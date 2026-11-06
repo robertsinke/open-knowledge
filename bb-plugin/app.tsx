@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   definePluginApp,
+  useBbContext,
   useRpc,
   useSdk,
+  type PluginFileOpenerProps,
   type PluginNavPanelProps,
   type PluginSettingsSectionProps,
 } from "@get-bb/plugin-sdk/app";
@@ -15,6 +17,25 @@ const EDITOR_SOURCE = "../packages/app/src";
 
 export const EDITOR_ORIGIN_POLL_MS = 15_000;
 
+const LONE_SURROGATE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
+
+export function editorDocumentHash(filePath: string): string {
+  const docName = filePath
+    .trim()
+    .replace(/^\.\/+/, "")
+    .replace(/^\/+/, "")
+    .replace(/\.(md|mdx|markdown)$/i, "");
+  const encoded = docName
+    .split("/")
+    .map((segment) => encodeURIComponent(segment.replace(LONE_SURROGATE, "\uFFFD")))
+    .join("/");
+  return `#/${encoded}`;
+}
+
+function editorFrameUrl(editorUrl: string, documentPath: string | null): string {
+  return documentPath === null ? editorUrl : `${editorUrl}${editorDocumentHash(documentPath)}`;
+}
+
 function EditorSettings(_props: PluginSettingsSectionProps) {
   return (
     <p>
@@ -24,7 +45,13 @@ function EditorSettings(_props: PluginSettingsSectionProps) {
   );
 }
 
-function EditorSurface({ workspaceRoot }: { workspaceRoot: string | null | undefined }) {
+function EditorSurface({
+  workspaceRoot,
+  documentPath = null,
+}: {
+  workspaceRoot: string | null | undefined;
+  documentPath?: string | null;
+}) {
   const rpc = useRpc<typeof rpcContract>();
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +68,7 @@ function EditorSurface({ workspaceRoot }: { workspaceRoot: string | null | undef
           pending = false;
           if (!active) return;
           setError(null);
-          setUrl(next.editorUrl);
+          setUrl(editorFrameUrl(next.editorUrl, documentPath));
         },
         (reason: unknown) => {
           pending = false;
@@ -56,7 +83,7 @@ function EditorSurface({ workspaceRoot }: { workspaceRoot: string | null | undef
       active = false;
       clearInterval(timer);
     };
-  }, [rpc, workspaceRoot]);
+  }, [documentPath, rpc, workspaceRoot]);
 
   if (workspaceRoot === undefined) return <p>Loading the editor.</p>;
   if (workspaceRoot === null) return <p>No workspace is open for this editor.</p>;
@@ -83,20 +110,20 @@ function EditorSurface({ workspaceRoot }: { workspaceRoot: string | null | undef
   return <p>Loading the editor.</p>;
 }
 
-export function ThreadEditor(props: { threadId: string; environment: { id: string } | null }) {
+function useWorkspaceRoot(environmentId: string | null | undefined): string | null | undefined {
   const sdk = useSdk();
   const [workspaceRoot, setWorkspaceRoot] = useState<string | null | undefined>(
-    props.environment === null ? null : undefined,
+    environmentId === undefined || environmentId === null ? environmentId : undefined,
   );
 
   useEffect(() => {
-    if (props.environment === null) {
-      setWorkspaceRoot(null);
+    if (environmentId === undefined || environmentId === null) {
+      setWorkspaceRoot(environmentId);
       return;
     }
     let active = true;
     setWorkspaceRoot(undefined);
-    void sdk.environments.get({ environmentId: props.environment.id }).then(
+    void sdk.environments.get({ environmentId }).then(
       (environment) => {
         if (active) setWorkspaceRoot(environment.path);
       },
@@ -107,13 +134,53 @@ export function ThreadEditor(props: { threadId: string; environment: { id: strin
     return () => {
       active = false;
     };
-  }, [sdk, props.environment]);
+  }, [environmentId, sdk]);
 
+  return workspaceRoot;
+}
+
+export function ThreadEditor(props: { threadId: string; environment: { id: string } | null }) {
+  const workspaceRoot = useWorkspaceRoot(props.environment === null ? null : props.environment.id);
   return <EditorSurface workspaceRoot={workspaceRoot} />;
 }
 
 function NavEditor(_props: PluginNavPanelProps) {
-  return <EditorSurface workspaceRoot={null} />;
+  const { threadId } = useBbContext();
+  const sdk = useSdk();
+  const [environmentId, setEnvironmentId] = useState<string | null | undefined>(
+    threadId === null ? null : undefined,
+  );
+
+  useEffect(() => {
+    if (threadId === null) {
+      setEnvironmentId(null);
+      return;
+    }
+    let active = true;
+    setEnvironmentId(undefined);
+    void sdk.threads.get({ threadId }).then(
+      (thread) => {
+        if (active) setEnvironmentId(thread.environmentId);
+      },
+      () => {
+        if (active) setEnvironmentId(null);
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [sdk, threadId]);
+
+  const workspaceRoot = useWorkspaceRoot(environmentId);
+  return <EditorSurface workspaceRoot={workspaceRoot} />;
+}
+
+function MarkdownFileOpener({ path, source, Original }: PluginFileOpenerProps) {
+  const workspaceRoot = useWorkspaceRoot(
+    source.kind === "workspace" ? source.environmentId : null,
+  );
+  if (source.kind !== "workspace") return <Original />;
+  return <EditorSurface workspaceRoot={workspaceRoot} documentPath={path} />;
 }
 
 export default definePluginApp((app) => {
@@ -139,5 +206,11 @@ export default definePluginApp((app) => {
     availability: "fixed",
     layout: "flush",
     component: ThreadEditor,
+  });
+  app.slots.fileOpener({
+    id: "editor",
+    title: "OpenKnowledge Editor",
+    extensions: ["md", "mdx", "markdown"],
+    component: MarkdownFileOpener,
   });
 });

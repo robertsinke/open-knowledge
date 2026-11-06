@@ -13,8 +13,8 @@ importers:
         version: 4.6.7
     devDependencies:
       '@get-bb/plugin-sdk':
-        specifier: 0.6.104
-        version: 0.6.104(@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 0.6.116
+        version: 0.6.116(@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@testing-library/dom':
         specifier: ^10.4.1
         version: 10.4.2
@@ -127,8 +127,8 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@get-bb/plugin-sdk@0.6.104':
-    resolution: {integrity: sha512-nUbCt+CrMjmSY5pRj66m/vx2dTh4MH/tt7oImWzRuRcmwily9Qbspdab5gWAIsDImmyDibFBTC6Rg2XtOHh8Cg==}
+  '@get-bb/plugin-sdk@0.6.116':
+    resolution: {integrity: sha512-Cfp8PoiHlzfj4GPpwKvf3IovHZBHqB8hj3XXq+uAsKPPmk5zV913OsVXv6PvPLhdPxXSezU3B+MoTvJrD5vxxA==}
     peerDependencies:
       '@testing-library/react': ^16.3.2
       '@types/better-sqlite3': ^7.6.12
@@ -896,7 +896,7 @@ snapshots:
 
   '@exodus/bytes@1.16.0': {}
 
-  '@get-bb/plugin-sdk@0.6.104(@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@get-bb/plugin-sdk@0.6.116(@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@tanstack/react-query': 5.106.1(@types/react@19.3.0)(react@19.3.1)
       cross-spawn: 7.0.6

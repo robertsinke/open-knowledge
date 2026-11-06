@@ -11,7 +11,7 @@ import {
   isBbEditorHost,
   markBbEditorHost,
 } from "../packages/app/src/lib/bb-editor-host";
-import { EDITOR_ORIGIN_POLL_MS, ThreadEditor } from "./app";
+import { EDITOR_ORIGIN_POLL_MS, editorDocumentHash, ThreadEditor } from "./app";
 import {
   canonicalWorkspaceRoot,
   deployedOriginKey,
@@ -118,9 +118,16 @@ describe("OpenKnowledge editor plugin", () => {
   it("is the GPL editor package and points at this fork's app source", () => {
     const manifest = JSON.parse(
       readFileSync(join(pluginRepoRoot(), "bb-plugin/package.json"), "utf8"),
-    ) as { license: string; bb: { app?: string } };
+    ) as {
+      license: string;
+      bb: { app?: string };
+      engines: { bbPluginSdk: string };
+      devDependencies: { "@get-bb/plugin-sdk": string };
+    };
     const source = readFileSync(join(pluginRepoRoot(), "bb-plugin/app.tsx"), "utf8");
     expect(manifest.license).toBe("GPL-3.0-or-later");
+    expect(manifest.engines.bbPluginSdk).toBe(">=0.6.113");
+    expect(manifest.devDependencies["@get-bb/plugin-sdk"]).toBe("0.6.116");
     expect(manifest.bb.app).toBe("./app.tsx");
     expect(source).toContain("../packages/app/src");
     expect(source).not.toContain("TerminalSection");
@@ -164,6 +171,133 @@ describe("OpenKnowledge editor plugin", () => {
     );
     const editor = await slot.findByTitle("OpenKnowledge editor");
     expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4173/bb.html");
+  });
+
+  it("opens a workspace markdown file on that project's document", async () => {
+    expect(app.fileOpeners[0]).toMatchObject({
+      id: "editor",
+      title: "OpenKnowledge Editor",
+      extensions: ["md", "mdx", "markdown"],
+    });
+    const slot = renderSlot(
+      app.fileOpeners[0]!,
+      {
+        path: "notes/a.md",
+        source: {
+          kind: "workspace",
+          environmentId: "env_notes",
+          projectId: "prj_notes",
+          threadId: "thr_notes",
+        },
+        Original: () => <p>Original preview</p>,
+      },
+      {
+        rpc: {
+          editorOrigin: () => ({
+            origin: "http://127.0.0.1:4242",
+            editorUrl: "http://127.0.0.1:4242/bb.html",
+            mcpUrl: "http://127.0.0.1:4242/mcp",
+            source: "local" as const,
+          }),
+        },
+        sdk: {
+          environments: {
+            get: async () => ({ path: "/tmp/notes-project" }) as never,
+          },
+        },
+      },
+    );
+    const editor = await slot.findByTitle("OpenKnowledge editor");
+    expect(editor.getAttribute("src")).toBe(
+      `http://127.0.0.1:4242/bb.html${editorDocumentHash("notes/a.md")}`,
+    );
+    expect(editorDocumentHash("notes/a.md")).toBe("#/notes/a");
+    expect(slot.container.textContent).not.toContain("Original preview");
+  });
+
+  it("keeps a thread-storage markdown file on the built-in preview", async () => {
+    let requested = false;
+    const slot = renderSlot(
+      app.fileOpeners[0]!,
+      {
+        path: "notes/a.md",
+        source: {
+          kind: "thread-storage",
+          environmentId: "env_ignored",
+          projectId: null,
+          threadId: "thr_store",
+        },
+        Original: () => <p>Original preview</p>,
+      },
+      {
+        rpc: {
+          editorOrigin: () => {
+            requested = true;
+            throw new Error("origin requested");
+          },
+        },
+      },
+    );
+    await slot.findByText("Original preview");
+    expect(requested).toBe(false);
+    expect(slot.container.querySelector("iframe")).toBeNull();
+  });
+
+  it("keeps a host markdown file on the built-in preview", async () => {
+    let requested = false;
+    const slot = renderSlot(
+      app.fileOpeners[0]!,
+      {
+        path: "/Users/me/notes/a.md",
+        source: {
+          kind: "host",
+          environmentId: "env_ignored",
+          projectId: null,
+          threadId: null,
+          experimental_hostId: "host_1",
+        },
+        Original: () => <p>Original preview</p>,
+      },
+      {
+        rpc: {
+          editorOrigin: () => {
+            requested = true;
+            throw new Error("origin requested");
+          },
+        },
+      },
+    );
+    await slot.findByText("Original preview");
+    expect(requested).toBe(false);
+    expect(slot.container.querySelector("iframe")).toBeNull();
+  });
+
+  it("opens the nav panel on the active thread workspace origin", async () => {
+    const slot = renderSlot(
+      app.navPanels[0]!,
+      { subPath: "" },
+      {
+        context: { threadId: "thr_nav" },
+        rpc: {
+          editorOrigin: () => ({
+            origin: "http://127.0.0.1:4243",
+            editorUrl: "http://127.0.0.1:4243/bb.html",
+            mcpUrl: "http://127.0.0.1:4243/mcp",
+            source: "local" as const,
+          }),
+        },
+        sdk: {
+          threads: {
+            get: async () => ({ environmentId: "env_nav" }) as never,
+          },
+          environments: {
+            get: async () => ({ path: "/tmp/nav-workspace" }) as never,
+          },
+        },
+      },
+    );
+    const editor = await slot.findByTitle("OpenKnowledge editor");
+    expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4243/bb.html");
   });
 
   it("does not load an editor when the thread has no workspace", async () => {

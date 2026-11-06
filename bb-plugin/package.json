@@ -1,0 +1,47 @@
+{
+  "name": "bb-plugin-open-knowledge-editor",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "description": "OpenKnowledge editor mounted in BB, built from this fork.",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "bb": ">=0.48.1",
+    "bbPluginSdk": ">=0.6.104"
+  },
+  "bb": {
+    "name": "OpenKnowledge Editor",
+    "description": "OpenKnowledge editor mounted in BB. The terminal is omitted. GitHub sync is BB's.",
+    "branding": {
+      "icon": "Explore"
+    },
+    "server": "./server.ts",
+    "app": "./app.tsx"
+  },
+  "keywords": [
+    "bb-plugin"
+  ],
+  "scripts": {
+    "build": "bb plugin build .",
+    "test": "vitest run --config vitest.config.ts",
+    "typecheck": "tsrs --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.104",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "jsdom": "^29.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsrs": "0.18.0-ts7.1.0-dev.20260929",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^4.1.1"
+  }
+}

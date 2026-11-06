@@ -25,8 +25,11 @@ import {
   EPHEMERAL_PROJECT_DIR_PREFIX,
   isProjectRoot,
   lockAdvertisesUi,
+  lockBaseUrl,
   type PinoLogger,
   prepareSingleFileOpen,
+  readServerLock,
+  resolveLockDir,
   type ServerExitDetail,
   type ServerExitReason,
 } from '@inkeep/open-knowledge-server';
@@ -51,6 +54,19 @@ import type { LaunchJsonRepairResult } from './repair-launch-json.ts';
 import type { RepairResult } from './repair-mcp-configs.ts';
 
 const DEFAULT_IDLE_THRESHOLD_MS = 30 * 60 * 1000;
+
+export type LiveServerLock =
+  | { readonly state: 'absent' }
+  | { readonly state: 'starting' }
+  | { readonly state: 'ready'; readonly origin: string };
+
+export function readLiveServerLock(projectDir: string): LiveServerLock {
+  const lock = readServerLock(resolveLockDir(projectDir));
+  if (lock === null) return { state: 'absent' };
+  const origin = lockBaseUrl(lock);
+  if (origin === null) return { state: 'starting' };
+  return { state: 'ready', origin };
+}
 
 export function resolveHost(
   opts: { bind?: string[] },
@@ -757,7 +773,10 @@ export async function runStartCommand(configArg: Config, opts: StartCommandOptio
       process.exit(1);
     }
 
-    if (isServerLockCollision(err, serverModule, cwd)) {
+    if (
+      isServerLockCollision(err, serverModule, cwd) &&
+      readLiveServerLock(cwd).state !== 'absent'
+    ) {
       const lockDir = serverModule.resolveLockDir(cwd);
       let reuse: ServerReuseInfo | null = null;
       try {

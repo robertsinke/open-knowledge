@@ -584,6 +584,7 @@ interface InitCommandOptions {
   cwd?: string;
   projectRootMode?: 'discover' | 'cwd';
   mcp?: boolean;
+  projectSkills?: boolean;
   devMcp?: boolean;
   editors?: EditorId[];
   home?: string;
@@ -1325,33 +1326,35 @@ export async function runInit(options: InitCommandOptions = {}): Promise<InitCom
     }
   }
 
-  const writtenSkillPaths = new Set<string>();
-  for (const target of projectTargets) {
-    const skillPath = target.projectSkillPath?.(projectRoot);
-    if (!skillPath || writtenSkillPaths.has(skillPath)) continue;
-    writtenSkillPaths.add(skillPath);
-    projectSkillResults.push(writeProjectSkill(target, projectRoot, { home: options.home }));
-  }
-  const hubSkill = writeProjectSkillToHub(
-    projectRoot,
-    projectTargets.map((t) => t.id),
-  );
-  if (hubSkill) projectSkillResults.push(hubSkill);
-
-  const installedForEditors = projectSkillResults
-    .filter((r) => r.action === 'written' || r.action === 'overwritten')
-    .map((r) => r.editorId);
-  if (installedForEditors.length > 0) {
-    const reportHome = options.home ?? homedir();
-    void reportSkillInstall(
-      {
-        source: OPENKNOWLEDGE_SKILLS_REPO,
-        skills: [BUNDLE_SKILL_NAME.project],
-        agents: installedForEditors,
-        scope: projectRoot,
-      },
-      { home: reportHome, enabled: resolveSkillInstallReportSettings(reportHome).enabled },
+  if (options.projectSkills !== false) {
+    const writtenSkillPaths = new Set<string>();
+    for (const target of projectTargets) {
+      const skillPath = target.projectSkillPath?.(projectRoot);
+      if (!skillPath || writtenSkillPaths.has(skillPath)) continue;
+      writtenSkillPaths.add(skillPath);
+      projectSkillResults.push(writeProjectSkill(target, projectRoot, { home: options.home }));
+    }
+    const hubSkill = writeProjectSkillToHub(
+      projectRoot,
+      projectTargets.map((t) => t.id),
     );
+    if (hubSkill) projectSkillResults.push(hubSkill);
+
+    const installedForEditors = projectSkillResults
+      .filter((r) => r.action === 'written' || r.action === 'overwritten')
+      .map((r) => r.editorId);
+    if (installedForEditors.length > 0) {
+      const reportHome = options.home ?? homedir();
+      void reportSkillInstall(
+        {
+          source: OPENKNOWLEDGE_SKILLS_REPO,
+          skills: [BUNDLE_SKILL_NAME.project],
+          agents: installedForEditors,
+          scope: projectRoot,
+        },
+        { home: reportHome, enabled: resolveSkillInstallReportSettings(reportHome).enabled },
+      );
+    }
   }
 
   const projectScopeUnsupportedLabels =
@@ -1999,6 +2002,13 @@ export function initCommand(): Command {
       'Install only the named user-global skill bundles (comma list: discovery,write-skill)',
     )
     .option('--no-skills', 'Do not install any user-global skill bundles')
+    .option('--no-project-skills', 'Do not install project-local editor skills')
+    .addOption(
+      new Option(
+        '--project-root <mode>',
+        'Pin the project root to the working directory (cwd) or discover an ancestor project (discover)',
+      ).choices(['discover', 'cwd']),
+    )
     .addOption(
       new Option(
         '--scope <scope>',
@@ -2027,6 +2037,8 @@ export function initCommand(): Command {
         contentDir?: string;
         json?: boolean;
         skills?: string | boolean;
+        projectSkills?: boolean;
+        projectRoot?: 'discover' | 'cwd';
       }) => {
         const cwd = process.cwd();
         if (opts.devMcp) defaultToDevChannel(process.env);
@@ -2042,12 +2054,14 @@ export function initCommand(): Command {
           try {
             result = await runInit({
               cwd,
+              ...(opts.projectRoot === 'cwd' ? { projectRootMode: 'cwd' as const } : {}),
               mcp: opts.mcp,
               devMcp: opts.devMcp,
               scope: opts.scope,
               sharing,
               contentDir: opts.contentDir,
               skills: opts.skills,
+              ...(opts.projectSkills === false ? { projectSkills: false } : {}),
             });
           } catch (err) {
             if (

@@ -1,5 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { type ReactNode, lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { AddSkillTab } from '@/components/ImportSkillDialog';
 import { SidebarToolbarButton } from '@/components/SidebarToolbarButton';
 import { SkillsSidebarSection } from '@/components/SkillsSidebarSection';
@@ -26,7 +26,13 @@ const ImportSkillDialog = lazy(() =>
 const RESIZE_STEP = 32;
 const COLLAPSE_DRAG_SLACK = 40;
 
-export function SkillsSidebarDock({ filesOpen = true }: { filesOpen?: boolean } = {}) {
+export function SkillsSidebarDock({
+  filesOpen = true,
+  trailing = null,
+}: {
+  filesOpen?: boolean;
+  trailing?: ReactNode;
+} = {}) {
   const { t } = useLingui();
   const [expanded, setExpanded] = useState(readSkillsDockExpanded);
   const [height, setHeight] = useState(readSkillsDockHeight);
@@ -172,6 +178,7 @@ export function SkillsSidebarDock({ filesOpen = true }: { filesOpen?: boolean } 
             testId="skills-dock-explore"
           />
         </div>
+        {trailing}
       </div>
       <CollapsibleContent
         ref={contentRef}

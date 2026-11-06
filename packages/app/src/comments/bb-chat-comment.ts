@@ -7,6 +7,9 @@ export function addCommentsToBbChat(threadIds: readonly string[]): void {
   for (const threadId of threadIds) {
     const thread = getThreadById(threadId);
     if (thread === null) continue;
-    window.parent.postMessage(bbCommentChatAdd(thread.docName, thread.anchor?.quote ?? ''), '*');
+    window.parent.postMessage(
+      bbCommentChatAdd(thread.docName, thread.anchor?.quote ?? '', thread.body),
+      '*',
+    );
   }
 }

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import {
   definePluginApp,
+  experimental_usePluginId,
   useBbContext,
   useComposer,
+  useComposers,
   useRpc,
   useSdk,
   type PluginFileOpenerProps,
@@ -10,21 +12,48 @@ import {
   type PluginSettingsSectionProps,
 } from "@get-bb/plugin-sdk/app";
 import {
-  bbCommentChatBlock,
+  bbPluginSettingsPath,
+  bbSettingsFrameUrl,
+  readBbSettingsMessage,
+} from "./bb-settings";
+import {
   bbCommentChatComposer,
+  commentChatInsertParts,
   readBbCommentChatMessage,
-} from "../packages/app/src/lib/bb-comment-chat";
+} from "./comment-chat";
 import {
   bbDeployedOriginCurrent,
   deployedOriginSetting,
   readBbDeployedOriginMessage,
-} from "../packages/app/src/lib/bb-deployed-origin";
-import { markBbEditorHost } from "../packages/app/src/lib/bb-editor-host";
+} from "./deployed-origin";
 import type { rpcContract } from "./server";
 
-markBbEditorHost();
-
 export const EDITOR_ORIGIN_POLL_MS = 15_000;
+
+type ComposerHandle = ReturnType<typeof useComposer>;
+
+function isThreadDraft(
+  scope: ComposerHandle["scope"],
+): scope is Extract<ComposerHandle["scope"], { kind: "thread" | "queued-message" }> {
+  return scope.kind === "thread" || scope.kind === "queued-message";
+}
+
+/** The thread draft, including when its box is not the active surface. */
+export function commentComposer(
+  current: ComposerHandle,
+  listed: readonly ComposerHandle[],
+  threadId: string | null,
+): ComposerHandle | null {
+  const sameThread = (composer: ComposerHandle) =>
+    isThreadDraft(composer.scope) && (threadId === null || composer.scope.threadId === threadId);
+  const onScreen = listed.find(sameThread);
+  if (onScreen) return onScreen;
+  if (sameThread(current)) return current;
+  // This editor is open inside a thread. That handle still writes the thread
+  // draft after the composer box leaves the screen.
+  if (threadId !== null) return current;
+  return null;
+}
 
 const LONE_SURROGATE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g;
 
@@ -66,30 +95,63 @@ function postComposerStatus(
 }
 
 function EditorSettings(_props: PluginSettingsSectionProps) {
+  const context = useBbContext();
+  const rpc = useRpc<typeof rpcContract>();
+  const [url, setUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (context.projectId === null) return;
+    let active = true;
+    void rpc.call("editorOrigin", { projectId: context.projectId }).then(
+      (next) => {
+        if (active) setUrl(bbSettingsFrameUrl(next.editorUrl));
+      },
+      (reason: unknown) => {
+        if (active) setError(reason instanceof Error ? reason.message : "Settings entry failed");
+      },
+    );
+    return () => {
+      active = false;
+    };
+  }, [context.projectId, rpc]);
+
+  if (context.projectId === null) return <p>No project is open for these settings.</p>;
+  if (error) return <p>{error}</p>;
+  if (url === null) return <p>Loading settings.</p>;
   return (
-    <p>
-      Use the settings gear in the editor for this project. The terminal is omitted.
-      GitHub sync is a BB setting, not an OpenKnowledge setting.
-    </p>
+    <iframe
+      title="OpenKnowledge settings"
+      src={url}
+      style={{ width: "100%", height: "70vh", border: 0 }}
+    />
   );
 }
 
 function EditorSurface({
-  workspaceRoot,
+  projectId,
   documentPath = null,
 }: {
-  workspaceRoot: string | null | undefined;
+  projectId: string | null | undefined;
   documentPath?: string | null;
 }) {
   const rpc = useRpc<typeof rpcContract>();
+  const pluginId = experimental_usePluginId();
   const composer = useComposer();
+  const composers = useComposers();
+  const threadId = useBbContext().threadId;
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const frameRef = useRef<HTMLIFrameElement>(null);
   const framedOriginRef = useRef<string | null>(null);
   const composerRef = useRef(composer);
   composerRef.current = composer;
-  const threadComposerMounted = composer.scope.kind === "thread";
+  const composersRef = useRef(composers);
+  composersRef.current = composers;
+  const threadIdRef = useRef(threadId);
+  threadIdRef.current = threadId;
+  const threadComposerMounted =
+    commentComposer(composer, composers, threadId) !== null;
   const threadComposerMountedRef = useRef(threadComposerMounted);
   threadComposerMountedRef.current = threadComposerMounted;
 
@@ -103,15 +165,15 @@ function EditorSurface({
 
   useEffect(() => {
     framedOriginRef.current = null;
-    if (workspaceRoot === undefined || workspaceRoot === null) return;
-    const root = workspaceRoot;
+    if (projectId === undefined || projectId === null) return;
+    const currentProjectId = projectId;
     let active = true;
     let request = 0;
     let framedOrigin: string | null = null;
     let deployedOrigin = "";
     const load = () => {
       const id = ++request;
-      void rpc.call("editorOrigin", { workspaceRoot: root }).then(
+      void rpc.call("editorOrigin", { projectId: currentProjectId }).then(
         (next) => {
           if (!active || id !== request) return;
           framedOrigin = next.origin;
@@ -143,6 +205,10 @@ function EditorSurface({
         void applySet(message.origin);
         return;
       }
+      if (readBbSettingsMessage(event.data)) {
+        window.location.assign(bbPluginSettingsPath(pluginId));
+        return;
+      }
       const comment = readBbCommentChatMessage(event.data);
       if (!comment) return;
       if (comment.intent === "read") {
@@ -150,19 +216,30 @@ function EditorSurface({
         return;
       }
       if (comment.intent !== "add") return;
-      if (!threadComposerMountedRef.current) {
+      const target = commentComposer(
+        composerRef.current,
+        composersRef.current,
+        threadIdRef.current,
+      );
+      if (target === null) {
         postToMessageSource(event, bbCommentChatComposer(false));
         return;
       }
       try {
-        composerRef.current.insert(bbCommentChatBlock(comment.path, comment.quote), {
-          at: "end",
-          block: true,
-        });
-        composerRef.current.focus();
+        target.insert(
+          commentChatInsertParts(target.text, comment.path, comment.quote, comment.body),
+          { at: "end" },
+        );
       } catch {
         postToMessageSource(event, bbCommentChatComposer(false));
+        return;
       }
+      try {
+        target.focus();
+      } catch {
+        // The draft already has the quote. Focusing requires the box on screen.
+      }
+      postToMessageSource(event, bbCommentChatComposer(true));
     };
     async function applySet(raw: string): Promise<void> {
       let next: string | null;
@@ -172,7 +249,7 @@ function EditorSurface({
         return;
       }
       try {
-        await rpc.call("setDeployedOrigin", { workspaceRoot: root, origin: next });
+        await rpc.call("setDeployedOrigin", { projectId: currentProjectId, origin: next });
       } catch {
         return;
       }
@@ -186,10 +263,10 @@ function EditorSurface({
       clearInterval(timer);
       window.removeEventListener("message", onMessage);
     };
-  }, [documentPath, rpc, workspaceRoot]);
+  }, [documentPath, pluginId, projectId, rpc]);
 
-  if (workspaceRoot === undefined) return <p>Loading the editor.</p>;
-  if (workspaceRoot === null) return <p>No workspace is open for this editor.</p>;
+  if (projectId === undefined) return <p>Loading the editor.</p>;
+  if (projectId === null) return <p>No project is open for this editor.</p>;
   if (url) {
     return (
       <div
@@ -198,7 +275,8 @@ function EditorSurface({
           flex: "1 1 auto",
           width: "100%",
           height: "100%",
-          minHeight: "100vh",
+          minHeight: 0,
+          overflow: "hidden",
         }}
       >
         <iframe
@@ -221,85 +299,63 @@ function EditorSurface({
   return <p>Loading the editor.</p>;
 }
 
-function useWorkspaceRoot(environmentId: string | null | undefined): string | null | undefined {
+function useResolvedProjectId(threadId: string | null): string | null | undefined {
+  const context = useBbContext();
   const sdk = useSdk();
-  const [workspaceRoot, setWorkspaceRoot] = useState<string | null | undefined>(
-    environmentId === undefined || environmentId === null ? environmentId : undefined,
+  const [projectId, setProjectId] = useState<string | null | undefined>(
+    context.projectId === null && threadId !== null ? undefined : context.projectId,
   );
 
   useEffect(() => {
-    if (environmentId === undefined || environmentId === null) {
-      setWorkspaceRoot(environmentId);
+    if (context.projectId !== null) {
+      setProjectId(context.projectId);
+      return;
+    }
+    if (threadId === null) {
+      setProjectId(null);
       return;
     }
     let active = true;
-    setWorkspaceRoot(undefined);
-    void sdk.environments.get({ environmentId }).then(
-      (environment) => {
-        if (active) setWorkspaceRoot(environment.path);
-      },
-      () => {
-        if (active) setWorkspaceRoot(null);
-      },
-    );
+    setProjectId(undefined);
+    void Promise.resolve()
+      .then(() => sdk.threads.get({ threadId }))
+      .then(
+        (thread) => {
+          if (active) setProjectId(thread.projectId);
+        },
+        () => {
+          if (active) setProjectId(null);
+        },
+      );
     return () => {
       active = false;
     };
-  }, [environmentId, sdk]);
+  }, [context.projectId, sdk, threadId]);
 
-  return workspaceRoot;
+  return projectId;
 }
 
 export function ThreadEditor(props: { threadId: string; environment: { id: string } | null }) {
-  const workspaceRoot = useWorkspaceRoot(props.environment === null ? null : props.environment.id);
-  return <EditorSurface workspaceRoot={workspaceRoot} />;
+  const projectId = useResolvedProjectId(props.threadId);
+  return <EditorSurface projectId={projectId} />;
 }
 
 function NavEditor(_props: PluginNavPanelProps) {
   const { threadId } = useBbContext();
-  const sdk = useSdk();
-  const [environmentId, setEnvironmentId] = useState<string | null | undefined>(
-    threadId === null ? null : undefined,
-  );
-
-  useEffect(() => {
-    if (threadId === null) {
-      setEnvironmentId(null);
-      return;
-    }
-    let active = true;
-    setEnvironmentId(undefined);
-    void sdk.threads.get({ threadId }).then(
-      (thread) => {
-        if (active) setEnvironmentId(thread.environmentId);
-      },
-      () => {
-        if (active) setEnvironmentId(null);
-      },
-    );
-    return () => {
-      active = false;
-    };
-  }, [sdk, threadId]);
-
-  const workspaceRoot = useWorkspaceRoot(environmentId);
-  return <EditorSurface workspaceRoot={workspaceRoot} />;
+  const projectId = useResolvedProjectId(threadId);
+  return <EditorSurface projectId={projectId} />;
 }
 
 function MarkdownFileOpener({ path, source, Original }: PluginFileOpenerProps) {
-  const workspaceRoot = useWorkspaceRoot(
-    source.kind === "workspace" ? source.environmentId : null,
-  );
   if (source.kind !== "workspace") return <Original />;
-  return <EditorSurface workspaceRoot={workspaceRoot} documentPath={path} />;
+  return <EditorSurface projectId={source.projectId} documentPath={path} />;
 }
 
 export default definePluginApp((app) => {
   app.slots.settingsSection({
     id: "editor",
     title: "Editor",
-    description:
-      "Use the settings gear in the editor. The terminal is omitted. GitHub sync stays in BB.",
+    description: "OpenKnowledge settings for this project. GitHub sync stays in BB.",
     component: EditorSettings,
   });
   app.slots.navPanel({

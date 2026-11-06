@@ -22,6 +22,7 @@ import { EditorPane } from '@/components/EditorPane';
 import { FeedbackMenuTrigger } from '@/components/FeedbackMenuTrigger';
 import { FileListHostProvider } from '@/components/FileListHost';
 import { FileSidebar } from '@/components/FileSidebar';
+import { OPEN_COMMAND_PALETTE_EVENT } from '@/components/HeaderSearchBar';
 import { defaultInitialDir } from '@/components/file-tree-utils';
 import { ExternalHandoffGateProvider } from '@/components/handoff/ExternalHandoffGate';
 import {
@@ -85,6 +86,8 @@ import { revealEditor } from '@/lib/reveal-editor';
 import { SingleFileModeProvider, useSingleFileMode } from '@/lib/single-file-mode';
 import { consumeHashNavigationSuppression } from '@/lib/tab-session-restore-suppression';
 import { useServerKeepalive } from '@/lib/use-server-keepalive';
+import { isBbEditorHost, isBbSettingsPage } from '@/lib/bb-editor-host';
+import { SyncToastHost } from '@/presence/SyncToastHost';
 import { isSettingsHashOpen, isSettingsShortcut, openSettings } from '@/lib/use-settings-route';
 import { cn } from '@/lib/utils';
 import { consumeWorkspaceHashWrite } from '@/lib/workspace-hash-writes';
@@ -605,7 +608,16 @@ function AppBody() {
   const singleFile = useSingleFileMode();
   const noteWindow = isNoteWindow();
 
-  const showAppHeader = !noteWindow;
+  const bbEditorHost = isBbEditorHost();
+  const showAppHeader = !noteWindow && !isBbSettingsPage() && !bbEditorHost;
+  const showFileList = !noteWindow && !isBbSettingsPage() && !singleFile;
+
+  useEffect(() => {
+    if (!bbEditorHost) return;
+    const openPalette = () => setCommandPaletteOpen(true);
+    window.addEventListener(OPEN_COMMAND_PALETTE_EVENT, openPalette);
+    return () => window.removeEventListener(OPEN_COMMAND_PALETTE_EVENT, openPalette);
+  }, [bbEditorHost]);
   const appHeaderStyle: CSSProperties | undefined = showAppHeader
     ? ({ '--ok-app-header-height': APP_HEADER_HEIGHT } as CSSProperties)
     : undefined;
@@ -663,8 +675,12 @@ function AppBody() {
         <TerminalLaunchProvider value={terminalLaunch}>
           <CommentQueueShortcut />
           {showAppHeader && <AppHeader onOpenSearch={() => setCommandPaletteOpen(true)} />}
-          <SidebarProvider className="h-[calc(100vh-var(--ok-app-header-height,0px))] min-h-[calc(100svh-var(--ok-app-header-height,0px))]">
-            <FileListHostProvider enabled={showAppHeader && !singleFile} fileList={<FileSidebar />}>
+          {showAppHeader ? null : <SyncToastHost />}
+          <SidebarProvider
+            className="h-[calc(100vh-var(--ok-app-header-height,0px))] min-h-[calc(100svh-var(--ok-app-header-height,0px))]"
+            defaultWidth={bbEditorHost ? '20rem' : undefined}
+          >
+            <FileListHostProvider enabled={showFileList} fileList={<FileSidebar />}>
               <div
                 data-app-main=""
                 className={cn(

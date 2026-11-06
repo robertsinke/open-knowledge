@@ -1275,11 +1275,20 @@ msgstr "新增標籤"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "把 <0>{cliCommand}</0> 指令加到你的終端機"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "加入下一處與所選來源相符的內容。"
 
 msgid "Add to {gitignorePath}"
 msgstr "新增至 {gitignorePath}"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "加入詞典"
@@ -2498,6 +2507,9 @@ msgstr "對此程式碼區塊發表評論或詢問 AI"
 msgid "Comments"
 msgstr "註解"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "提交並同步"
 
@@ -3364,6 +3376,9 @@ msgstr "依目前的文件或資料夾情境建立一個資料夾。"
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "建立新分支，或簽出既有分支，各自在獨立視窗中開啟。"
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "從目前的清單項目建立一個新的清單項目。"
 
@@ -3627,6 +3642,9 @@ msgstr "已拒絕 — {optionName}"
 
 msgid "Deny"
 msgstr "拒絕"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "描述你想建立的專案"
@@ -4995,6 +5013,9 @@ msgstr "GitHub Enterprise Server 主機"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "GitHub 登入不存在或已過期。請重新連接以繼續同步。"
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub、一個 git URL，或一個本機路徑。"
 
@@ -5063,9 +5084,6 @@ msgstr "指引你的 AI 代理在這裡該怎麼做事。"
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install 或 https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "一次把勾選的註解交給智慧代理。在「這份文件」下只傳送該文件的註解；在「這個專案」下傳送所有勾選的註解。註解分頁關閉時不會有任何動作。"
 
 msgid "Hard break"
 msgstr "強制換行"
@@ -5890,6 +5908,9 @@ msgstr "無論資料夾層級多深，都不在「問題」、檔案總管指示
 
 msgid "Leave these comments out of this message"
 msgstr "不要把這些註解放進這則訊息"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "允許代理對話使用瀏覽器"
@@ -9079,6 +9100,9 @@ msgstr "儲存失敗：{error}"
 msgid "Save queued message"
 msgstr "儲存排隊中的訊息"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "儲存這則註解（Enter）"
 
@@ -9370,9 +9394,6 @@ msgstr "傳送"
 msgid "Send & continue"
 msgstr "傳送並繼續"
 
-msgid "Send checked comments to chat"
-msgstr "將勾選的註解傳送到對話"
-
 msgid "Send comments to"
 msgstr "把註解傳送到"
 
@@ -9432,6 +9453,9 @@ msgstr "已傳送，但無法把這些註解標記為完成——它們仍在等
 
 msgid "Separator"
 msgstr "分隔線"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "伺服器無法開啟文件"
@@ -9587,6 +9611,9 @@ msgstr "分享的儲存庫"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "與專案裡的所有人共享。存在專案資料夾中，並透過 git 隨專案一起流轉。"
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "分享文件需要一個 GitHub 儲存庫。請為這個專案建立一個。"
@@ -10024,6 +10051,9 @@ msgstr "過期的 Git 項目"
 
 msgid "Star us on GitHub"
 msgstr "在 GitHub 上給我們一顆星"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "發起一份錯誤回報，並附上此刻畫面的螢幕擷圖。"
@@ -10554,6 +10584,9 @@ msgstr "經證明的計算合約。僅適用於類型為 Attested Computation �
 
 msgid "The audit could not be completed. Try again."
 msgstr "稽核未能完成。請再試一次。"
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "無法連線至畫板。它可能不存在，或伺服器已離線。"
@@ -12009,9 +12042,6 @@ msgstr "開啟之後，代理每次編輯完都會開啟或重新整理預覽。
 
 msgid "When the agent runs its scheduled work."
 msgstr "代理執行排程工作的時間。"
-
-msgid "When the Comments tab is open"
-msgstr "當註解分頁開啟時"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "把游標停在外部連結上時，它的 URL 會送到目標網站，以取得那個頁面的預覽中繼資料——每個被預覽的連結送一次要求。"

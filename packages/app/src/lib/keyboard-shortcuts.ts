@@ -578,9 +578,9 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
   {
     id: 'send-comment-queue',
     category: 'general',
-    title: msg`Send checked comments to chat`,
-    description: msg`Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed.`,
-    scope: msg`When the Comments tab is open`,
+    title: msg`Add to chat`,
+    description: msg`Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment.`,
+    scope: msg`Comments tab, or the inline comment card`,
     bindings: [
       {
         mac: '⇧⌘ Enter',

@@ -9,21 +9,19 @@ import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { loadPluginApp, renderSlot } from "@get-bb/plugin-sdk/testing/app";
 import {
   bbCommentChatAdd,
-  bbCommentChatBlock,
   bbCommentChatComposer,
-} from "../packages/app/src/lib/bb-comment-chat";
+  commentChatContextFromId,
+} from "./comment-chat";
 import {
   bbDeployedOriginCurrent,
   bbDeployedOriginRead,
   bbDeployedOriginSet,
-} from "../packages/app/src/lib/bb-deployed-origin";
-import {
-  isBbEditorHost,
-  markBbEditorHost,
-} from "../packages/app/src/lib/bb-editor-host";
+} from "./deployed-origin";
 import { EDITOR_ORIGIN_POLL_MS, editorDocumentHash, ThreadEditor } from "./app";
 import plugin, {
   canonicalWorkspaceRoot,
+  corpusDirectory,
+  GENERAL_CORPUS_DIRECTORY,
   deployedOriginKey,
   editorOriginFrom,
   initCliArgs,
@@ -138,41 +136,29 @@ describe("OpenKnowledge editor plugin", () => {
     };
     const source = readFileSync(join(pluginRepoRoot(), "bb-plugin/app.tsx"), "utf8");
     expect(manifest.license).toBe("GPL-3.0-or-later");
-    expect(manifest.engines.bbPluginSdk).toBe(">=0.6.113");
-    expect(manifest.devDependencies["@get-bb/plugin-sdk"]).toBe("0.6.116");
+    expect(manifest.engines.bbPluginSdk).toBe(">=0.6.104");
+    expect(manifest.devDependencies["@get-bb/plugin-sdk"]).toBe("0.6.104");
     expect(manifest.bb.app).toBe("./app.tsx");
-    expect(source).toContain("../packages/app/src");
+    expect(source).not.toContain("../packages/app/");
     expect(source).not.toContain("TerminalSection");
     expect(source).not.toContain("SyncSection");
     expect(source).not.toContain("localhost:5173");
   });
 
-  it("registers editor settings without a terminal or OpenKnowledge sync control", async () => {
+  it("registers editor settings as this project's OpenKnowledge settings", async () => {
     expect(app.settingsSections).toHaveLength(1);
     expect(app.settingsSections[0]?.title).toBe("Editor");
-    const slot = renderSlot(app.settingsSections[0]!, {});
-    await slot.findByText(/The terminal is omitted/u);
-    expect(slot.container.textContent).toContain("GitHub sync is a BB setting");
+    const slot = renderSlot(app.settingsSections[0]!, {}, { context: { projectId: null } });
+    await slot.findByText("No project is open for these settings.");
     expect(slot.container.textContent).not.toMatch(/terminal settings/iu);
   });
 
-  it("keeps the left-rail editor section free of project field controls", async () => {
-    const slot = renderSlot(app.settingsSections[0]!, {});
-    await slot.findByText(/settings gear/u);
-    expect(slot.container.querySelector("input, textarea, select, button")).toBeNull();
-    expect(slot.container.textContent).not.toContain("Deployed origin");
-  });
-
-  it("marks this page as the BB editor host", () => {
-    markBbEditorHost();
-    expect(isBbEditorHost()).toBe(true);
-  });
-
-  it("loads bb.html on the workspace origin", async () => {
+  it("loads the native settings menu inside BB settings for the open project", async () => {
     const slot = renderSlot(
-      { component: ThreadEditor },
-      { threadId: "thr_editor", environment: { id: "env_editor" } },
+      app.settingsSections[0]!,
+      {},
       {
+        context: { projectId: "proj_editor" },
         rpc: {
           editorOrigin: () => ({
             origin: "http://127.0.0.1:4173",
@@ -181,15 +167,37 @@ describe("OpenKnowledge editor plugin", () => {
             source: "local" as const,
           }),
         },
-        sdk: {
-          environments: {
-            get: async () => ({ path: "/tmp/workspace-a" }) as never,
+      },
+    );
+    const frame = await slot.findByTitle("OpenKnowledge settings");
+    expect(frame.getAttribute("src")).toBe("http://127.0.0.1:4173/bb.html?bb-settings=1#settings");
+  });
+
+  it("loads bb.html for the BB project, not the thread workspace", async () => {
+    let requested: unknown;
+    const slot = renderSlot(
+      { component: ThreadEditor },
+      { threadId: "thr_editor", environment: { id: "env_editor" } },
+      {
+        context: { projectId: "proj_editor", threadId: "thr_editor" },
+        rpc: {
+          editorOrigin: (input) => {
+            requested = input;
+            return {
+              origin: "http://127.0.0.1:4173",
+              editorUrl: "http://127.0.0.1:4173/bb.html",
+              mcpUrl: "http://127.0.0.1:4173/mcp",
+              source: "local" as const,
+            };
           },
         },
       },
     );
     const editor = await slot.findByTitle("OpenKnowledge editor");
     expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4173/bb.html");
+    expect(editor.parentElement?.style.minHeight).toBe("0px");
+    expect(requested).toEqual({ projectId: "proj_editor" });
+    expect(slot.inspection.sdkCalls).toEqual([]);
   });
 
   it("opens a workspace markdown file on that project's document", async () => {
@@ -212,16 +220,14 @@ describe("OpenKnowledge editor plugin", () => {
       },
       {
         rpc: {
-          editorOrigin: () => ({
-            origin: "http://127.0.0.1:4242",
-            editorUrl: "http://127.0.0.1:4242/bb.html",
-            mcpUrl: "http://127.0.0.1:4242/mcp",
-            source: "local" as const,
-          }),
-        },
-        sdk: {
-          environments: {
-            get: async () => ({ path: "/tmp/notes-project" }) as never,
+          editorOrigin: (input) => {
+            expect(input).toEqual({ projectId: "prj_notes" });
+            return {
+              origin: "http://127.0.0.1:4242",
+              editorUrl: "http://127.0.0.1:4242/bb.html",
+              mcpUrl: "http://127.0.0.1:4242/mcp",
+              source: "local" as const,
+            };
           },
         },
       },
@@ -298,19 +304,19 @@ describe("OpenKnowledge editor plugin", () => {
       {
         context: { threadId: "thr_nav" },
         rpc: {
-          editorOrigin: () => ({
-            origin: "http://127.0.0.1:4243",
-            editorUrl: "http://127.0.0.1:4243/bb.html",
-            mcpUrl: "http://127.0.0.1:4243/mcp",
-            source: "local" as const,
-          }),
+          editorOrigin: (input) => {
+            expect(input).toEqual({ projectId: "proj_nav" });
+            return {
+              origin: "http://127.0.0.1:4243",
+              editorUrl: "http://127.0.0.1:4243/bb.html",
+              mcpUrl: "http://127.0.0.1:4243/mcp",
+              source: "local" as const,
+            };
+          },
         },
         sdk: {
           threads: {
-            get: async () => ({ environmentId: "env_nav" }) as never,
-          },
-          environments: {
-            get: async () => ({ path: "/tmp/nav-workspace" }) as never,
+            get: async () => ({ projectId: "proj_nav" }) as never,
           },
         },
       },
@@ -319,7 +325,7 @@ describe("OpenKnowledge editor plugin", () => {
     expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4243/bb.html");
   });
 
-  it("does not load an editor when the thread has no workspace", async () => {
+  it("does not load an editor when no BB project is open", async () => {
     const slot = renderSlot(
       { component: ThreadEditor },
       { threadId: "thr_empty", environment: null },
@@ -329,9 +335,16 @@ describe("OpenKnowledge editor plugin", () => {
             throw new Error("origin requested");
           },
         },
+        sdk: {
+          threads: {
+            get: async () => {
+              throw new Error("missing thread");
+            },
+          },
+        },
       },
     );
-    await slot.findByText("No workspace is open for this editor.");
+    await slot.findByText("No project is open for this editor.");
     expect(slot.container.querySelector("iframe")).toBeNull();
   });
 
@@ -342,6 +355,7 @@ describe("OpenKnowledge editor plugin", () => {
       { component: ThreadEditor },
       { threadId: "thr_poll", environment: { id: "env_poll" } },
       {
+        context: { projectId: "proj_poll", threadId: "thr_poll" },
         rpc: {
           editorOrigin: () => {
             calls += 1;
@@ -351,11 +365,6 @@ describe("OpenKnowledge editor plugin", () => {
               mcpUrl: "http://127.0.0.1:4174/mcp",
               source: "local" as const,
             };
-          },
-        },
-        sdk: {
-          environments: {
-            get: async () => ({ path: "/tmp/workspace-poll" }) as never,
           },
         },
       },
@@ -384,6 +393,7 @@ describe("OpenKnowledge editor plugin", () => {
       { component: ThreadEditor },
       { threadId: "thr_set_origin", environment: { id: "env_set_origin" } },
       {
+        context: { projectId: "proj_set", threadId: "thr_set_origin" },
         rpc: {
           editorOrigin: async () => {
             originReads += 1;
@@ -392,14 +402,10 @@ describe("OpenKnowledge editor plugin", () => {
             return editorOriginFrom("http://127.0.0.1:4173", "local");
           },
           setDeployedOrigin: async (input: unknown) => {
-            const body = input as { workspaceRoot: string; origin: string | null };
-            const origin = await writeDeployedOrigin(kv, body.workspaceRoot, body.origin);
+            const body = input as { projectId: string; origin: string | null };
+            expect(body.projectId).toBe("proj_set");
+            const origin = await writeDeployedOrigin(kv, root, body.origin);
             return { origin };
-          },
-        },
-        sdk: {
-          environments: {
-            get: async () => ({ path: root }) as never,
           },
         },
       },
@@ -494,7 +500,7 @@ describe("OpenKnowledge editor plugin", () => {
       { component: ThreadEditor },
       { threadId: "thr_comment", environment: { id: "env_comment" } },
       {
-        context: { threadId },
+        context: { projectId: "proj_comment", threadId },
         composer: { text },
         rpc: {
           editorOrigin: () => ({
@@ -531,8 +537,23 @@ describe("OpenKnowledge editor plugin", () => {
         source: commentFrame(),
       }),
     );
-    expect(slot.composer.text).toBe(
-      `Keep this.\n\n${bbCommentChatBlock("recipes/stir-fry", "the tofu")}`,
+    expect(slot.composer.text).toBe("Keep this. @Docs: the tofu ");
+    expect(slot.composer.draft.mentions).toMatchObject([
+      {
+        kind: "plugin",
+        provider: "document-comment",
+        label: "Docs: the tofu",
+      },
+    ]);
+    const mention = slot.composer.draft.mentions[0];
+    if (!mention || mention.kind !== "plugin") throw new Error("missing Docs chip");
+    expect(commentChatContextFromId(mention.id)).toBe(
+      [
+        "The user attached this passage from a Docs document to their message:",
+        "Document: recipes/stir-fry",
+        "> the tofu",
+        "Their comment: ",
+      ].join("\n\n"),
     );
     expect(slot.composer.focusCount).toBe(1);
   });
@@ -570,11 +591,46 @@ describe("OpenKnowledge editor plugin", () => {
     expect(slot.composer.focusCount).toBe(0);
     expect(replies).toEqual([bbCommentChatComposer(false)]);
   });
+
+  it("appends the quote when the thread is open and the composer box is not the active surface", async () => {
+    const slot = renderSlot(
+      { component: ThreadEditor },
+      { threadId: "thr_comment", environment: { id: "env_comment" } },
+      {
+        context: { projectId: "proj_comment", threadId: "thr_comment" },
+        composer: {
+          text: "Keep this.",
+          scope: { kind: "new-thread", projectId: "proj_comment" },
+          layout: "compact",
+        },
+        rpc: {
+          editorOrigin: () => ({
+            origin: "http://127.0.0.1:4173",
+            editorUrl: "http://127.0.0.1:4173/bb.html",
+            mcpUrl: "http://127.0.0.1:4173/mcp",
+            source: "local" as const,
+          }),
+        },
+      },
+    );
+    await slot.findByTitle("OpenKnowledge editor");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbCommentChatAdd("recipes/stir-fry", "the tofu"),
+        source: commentFrame(),
+      }),
+    );
+    expect(slot.composer.text).toBe("Keep this. @Docs: the tofu ");
+    expect(slot.composer.draft.mentions).toMatchObject([
+      { kind: "plugin", provider: "document-comment", label: "Docs: the tofu" },
+    ]);
+  });
 });
 
 interface DeployedOriginHandler {
   setDeployedOrigin(input: {
-    workspaceRoot: string;
+    projectId: string;
     origin: string | null;
   }): Promise<{ origin: string | null }>;
 }
@@ -584,12 +640,44 @@ describe("workspace project server", () => {
     expect(startCliArgs).toEqual(["start", "--no-open-browser", "--no-auto-sync"]);
   });
 
+  it("uses the project's checkout, shared by every thread", () => {
+    const checkout = tempDir("project-checkout");
+    const dataDir = "/tmp/bb-data";
+    expect(
+      corpusDirectory({
+        projectId: "proj_notes",
+        sources: [
+          { path: "/tmp/thread-workspace", isDefault: false },
+          { path: checkout, isDefault: true },
+        ],
+        dataDir,
+      }),
+    ).toBe(canonicalWorkspaceRoot(checkout));
+    expect(
+      corpusDirectory({ projectId: "proj_personal", sources: [], dataDir }),
+    ).toBe(canonicalWorkspaceRoot(join(dataDir, GENERAL_CORPUS_DIRECTORY)));
+    expect(GENERAL_CORPUS_DIRECTORY).toBe("General");
+    expect(() =>
+      corpusDirectory({
+        projectId: "../proj_notes",
+        sources: [{ path: checkout, isDefault: true }],
+        dataDir,
+      }),
+    ).toThrow(/single path segment/u);
+  });
+
   it("stores a deployed origin from the settings RPC on the key U1 reads", async () => {
     const root = tempDir("rpc-origin");
     const memory = new Map<string, unknown>();
     const registered: { current: DeployedOriginHandler | null } = { current: null };
     await plugin({
+      server: { experimental_dataDir: "/tmp/bb-data" },
       onDispose() {},
+      sdk: {
+        projects: {
+          get: async () => ({ sources: [{ path: root, isDefault: true }] }),
+        },
+      },
       storage: {
         kv: {
           get: async (key: string) => memory.get(key),
@@ -602,6 +690,7 @@ describe("workspace project server", () => {
           list: async () => [...memory.keys()],
         },
       },
+      ui: { registerMentionProvider() {} },
       rpc: {
         register(_contract: unknown, impl: DeployedOriginHandler) {
           registered.current = impl;
@@ -611,17 +700,17 @@ describe("workspace project server", () => {
     const handlers = registered.current;
     if (handlers === null) throw new Error("setDeployedOrigin was not registered");
     await expect(
-      handlers.setDeployedOrigin({ workspaceRoot: root, origin: "javascript:alert(1)" }),
+      handlers.setDeployedOrigin({ projectId: "proj_rpc", origin: "javascript:alert(1)" }),
     ).rejects.toThrow(/http\(s\)/u);
     expect(memory.size).toBe(0);
     await expect(
       handlers.setDeployedOrigin({
-        workspaceRoot: root,
+        projectId: "proj_rpc",
         origin: "https://user:secret@notes.example/kb",
       }),
     ).rejects.toThrow(/http\(s\)/u);
     const stored = await handlers.setDeployedOrigin({
-      workspaceRoot: root,
+      projectId: "proj_rpc",
       origin: "https://notes.example/kb",
     });
     expect(stored.origin).toBe("https://notes.example");
@@ -634,11 +723,11 @@ describe("workspace project server", () => {
       }),
     );
     expect(resolved).toMatchObject({ origin: "https://notes.example", source: "deployed" });
-    expect(await handlers.setDeployedOrigin({ workspaceRoot: root, origin: "" })).toEqual({
+    expect(await handlers.setDeployedOrigin({ projectId: "proj_rpc", origin: "" })).toEqual({
       origin: null,
     });
     expect(memory.has(deployedOriginKey(root))).toBe(false);
-    expect(await handlers.setDeployedOrigin({ workspaceRoot: root, origin: null })).toEqual({
+    expect(await handlers.setDeployedOrigin({ projectId: "proj_rpc", origin: null })).toEqual({
       origin: null,
     });
   });

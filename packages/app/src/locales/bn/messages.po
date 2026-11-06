@@ -1271,11 +1271,20 @@ msgstr "ট্যাগ যোগ করুন"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "আপনার টার্মিনালে <0>{cliCommand}</0> কমান্ড যোগ করুন"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "পরবর্তী মিলে যাওয়া সোর্স নির্বাচন যোগ করুন।"
 
 msgid "Add to {gitignorePath}"
 msgstr "{gitignorePath}-এ যোগ করুন"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "অভিধানে যোগ করুন"
@@ -2494,6 +2503,9 @@ msgstr "এই কোড ব্লক নিয়ে মন্তব্য ক�
 msgid "Comments"
 msgstr "মন্তব্য"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "কমিট করে সিঙ্ক করুন"
 
@@ -3360,6 +3372,9 @@ msgstr "বর্তমান নথি বা ফোল্ডারের প�
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "একটি নতুন ব্রাঞ্চ তৈরি করুন, বা বিদ্যমান কোনোটি নিজের জানালায় চেক আউট করুন।"
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "বর্তমান তালিকা আইটেম থেকে একটি নতুন তালিকা আইটেম তৈরি করুন।"
 
@@ -3623,6 +3638,9 @@ msgstr "প্রত্যাখ্যাত — {optionName}"
 
 msgid "Deny"
 msgstr "প্রত্যাখ্যান করুন"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "আপনি যে প্রকল্পটি তৈরি করতে চান তার বর্ণনা দিন"
@@ -4991,6 +5009,9 @@ msgstr "GitHub Enterprise Server হোস্ট"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "GitHub সাইন-ইন অনুপস্থিত বা এর মেয়াদ শেষ। সিঙ্ক আবার শুরু করতে পুনরায় যুক্ত হোন।"
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub, একটি git URL, বা একটি স্থানীয় পথ।"
 
@@ -5059,9 +5080,6 @@ msgstr "আপনার AI এজেন্টদের এখানে কীভ
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install বা https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "চেক করা মন্তব্যগুলো এক দফায় এজেন্টকে দিন। এই নথি-তে শুধু সেই নথির মন্তব্য; এই প্রকল্প-এ সব চেক করা মন্তব্য। মন্তব্য ট্যাব বন্ধ থাকলে কিছুই হয় না।"
 
 msgid "Hard break"
 msgstr "কঠিন বিরতি"
@@ -5886,6 +5904,9 @@ msgstr "ফোল্ডারের যেকোনো গভীরতায় 
 
 msgid "Leave these comments out of this message"
 msgstr "এই মন্তব্যগুলো এই বার্তার বাইরে রাখুন"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "এজেন্ট চ্যাটকে ব্রাউজার ব্যবহার করতে দিন"
@@ -9075,6 +9096,9 @@ msgstr "সংরক্ষণ ব্যর্থ: {error}"
 msgid "Save queued message"
 msgstr "সারিতে থাকা বার্তা সংরক্ষণ করুন"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "এই মন্তব্যটি সংরক্ষণ করুন (Enter)"
 
@@ -9366,9 +9390,6 @@ msgstr "পাঠান"
 msgid "Send & continue"
 msgstr "পাঠিয়ে চালিয়ে যান"
 
-msgid "Send checked comments to chat"
-msgstr "চেক করা মন্তব্য আলাপে পাঠান"
-
 msgid "Send comments to"
 msgstr "মন্তব্য পাঠান"
 
@@ -9428,6 +9449,9 @@ msgstr "পাঠানো হয়েছে, কিন্তু মন্ত�
 
 msgid "Separator"
 msgstr "বিভাজক"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "সার্ভার নথি খুলতে পারছে না"
@@ -9583,6 +9607,9 @@ msgstr "ভাগ করা রিপোজিটরি"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "এই প্রকল্পের সবার সঙ্গে ভাগ করা। প্রকল্প ফোল্ডারে সংরক্ষিত এবং git-এর মাধ্যমে এর সঙ্গেই যায়।"
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "নথি ভাগ করতে একটি GitHub রিপোজিটরি দরকার। এই প্রকল্পের জন্য একটি তৈরি করুন।"
@@ -10020,6 +10047,9 @@ msgstr "অচল Git এন্ট্রি"
 
 msgid "Star us on GitHub"
 msgstr "GitHub-এ আমাদের স্টার দিন"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "স্ক্রিন এখন যেমন দেখাচ্ছে তার স্ক্রিনশট নিয়ে একটি বাগ রিপোর্ট শুরু করুন।"
@@ -10550,6 +10580,9 @@ msgstr "প্রত্যয়িত-গণনা চুক্তি। শু
 
 msgid "The audit could not be completed. Try again."
 msgstr "নিরীক্ষা সম্পূর্ণ করা যায়নি। আবার চেষ্টা করুন।"
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "বোর্ডে পৌঁছানো যায়নি। এটি হয়তো নেই, অথবা সার্ভার অফলাইন হতে পারে।"
@@ -12005,9 +12038,6 @@ msgstr "চালু থাকলে এজেন্ট প্রতিটি �
 
 msgid "When the agent runs its scheduled work."
 msgstr "এজেন্ট কখন তার নির্ধারিত কাজ চালায়।"
-
-msgid "When the Comments tab is open"
-msgstr "যখন মন্তব্য ট্যাব খোলা থাকে"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "আপনি কোনো বাইরের লিংকের উপর মাউস নিলে পাতার প্রাকদর্শনের মেটাডেটা আনতে তার URL গন্তব্য সাইটে পাঠানো হয় — প্রতি প্রাকদর্শিত লিংকে একটি অনুরোধ।"

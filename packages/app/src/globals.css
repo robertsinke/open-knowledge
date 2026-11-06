@@ -7097,8 +7097,38 @@ html[data-bb-editor-host][data-color-theme] {
   --sidebar: color-mix(in oklch, var(--ink) 2.2%, var(--canvas));
   --sidebar-foreground: var(--ink);
   --sidebar-border: color-mix(in oklch, var(--ink) 14%, var(--canvas));
-  --sidebar-accent: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+  --sidebar-hover: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+  --sidebar-accent: color-mix(in oklch, var(--ink) 11.8%, var(--canvas));
   --sidebar-accent-foreground: var(--ink);
+  --primary: oklch(0.27 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+  --secondary-foreground: var(--ink);
+  --accent: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+  --accent-foreground: var(--ink);
+  --muted: color-mix(in oklch, var(--ink) 11%, var(--canvas));
+  --muted-foreground: oklch(0.44 0 0);
+  --subtle-foreground: oklch(0.5 0 0);
+  --ring: var(--primary);
+  --state-hover: color-mix(in oklab, var(--ink) 5.9%, transparent);
+  --state-active: color-mix(in oklab, var(--ink) 11.8%, transparent);
+  --destructive: oklch(0.45 0.19 25.8625);
+  --destructive-foreground: oklch(1 0 0);
+  --surface-raised-solid: color-mix(in oklab, var(--ink) 2.5%, var(--canvas));
+  --border-seam: color-mix(in oklch, var(--ink) 9.5%, var(--canvas));
+  --ok-tree-muted: var(--subtle-foreground);
+  --radius: 0.5rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-sm:
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 1px 2px -1px hsl(0 0% 20% / 0.15);
+  --shadow-md:
+    0px 2px 0px 0px hsl(0 0% 20% / 0.15), 0px 2px 4px -1px hsl(0 0% 20% / 0.15);
+  --text-2xs: 0.625rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
   --font-ui-sans: "Inter Variable", Inter, sans-serif;
   --font-sans: "Inter Variable", Inter, sans-serif;
   --font-ui-mono:
@@ -7128,8 +7158,46 @@ html[data-bb-editor-host][data-color-theme].dark {
   --sidebar: color-mix(in oklch, var(--ink) 4.3%, var(--canvas));
   --sidebar-foreground: var(--ink);
   --sidebar-border: color-mix(in oklch, var(--ink) 18.1%, var(--canvas));
-  --sidebar-accent: color-mix(in oklch, var(--ink) 12%, var(--canvas));
+  --sidebar-hover: color-mix(in oklch, var(--ink) 12%, var(--canvas));
+  --sidebar-accent: color-mix(in oklch, var(--ink) 22.5%, var(--canvas));
   --sidebar-accent-foreground: var(--ink);
+  --primary: oklch(0.82 0 0);
+  --primary-foreground: oklch(0.2178 0 0);
+  --secondary: color-mix(in oklch, var(--ink) 13%, var(--canvas));
+  --secondary-foreground: var(--ink);
+  --accent: color-mix(in oklch, var(--ink) 13%, var(--canvas));
+  --accent-foreground: var(--ink);
+  --muted: color-mix(in oklch, var(--ink) 16%, var(--canvas));
+  --muted-foreground: oklch(0.78 0 0);
+  --subtle-foreground: oklch(0.68 0 0);
+  --ring: var(--primary);
+  --state-hover: color-mix(in oklab, var(--ink) 13.8%, transparent);
+  --state-active: color-mix(in oklab, var(--ink) 22.5%, transparent);
+  --destructive: oklch(0.56 0.19 22.1703);
+  --destructive-foreground: oklch(1 0 0);
+  --surface-raised-solid: color-mix(in oklab, var(--ink) 2.5%, var(--canvas));
+  --border-seam: color-mix(in oklch, var(--ink) 11%, var(--canvas));
+  --ok-tree-muted: var(--subtle-foreground);
+  --shadow-sm:
+    0px 2px 0px 0px hsl(0 0% 0% / 0.3), 0px 1px 2px -1px hsl(0 0% 0% / 0.4);
+  --shadow-md:
+    0px 2px 0px 0px hsl(0 0% 0% / 0.3), 0px 2px 4px -1px hsl(0 0% 0% / 0.5);
+}
+
+html[data-bb-settings-page] [data-slot='dialog-overlay'],
+html[data-bb-settings-page] [data-slot='dialog-close'] {
+  display: none;
+}
+
+html[data-bb-settings-page] [data-testid='settings-dialog'] {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  transform: none;
+  border-radius: 0;
 }
 
 html[data-bb-editor-host]
@@ -7148,4 +7216,241 @@ html[data-bb-editor-host]
   --font-mono: var(--font-code);
   --font-ui-mono: var(--font-code);
   --diffs-font-family: var(--font-code);
+}
+
+/* Chrome a person sees. Tokens above move the ramp; these rules replace the
+   upstream mono-uppercase and 10px radius that utilities still paint. */
+html[data-bb-editor-host] [data-app-header] {
+  --ok-app-header-height: 2.25rem;
+  background-color: var(--background);
+  font-weight: 400;
+}
+
+html[data-bb-editor-host] [data-editor-header] {
+  height: 2.25rem;
+  font-weight: 400;
+}
+
+/* Same size as a BB thread message (text-sm / leading-relaxed). Headings stay em. */
+html[data-bb-editor-host] .editor-doc-scroll .ProseMirror {
+  font-size: 0.8125rem;
+  line-height: 1.625;
+  font-weight: 400;
+}
+
+html[data-bb-editor-host] [data-sidebar='group-label'] {
+  height: 1.5rem;
+  min-height: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: color-mix(in oklch, var(--subtle-foreground) 75%, transparent);
+}
+
+html[data-bb-editor-host] [data-sidebar='group-label'][data-sidebar-project-row] {
+  /* The editor tab strip is h-11 and top-aligned in the shorter header, so its
+     icons sit on a 2.75rem band. Match that band, not the header box. */
+  height: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+
+html[data-bb-editor-host] [data-sidebar="menu-button"] {
+  height: 1.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+html[data-bb-editor-host]:not([data-color-theme]):not(.dark) file-tree-container,
+html[data-bb-editor-host] file-tree-container {
+  --trees-font-family-override: var(--font-sans) !important;
+  --trees-font-size-override: 0.8125rem !important;
+  --trees-border-radius-override: var(--radius-md) !important;
+  --trees-selected-fg: var(--foreground) !important;
+  --trees-fg-muted: var(--subtle-foreground) !important;
+}
+
+html[data-bb-editor-host] [data-slot='button'] {
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-bb-editor-host] [data-slot='button']:active {
+  transform: none;
+}
+
+html[data-bb-editor-host] [data-slot='button'][data-size='default'] {
+  height: 2.25rem;
+  padding-inline: 1rem;
+}
+
+html[data-bb-editor-host] [data-slot='button'][data-size='sm'] {
+  height: 2rem;
+  padding-inline: 0.75rem;
+  font-size: 0.75rem;
+}
+
+html[data-bb-editor-host] [data-slot='button'][data-variant='default'] {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+html[data-bb-editor-host] [data-slot='button'][data-variant='default']:hover {
+  background-color: color-mix(in oklch, var(--foreground) 90%, transparent);
+}
+
+html[data-bb-editor-host] [data-slot='button'][data-variant='destructive'] {
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+html[data-bb-editor-host]
+  [data-slot='button']:is(
+    [data-variant='ghost'],
+    [data-variant='ghost-mono'],
+    [data-variant='outline'],
+    [data-variant='outline-mono']
+  ):hover {
+  background-color: var(--state-hover);
+  color: var(--foreground);
+}
+
+html[data-bb-editor-host] [data-slot='button']:is([data-variant='link'], [data-variant='link-muted']) {
+  font-weight: 400;
+}
+
+html[data-bb-editor-host] [data-slot='button']:focus-visible,
+html[data-bb-editor-host] [data-slot='input']:focus-visible,
+html[data-bb-editor-host] [data-slot='select-trigger']:focus-visible {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+html[data-bb-editor-host] :is([data-slot='input'], [data-slot='select-trigger']) {
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  padding-inline: 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+html[data-bb-editor-host]
+  :is(
+    [data-slot='dropdown-menu-content'],
+    [data-slot='dropdown-menu-sub-content'],
+    [data-slot='context-menu-content'],
+    [data-slot='context-menu-sub-content'],
+    [data-slot='menubar-content'],
+    [data-slot='menubar-sub-content'],
+    [data-slot='select-content']
+  ) {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+html[data-bb-editor-host]
+  :is(
+    [data-slot='dropdown-menu-item'],
+    [data-slot='dropdown-menu-sub-trigger'],
+    [data-slot='context-menu-item'],
+    [data-slot='context-menu-sub-trigger'],
+    [data-slot='menubar-item'],
+    [data-slot='select-item']
+  ) {
+  border-radius: var(--radius-sm);
+  gap: 0.5rem;
+  padding: 0.3125rem 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1rem;
+}
+
+html[data-bb-editor-host]
+  :is(
+    [data-slot='dropdown-menu-item'],
+    [data-slot='context-menu-item'],
+    [data-slot='menubar-item'],
+    [data-slot='select-item']
+  ):focus {
+  background-color: var(--state-hover);
+  color: var(--foreground);
+}
+
+html[data-bb-editor-host]
+  :is(
+    [data-slot='dropdown-menu-label'],
+    [data-slot='context-menu-label'],
+    [data-slot='panel-title']
+  ) {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: color-mix(in oklch, var(--subtle-foreground) 75%, transparent);
+}
+
+html[data-bb-editor-host] [data-slot='panel-header'] {
+  min-height: 2.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+html[data-bb-editor-host] [data-slot='panel-count'] {
+  padding: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+html[data-bb-editor-host] [data-slot='panel-body'] {
+  padding: 0.5rem 0.75rem;
+}
+
+html[data-bb-editor-host] [data-slot='panel-empty'] {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+html[data-bb-editor-host] [data-testid='comment-composer'] {
+  border-radius: var(--radius-lg);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--surface-raised-solid);
+  border-color: var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+html[data-bb-editor-host] [data-slot='badge'] {
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-bb-editor-host] [data-testid='empty-editor-state'] h2,
+html[data-bb-editor-host] [data-testid='empty-editor-state'] .font-mono {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+html[data-bb-editor-host] [data-testid='empty-editor-state'] h2 {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.375rem;
 }

@@ -1,12 +1,16 @@
 import { execFile, spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
-import { closeSync, existsSync, mkdtempSync, openSync, readFileSync, realpathSync, rmSync } from "node:fs";
+import { closeSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { defineRpcContract, type BbPluginApi } from "@get-bb/plugin-sdk";
 import { z } from "zod";
-import { deployedOriginSetting } from "../packages/app/src/lib/bb-deployed-origin";
+import {
+  COMMENT_CHAT_MENTION_PROVIDER,
+  commentChatContextFromId,
+} from "./comment-chat";
+import { deployedOriginSetting } from "./deployed-origin";
 
 const execFileAsync = promisify(execFile);
 
@@ -27,7 +31,7 @@ export const startCliArgs = ["start", "--no-open-browser", "--no-auto-sync"] as 
 
 export const rpcContract = defineRpcContract({
   editorOrigin: {
-    input: z.object({ workspaceRoot: z.string().min(1) }),
+    input: z.object({ projectId: z.string().min(1) }),
     output: z.object({
       origin: z.string(),
       editorUrl: z.string(),
@@ -37,7 +41,7 @@ export const rpcContract = defineRpcContract({
   },
   setDeployedOrigin: {
     input: z.object({
-      workspaceRoot: z.string().min(1),
+      projectId: z.string().min(1),
       origin: z.string().nullable(),
     }),
     output: z.object({
@@ -70,6 +74,25 @@ export function pluginRepoRoot(): string {
   const here = dirname(fileURLToPath(import.meta.url));
   const pluginDir = basename(here) === "dist" ? dirname(here) : here;
   return dirname(pluginDir);
+}
+
+function singlePathSegment(value: string): boolean {
+  return value.length > 0 && value !== "." && value !== ".." && basename(value) === value;
+}
+
+export const GENERAL_CORPUS_DIRECTORY = "General";
+
+export function corpusDirectory(input: {
+  projectId: string;
+  sources: readonly { path: string; isDefault: boolean }[];
+  dataDir: string;
+}): string {
+  if (!singlePathSegment(input.projectId)) {
+    throw new Error("BB project id must be a single path segment");
+  }
+  const source = input.sources.find((item) => item.isDefault) ?? input.sources[0];
+  if (source) return canonicalWorkspaceRoot(source.path);
+  return canonicalWorkspaceRoot(join(input.dataDir, GENERAL_CORPUS_DIRECTORY));
 }
 
 export function canonicalWorkspaceRoot(workspaceRoot: string): string {
@@ -417,15 +440,34 @@ export default async function plugin(bb: BbPluginApi) {
       return readDeployedOriginValue(await bb.storage.kv.get(deployedOriginKey(workspaceRoot)));
     },
   });
+  async function corpusFor(projectId: string): Promise<string> {
+    const project = await bb.sdk.projects.get({ projectId });
+    const directory = corpusDirectory({
+      projectId,
+      sources: project.sources,
+      dataDir: bb.server.experimental_dataDir,
+    });
+    if (project.sources.length === 0) mkdirSync(directory, { recursive: true });
+    return directory;
+  }
+  bb.ui.registerMentionProvider({
+    id: COMMENT_CHAT_MENTION_PROVIDER,
+    label: "Docs comments",
+    search: () => [],
+    resolve(id) {
+      return { context: commentChatContextFromId(id) };
+    },
+  });
   bb.rpc.register(rpcContract, {
     async editorOrigin(input) {
-      const root = canonicalWorkspaceRoot(input.workspaceRoot);
+      const root = await corpusFor(input.projectId);
       const result = await resolveEditorOrigin(root, deps);
       await bb.storage.kv.set(mcpUrlKey(root), result.mcpUrl);
       return result;
     },
     async setDeployedOrigin(input) {
-      const origin = await writeDeployedOrigin(bb.storage.kv, input.workspaceRoot, input.origin);
+      const root = await corpusFor(input.projectId);
+      const origin = await writeDeployedOrigin(bb.storage.kv, root, input.origin);
       return { origin };
     },
   });

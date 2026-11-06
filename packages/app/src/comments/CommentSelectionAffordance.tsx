@@ -8,6 +8,7 @@ import type { Editor } from '@tiptap/react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   ComposerMentionInput,
   type ComposerMentionInputHandle,
@@ -19,8 +20,11 @@ import {
   SELECTION_SURFACE_GAP_PX,
 } from '@/editor/utils/editor-visible-region';
 import { getEditorView } from '@/editor/utils/get-editor-view';
+import { bbCommentChatAdd } from '@/lib/bb-comment-chat';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { focusAwayFromHiddenEditor } from '@/lib/editor-hidden-focus';
-import { matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
+import { MessageSquare, MessageSquarePlus } from '@/lib/host-icons';
+import { formatShortcutLabel, matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { useEditorPaneOnScreen } from '@/lib/use-editor-pane-on-screen';
 import { cn } from '@/lib/utils';
 import { setCommentDraftRange } from './anchor-decorations';
@@ -29,6 +33,7 @@ import { useCommentsPanelOnScreen } from './comments-panel-visibility';
 import { revealComments } from './reveal-queue';
 import { selectedSpan } from './selected-span';
 import { createThread, emitStartComment, subscribeStartComment } from './store';
+import { useBbThreadComposerMounted } from './use-bb-thread-composer';
 
 interface Captured {
   from: number;
@@ -52,6 +57,8 @@ export function CommentSelectionAffordance({
   const [empty, setEmpty] = useState(true);
   const commentsOnScreen = useCommentsPanelOnScreen();
   const editorPaneOnScreen = useEditorPaneOnScreen();
+  const bbHost = isBbEditorHost();
+  const composerMounted = useBbThreadComposerMounted();
   const inputRef = useRef<ComposerMentionInputHandle>(null);
   const floatingRef = useRef<HTMLDivElement>(null);
 
@@ -157,10 +164,12 @@ export function CommentSelectionAffordance({
     return () => document.removeEventListener('pointerdown', onPointerDown, true);
   });
 
-  function post() {
-    if (captured === null) return;
-    const body = inputRef.current?.getContent().instruction.trim() ?? '';
-    if (body.length === 0) return;
+  function draftBody(): string {
+    return inputRef.current?.getContent().instruction.trim() ?? '';
+  }
+
+  function fileDraft(body: string) {
+    if (captured === null || body.length === 0) return;
     createThread({
       docName,
       quote: captured.quote,
@@ -173,6 +182,32 @@ export function CommentSelectionAffordance({
     }
     reset();
   }
+
+  function post() {
+    fileDraft(draftBody());
+  }
+
+  function addToBbChat() {
+    if (captured === null) return;
+    const body = draftBody();
+    if (body.length === 0) return;
+    window.parent.postMessage(bbCommentChatAdd(docName, captured.quote, body), '*');
+    fileDraft(body);
+  }
+
+  useEffect(() => {
+    if (!bbHost || captured === null) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!matchesKeyboardShortcut(event, 'send-comment-queue')) return;
+      event.preventDefault();
+      const body = inputRef.current?.getContent().instruction.trim() ?? '';
+      if (body.length === 0) return;
+      window.parent.postMessage(bbCommentChatAdd(docName, captured.quote, body), '*');
+      fileDraft(body);
+    };
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
+  }, [bbHost, captured, docName]);
 
   if (captured === null) return null;
 
@@ -199,27 +234,62 @@ export function CommentSelectionAffordance({
       />
       <div
         className={cn(
-          'flex items-center gap-1.5',
-          commentsOnScreen ? 'justify-end' : 'justify-between',
+          'w-full items-center gap-2',
+          bbHost && commentsOnScreen && 'grid grid-cols-2',
+          bbHost && !commentsOnScreen && 'grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]',
+          !bbHost && 'flex justify-end',
         )}
       >
-        {commentsOnScreen ? null : (
+        {bbHost ? (
           <Button
             size="sm"
-            variant="ghost"
-            onClick={() => revealComments('doc', docName)}
-            className="px-2 text-muted-foreground hover:text-foreground"
+            className="min-w-0 flex-1 gap-1"
+            title={t`Add to chat (${formatShortcutLabel('send-comment-queue')})`}
+            onClick={addToBbChat}
+            disabled={empty}
           >
-            <Trans>View comments</Trans>
+            <Trans>Add to chat</Trans>
+            <MessageSquarePlus className="size-[11px] shrink-0" aria-hidden />
           </Button>
-        )}
-        <Button size="sm" onClick={post} disabled={empty} aria-label={t`Add Comment (Enter)`}>
+        ) : null}
+        <Button
+          size="sm"
+          className={bbHost ? 'min-w-0 flex-1' : undefined}
+          onClick={post}
+          disabled={empty}
+          aria-label={t`Add Comment (Enter)`}
+        >
           <Trans>Add Comment</Trans>
           <span className="ml-0.5 text-[11px] tracking-normal normal-case text-primary-foreground/75">
             ⏎
           </span>
         </Button>
+        {commentsOnScreen ? null : (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label={t`View comments`}
+                  onClick={() => revealComments('doc', docName)}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <MessageSquare className="size-3.5" aria-hidden />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <Trans>View comments</Trans>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </div>
+      {bbHost && composerMounted === false ? (
+        <p role="status" className="text-xs text-muted-foreground">
+          <Trans>The BB thread composer is not open.</Trans>
+        </p>
+      ) : null}
     </div>,
     document.body,
   );

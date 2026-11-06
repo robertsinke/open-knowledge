@@ -26,6 +26,15 @@ describe('BB editor host tokens', () => {
     expect(host).toContain('--ink: oklch(0.81 0 0)');
     expect(host).toContain('--border: color-mix(in oklch, var(--ink) 14%, var(--canvas))');
     expect(host).toContain('--sidebar: color-mix(in oklch, var(--ink) 2.2%, var(--canvas))');
+    expect(host).toContain('--radius: 0.5rem');
+    expect(host).toContain('--radius-md: calc(var(--radius) - 2px)');
+    expect(host).toContain('--primary: oklch(0.27 0 0)');
+    expect(host).toContain('--muted-foreground: oklch(0.44 0 0)');
+    expect(host).toContain('--primary: oklch(0.82 0 0)');
+    expect(host).toContain('--muted-foreground: oklch(0.78 0 0)');
+    expect(host).toContain("[data-slot='button']");
+    expect(host).toContain("[data-testid='comment-composer']");
+    expect(host).toContain('text-transform: none');
   });
 
   test('without the host attribute the editor tokens stay as they are', () => {

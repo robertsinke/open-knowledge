@@ -1,40 +1,21 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode } from 'react';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
 import { AgentSplitButton } from '@/components/handoff/AgentSplitButton';
 import { useReusableSession } from '@/components/reusable-session-store';
 import { Button } from '@/components/ui/button';
 import { PanelFooter } from '@/components/ui/panel';
-import { bbCommentChatRead, readBbCommentChatMessage } from '@/lib/bb-comment-chat';
 import { isBbEditorHost } from '@/lib/bb-editor-host';
+import { MessageSquarePlus } from '@/lib/host-icons';
 import { formatShortcut, formatShortcutLabel } from '@/lib/keyboard-shortcuts';
 import { openAgentSettings } from '@/lib/use-settings-route';
 import { addCommentsToBbChat } from './bb-chat-comment';
+import { useBbThreadComposerMounted } from './use-bb-thread-composer';
 import { QueueNewChatRow } from './QueueNewChatRow';
 import { dispatchComments } from './store';
 import { useCommentAgentPicker } from './use-comment-agent-picker';
 import { useCommentDispatch } from './use-comment-delivery';
 import { useSendQueue } from './use-send-queue';
-
-function useBbThreadComposerMounted(): boolean | null {
-  const host = isBbEditorHost();
-  const [mounted, setMounted] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (!host) return;
-    const onMessage = (event: MessageEvent) => {
-      if (event.source !== window.parent) return;
-      const message = readBbCommentChatMessage(event.data);
-      if (message?.intent !== 'composer') return;
-      setMounted(message.mounted);
-    };
-    window.addEventListener('message', onMessage);
-    window.parent.postMessage(bbCommentChatRead(), '*');
-    return () => window.removeEventListener('message', onMessage);
-  }, [host]);
-
-  return host ? mounted : true;
-}
 
 export function CommentSendFooter({
   threadIds,
@@ -57,7 +38,6 @@ export function CommentSendFooter({
   const composerMounted = useBbThreadComposerMounted();
   const shortcut = formatShortcut('send-comment-queue').replace('Enter', '↵');
   const addToBbChat = () => {
-    if (composerMounted !== true) return;
     addCommentsToBbChat(threadIds);
   };
   const destinationIcon =
@@ -95,7 +75,7 @@ export function CommentSendFooter({
             className="shrink-0 font-sans text-2xs leading-none text-muted-foreground/80"
             title={
               bbHost
-                ? t`Add to BB chat (${formatShortcutLabel('send-comment-queue')})`
+                ? t`Add to chat (${formatShortcutLabel('send-comment-queue')})`
                 : openSession === null
                   ? t`Start a new chat (${formatShortcutLabel('send-comment-queue')})`
                   : t`Send to chat (${formatShortcutLabel('send-comment-queue')})`
@@ -108,14 +88,16 @@ export function CommentSendFooter({
           <div className="ms-auto flex max-w-full shrink-0 flex-col items-end gap-1">
             <Button
               type="button"
-              className="max-w-full"
+              className="max-w-full gap-1.5"
               data-testid={`${testIdPrefix}-send`}
-              disabled={threadIds.length === 0 || composerMounted !== true}
+              disabled={threadIds.length === 0}
+              title={t`Add to chat (${formatShortcutLabel('send-comment-queue')})`}
               onClick={addToBbChat}
             >
               <span className="truncate">
-                <Trans>Add to BB chat</Trans>
+                <Trans>Add to chat</Trans>
               </span>
+              <MessageSquarePlus className="size-3.5 shrink-0" aria-hidden />
             </Button>
             {composerMounted === false ? (
               <p role="status" className="text-xs text-muted-foreground">

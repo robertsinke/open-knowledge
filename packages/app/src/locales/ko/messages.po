@@ -1275,11 +1275,20 @@ msgstr "태그 추가"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "터미널에 <0>{cliCommand}</0> 명령 추가"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "다음으로 일치하는 소스 선택 영역 추가"
 
 msgid "Add to {gitignorePath}"
 msgstr "{gitignorePath}에 추가"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "사전에 추가"
@@ -2498,6 +2507,9 @@ msgstr "이 코드 블록에 댓글을 남기거나 AI에 질문"
 msgid "Comments"
 msgstr "댓글"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "커밋하고 동기화"
 
@@ -3364,6 +3376,9 @@ msgstr "현재 문서 또는 폴더를 기준으로 폴더를 만듭니다."
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "새 브랜치를 만들거나 기존 브랜치를 별도 창에서 체크아웃하세요."
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "현재 목록 항목에서 새 목록 항목을 만듭니다."
 
@@ -3627,6 +3642,9 @@ msgstr "거부됨: {optionName}"
 
 msgid "Deny"
 msgstr "거부"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "만들려는 프로젝트 설명"
@@ -4995,6 +5013,9 @@ msgstr "GitHub Enterprise Server 호스트"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "GitHub 로그인이 없거나 만료되었습니다. 동기화를 계속하려면 다시 연결하세요."
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub, git URL 또는 로컬 경로입니다."
 
@@ -5063,9 +5084,6 @@ msgstr "AI 에이전트가 여기서 작업하는 방법을 안내합니다."
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install 또는 https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "확인한 댓글을 한 번에 에이전트에게 전달합니다. 이 문서에서는 이 문서의 확인한 댓글만 전달하고, 이 프로젝트에서는 확인한 모든 댓글을 전달합니다. 댓글 탭이 닫혀 있으면 아무 작업도 하지 않습니다."
 
 msgid "Hard break"
 msgstr "하드 줄바꿈"
@@ -5890,6 +5908,9 @@ msgstr "어떤 폴더 깊이에 있든 log.md 또는 log.mdx 안에 작성된 �
 
 msgid "Leave these comments out of this message"
 msgstr "이 메시지에서 댓글 제외"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "에이전트 채팅에서 브라우저를 사용하도록 허용합니다"
@@ -9079,6 +9100,9 @@ msgstr "저장 실패: {error}"
 msgid "Save queued message"
 msgstr "대기 중인 메시지 저장"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "이 댓글 저장 (Enter)"
 
@@ -9370,9 +9394,6 @@ msgstr "전송"
 msgid "Send & continue"
 msgstr "보내고 계속하기"
 
-msgid "Send checked comments to chat"
-msgstr "확인한 댓글을 채팅으로 보내기"
-
 msgid "Send comments to"
 msgstr "댓글 보낼 곳"
 
@@ -9432,6 +9453,9 @@ msgstr "보냈지만 댓글 완료 표시에 실패했습니다. 아직 전송 �
 
 msgid "Separator"
 msgstr "구분선"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "서버에서 문서를 열 수 없습니다"
@@ -9587,6 +9611,9 @@ msgstr "공유 저장소"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "이 프로젝트의 모든 사람과 공유됩니다. 프로젝트 폴더에 저장되어 git을 통해 함께 이동합니다."
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "문서 공유에는 GitHub 저장소가 필요합니다. 이 프로젝트용 저장소를 만드세요."
@@ -10024,6 +10051,9 @@ msgstr "오래된 Git 항목"
 
 msgid "Star us on GitHub"
 msgstr "GitHub에서 별표를 눌러 주세요"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "지금 화면에 보이는 그대로의 스크린샷과 함께 버그 신고를 시작합니다."
@@ -10554,6 +10584,9 @@ msgstr "attested-computation 계약입니다. Attested Computation 유형 문서
 
 msgid "The audit could not be completed. Try again."
 msgstr "감사를 완료하지 못했습니다. 다시 시도하세요."
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "보드에 연결할 수 없습니다. 보드가 없거나 서버가 오프라인일 수 있습니다."
@@ -12009,9 +12042,6 @@ msgstr "사용하도록 설정하면 에이전트가 편집할 때마다 미리�
 
 msgid "When the agent runs its scheduled work."
 msgstr "에이전트가 예약된 작업을 실행할 때"
-
-msgid "When the Comments tab is open"
-msgstr "댓글 탭이 열려 있을 때"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "외부 링크 위에 마우스를 올리면 미리보기 메타데이터를 가져오기 위해 URL을 대상 사이트로 전송합니다. 미리보기 하나마다 한 번 요청합니다."

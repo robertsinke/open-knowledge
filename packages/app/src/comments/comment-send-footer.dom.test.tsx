@@ -132,7 +132,7 @@ test('footer shows the selection and Enter glyph, and sends the selected threads
   expect(sent).toEqual([['a', 'b']]);
 });
 
-test('Add to BB chat appends the path and quote and leaves the log entry', async () => {
+test('Add to chat appends the path and quote and leaves the log entry', async () => {
   markBbEditorHost();
   const entry = logEntry('a', 'recipes/stir-fry', 'the tofu');
   threads.set(entry.id, entry);
@@ -157,17 +157,17 @@ test('Add to BB chat appends the path and quote and leaves the log entry', async
     />,
   );
 
-  const button = screen.getByRole('button', { name: 'Add to BB chat' });
-  await waitFor(() => expect((button as HTMLButtonElement).disabled).toBe(false));
+  const button = screen.getByRole('button', { name: 'Add to chat' });
+  expect((button as HTMLButtonElement).disabled).toBe(false);
   fireEvent.click(button);
   expect(posted).toContainEqual(bbCommentChatRead());
-  expect(posted).toContainEqual(bbCommentChatAdd('recipes/stir-fry', 'the tofu'));
+  expect(posted).toContainEqual(bbCommentChatAdd('recipes/stir-fry', 'the tofu', 'press it?'));
   expect(sent).toEqual([]);
   expect(dispatchComments).not.toHaveBeenCalled();
   expect(threads.get('a')).toBe(entry);
 });
 
-test('Add to BB chat reports a missing thread composer and keeps the log entry', async () => {
+test('Add to chat stays available when the thread composer is not the active surface', async () => {
   markBbEditorHost();
   const entry = logEntry('a', 'recipes/stir-fry', 'the tofu');
   threads.set(entry.id, entry);
@@ -182,11 +182,11 @@ test('Add to BB chat reports a missing thread composer and keeps the log entry',
     />,
   );
 
-  const button = screen.getByRole('button', { name: 'Add to BB chat' });
+  const button = screen.getByRole('button', { name: 'Add to chat' });
   await waitFor(() =>
     expect(screen.getByRole('status').textContent).toContain('The BB thread composer is not open.'),
   );
-  expect((button as HTMLButtonElement).disabled).toBe(true);
+  expect((button as HTMLButtonElement).disabled).toBe(false);
   fireEvent.click(button);
   expect(sent).toEqual([]);
   expect(dispatchComments).not.toHaveBeenCalled();

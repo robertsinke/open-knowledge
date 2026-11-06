@@ -1,9 +1,15 @@
 import * as actualLinguiMacro from '@lingui/react/macro';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, onTestFinished, test, vi } from 'vitest';
 import { mentionRecencyAttribute } from '@/components/acp/composer-mention-input.test-helper';
-import { BB_COMMENT_CHAT_MESSAGE } from '@/lib/bb-comment-chat';
+import {
+  BB_COMMENT_CHAT_MESSAGE,
+  bbCommentChatAdd,
+  bbCommentChatComposer,
+  readBbCommentChatMessage,
+} from '@/lib/bb-comment-chat';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 
 vi.doMock('@lingui/react/macro', () => ({
   ...actualLinguiMacro,
@@ -127,6 +133,8 @@ afterEach(async () => {
   captured.startComment = null;
   const { setCommentsPanelOnScreen } = await import('./comments-panel-visibility');
   setCommentsPanelOnScreen(false);
+  clearBbEditorHost();
+  vi.restoreAllMocks();
 });
 
 async function openComposer() {
@@ -260,6 +268,61 @@ describe('the comment composer', () => {
 
     expect(captured.created).toEqual([]);
     expect(screen.queryByPlaceholderText('Add a comment')).toBeNull();
+  });
+
+  test('Add to chat files the draft and sends the passage from the inline card', async () => {
+    markBbEditorHost();
+    const posted: unknown[] = [];
+    vi.spyOn(window.parent, 'postMessage').mockImplementation((data: unknown) => {
+      posted.push(data);
+      if (readBbCommentChatMessage(data)?.intent !== 'read') return;
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: bbCommentChatComposer(true),
+          source: window.parent,
+        }),
+      );
+    });
+    const field = await openComposer();
+    fireEvent.change(field, { target: { value: 'press it?' } });
+    const button = screen.getByRole('button', { name: 'Add to chat' });
+    expect((button as HTMLButtonElement).disabled).toBe(false);
+    fireEvent.click(button);
+    expect(posted).toContainEqual(bbCommentChatAdd('recipes/stir-fry', 'the tofu', 'press it?'));
+    expect(captured.created).toEqual([
+      expect.objectContaining({
+        docName: 'recipes/stir-fry',
+        quote: 'the tofu',
+        body: 'press it?',
+      }),
+    ]);
+    expect(screen.queryByPlaceholderText('Add a comment')).toBeNull();
+  });
+
+  test('the inline card hides Add to chat off the BB host', async () => {
+    await openComposer();
+    expect(screen.queryByRole('button', { name: 'Add to chat' })).toBeNull();
+  });
+
+  test('the add to chat shortcut sends the inline comment', async () => {
+    markBbEditorHost();
+    const posted: unknown[] = [];
+    vi.spyOn(window.parent, 'postMessage').mockImplementation((data: unknown) => {
+      posted.push(data);
+    });
+    const field = await openComposer();
+    fireEvent.change(field, { target: { value: 'press it?' } });
+    fireEvent(
+      window,
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        ctrlKey: true,
+        shiftKey: true,
+        cancelable: true,
+        bubbles: true,
+      }),
+    );
+    expect(posted).toContainEqual(bbCommentChatAdd('recipes/stir-fry', 'the tofu', 'press it?'));
   });
 
   test('a click on the mention results does NOT close it', async () => {

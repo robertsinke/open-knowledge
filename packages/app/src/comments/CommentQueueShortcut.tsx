@@ -14,6 +14,7 @@ export function CommentQueueShortcut() {
     function onKeyDown(event: KeyboardEvent): void {
       if (!matchesKeyboardShortcut(event, 'send-comment-queue')) return;
       if (isOverlayLayerOpen()) return;
+      if (document.querySelector('[data-testid="comment-composer"]') !== null) return;
       const visible = getVisibleCommentScope();
       if (visible === null) return;
       const ids =

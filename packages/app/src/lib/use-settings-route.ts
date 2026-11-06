@@ -1,4 +1,6 @@
 import { startTransition, useEffect, useState } from 'react';
+import { isBbEditorHost, isBbSettingsPage } from '@/lib/bb-editor-host';
+import { bbSettingsOpen } from '@/lib/bb-settings';
 import {
   isEditableShortcutTarget,
   matchesKeyboardShortcut,
@@ -36,6 +38,10 @@ function openSettingsSection(sectionId: string): void {
 
 export function openSettings(): void {
   if (typeof window === 'undefined') return;
+  if (isBbEditorHost() && !isBbSettingsPage() && window.parent !== window) {
+    window.parent.postMessage(bbSettingsOpen(), '*');
+    return;
+  }
   if (!isSettingsHashOpen(window.location.hash)) window.location.hash = SETTINGS_OPEN_HASH;
 }
 

@@ -1271,11 +1271,20 @@ msgstr "Tambahkan tag"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "Tambahkan perintah <0>{cliCommand}</0> ke terminal Anda"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "Menambahkan pilihan sumber berikutnya yang cocok."
 
 msgid "Add to {gitignorePath}"
 msgstr "Tambahkan ke {gitignorePath}"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "Tambahkan ke kamus"
@@ -2494,6 +2503,9 @@ msgstr "Beri komentar atau tanya AI tentang blok kode ini"
 msgid "Comments"
 msgstr "Komentar"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "Commit dan sinkronkan"
 
@@ -3360,6 +3372,9 @@ msgstr "Membuat folder dari konteks dokumen atau folder saat ini."
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "Buat cabang baru, atau ambil cabang yang sudah ada, di jendelanya sendiri."
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "Membuat item daftar baru dari item daftar saat ini."
 
@@ -3623,6 +3638,9 @@ msgstr "Ditolak — {optionName}"
 
 msgid "Deny"
 msgstr "Tolak"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "Jelaskan proyek yang ingin Anda buat"
@@ -4991,6 +5009,9 @@ msgstr "Host GitHub Enterprise Server"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "Status masuk GitHub tidak ada atau kedaluwarsa. Sambungkan ulang untuk melanjutkan sinkronisasi."
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub, sebuah URL git, atau jalur lokal."
 
@@ -5059,9 +5080,6 @@ msgstr "Memandu agen AI Anda tentang cara bekerja di sini."
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install atau https://contoh.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "Serahkan komentar yang dicentang ke agen dalam satu giliran. Pada Dokumen ini, hanya komentar dokumen tersebut; pada Proyek ini, setiap komentar yang dicentang. Tidak melakukan apa pun selama tab Komentar tertutup."
 
 msgid "Hard break"
 msgstr "Ganti baris paksa"
@@ -5886,6 +5904,9 @@ msgstr "Kecualikan tautan rusak yang ditulis di dalam log.md atau log.mdx pada k
 
 msgid "Leave these comments out of this message"
 msgstr "Jangan sertakan komentar ini dalam pesan ini"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "Izinkan obrolan agen memakai browser"
@@ -9075,6 +9096,9 @@ msgstr "Gagal menyimpan: {error}"
 msgid "Save queued message"
 msgstr "Simpan pesan dalam antrean"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "Simpan komentar ini (Enter)"
 
@@ -9366,9 +9390,6 @@ msgstr "Kirim"
 msgid "Send & continue"
 msgstr "Kirim & lanjutkan"
 
-msgid "Send checked comments to chat"
-msgstr "Kirim komentar yang dicentang ke obrolan"
-
 msgid "Send comments to"
 msgstr "Kirim komentar ke"
 
@@ -9428,6 +9449,9 @@ msgstr "Terkirim, tetapi komentarnya tidak bisa ditandai selesai — semuanya ma
 
 msgid "Separator"
 msgstr "Pemisah"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "Server tidak bisa membuka dokumen"
@@ -9583,6 +9607,9 @@ msgstr "Repositori bersama"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "Dibagikan ke semua orang di proyek ini. Disimpan di folder proyek dan ikut berpindah lewat git."
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "Membagikan sebuah dokumen memerlukan repositori GitHub. Buat satu untuk proyek ini."
@@ -10020,6 +10047,9 @@ msgstr "entri Git usang"
 
 msgid "Star us on GitHub"
 msgstr "Beri kami bintang di GitHub"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "Memulai laporan bug dengan tangkapan layar persis seperti tampilannya saat ini."
@@ -10550,6 +10580,9 @@ msgstr "Kontrak perhitungan yang dibuktikan. Hanya berlaku untuk dokumen yang di
 
 msgid "The audit could not be completed. Try again."
 msgstr "Audit tidak dapat diselesaikan. Coba lagi."
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "Papan tidak dapat dijangkau. Papan mungkin tidak ada, atau server sedang offline."
@@ -12005,9 +12038,6 @@ msgstr "Ketika aktif, agennya membuka atau menyegarkan pratinjau setelah setiap 
 
 msgid "When the agent runs its scheduled work."
 msgstr "Kapan agennya menjalankan pekerjaan terjadwalnya."
-
-msgid "When the Comments tab is open"
-msgstr "Saat tab Komentar terbuka"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "Ketika Anda mengarahkan kursor ke tautan eksternal, URL-nya dikirim ke situs tujuan untuk mengambil metadata pratinjau halaman itu — satu permintaan per tautan yang dipratinjau."

@@ -1275,11 +1275,20 @@ msgstr "添加标签"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "把 <0>{cliCommand}</0> 命令添加到你的终端"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "添加下一处与所选来源匹配的内容。"
 
 msgid "Add to {gitignorePath}"
 msgstr "添加到 {gitignorePath}"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "添加到词典"
@@ -2498,6 +2507,9 @@ msgstr "对此代码块发表评论或询问 AI"
 msgid "Comments"
 msgstr "评论"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "提交并同步"
 
@@ -3364,6 +3376,9 @@ msgstr "基于当前文档或文件夹创建一个文件夹。"
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "新建一个分支，或检出一个已有分支，各自在独立窗口中打开。"
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "基于当前列表项创建一个新的列表项。"
 
@@ -3627,6 +3642,9 @@ msgstr "已拒绝 — {optionName}"
 
 msgid "Deny"
 msgstr "拒绝"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "描述你想创建的项目"
@@ -4995,6 +5013,9 @@ msgstr "GitHub Enterprise Server 主机"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "GitHub 登录缺失或已过期。请重新连接以继续同步。"
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub、一个 git URL，或一个本地路径。"
 
@@ -5063,9 +5084,6 @@ msgstr "指导你的 AI 智能体在这里如何工作。"
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install 或 https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "一次性把勾选的评论交给智能体。在“这个文档”下只发送该文档的评论；在“本项目”下发送所有勾选的评论。评论标签页关闭时不做任何事。"
 
 msgid "Hard break"
 msgstr "强制换行"
@@ -5890,6 +5908,9 @@ msgstr "无论文件夹层级多深，都不在“问题”、文件资源管理
 
 msgid "Leave these comments out of this message"
 msgstr "不要把这些评论放进这条消息"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "允许智能体对话使用浏览器"
@@ -9079,6 +9100,9 @@ msgstr "保存失败：{error}"
 msgid "Save queued message"
 msgstr "保存排队中的消息"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "保存这条评论（Enter）"
 
@@ -9370,9 +9394,6 @@ msgstr "发送"
 msgid "Send & continue"
 msgstr "发送并继续"
 
-msgid "Send checked comments to chat"
-msgstr "把勾选的评论发送到对话"
-
 msgid "Send comments to"
 msgstr "把评论发送到"
 
@@ -9432,6 +9453,9 @@ msgstr "已发送，但无法把这些评论标记为已完成——它们仍在
 
 msgid "Separator"
 msgstr "分隔符"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "服务器无法打开文档"
@@ -9587,6 +9611,9 @@ msgstr "共享的仓库"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "与项目里的所有人共享。保存在项目文件夹中，并通过 git 随项目一起流转。"
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "共享文档需要一个 GitHub 仓库。请为这个项目创建一个。"
@@ -10024,6 +10051,9 @@ msgstr "过期的 Git 条目"
 
 msgid "Star us on GitHub"
 msgstr "在 GitHub 上给我们点个星"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "发起一份错误报告，并附上此刻画面的截图。"
@@ -10554,6 +10584,9 @@ msgstr "经证明的计算合约。仅适用于类型为 Attested Computation �
 
 msgid "The audit could not be completed. Try again."
 msgstr "审查未能完成。请重试。"
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "无法访问画板。它可能不存在，或服务器已离线。"
@@ -12009,9 +12042,6 @@ msgstr "开启后，智能体每次编辑后都会打开或刷新预览。如果
 
 msgid "When the agent runs its scheduled work."
 msgstr "智能体执行定时任务的时间。"
-
-msgid "When the Comments tab is open"
-msgstr "当评论标签页打开时"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "把鼠标悬停在外部链接上时，它的 URL 会发送到目标站点以获取页面的预览元数据——每个被预览的链接一次请求。"

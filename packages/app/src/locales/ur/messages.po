@@ -1275,11 +1275,20 @@ msgstr "ٹیگ شامل کریں"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "اپنے ٹرمینل میں <0>{cliCommand}</0> کمانڈ شامل کریں"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "اگلا مماثل سورس انتخاب شامل کریں۔"
 
 msgid "Add to {gitignorePath}"
 msgstr "{gitignorePath} میں شامل کریں"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "لغت میں شامل کریں"
@@ -2498,6 +2507,9 @@ msgstr "اس کوڈ بلاک پر تبصرہ کریں یا AI سے پوچھیں"
 msgid "Comments"
 msgstr "تبصرے"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "کمٹ کریں اور مطابق کریں"
 
@@ -3364,6 +3376,9 @@ msgstr "موجودہ دستاویز یا فولڈر کے سیاق سے فولڈ�
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "نئی برانچ بنائیں، یا موجودہ کو چیک آؤٹ کریں، اس کی اپنی ونڈو میں۔"
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "موجودہ فہرست آئٹم سے نیا فہرست آئٹم بنائیں۔"
 
@@ -3627,6 +3642,9 @@ msgstr "مسترد — {optionName}"
 
 msgid "Deny"
 msgstr "مسترد کریں"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "جو پروجیکٹ آپ بنانا چاہتے ہیں اسے بیان کریں"
@@ -4995,6 +5013,9 @@ msgstr "GitHub Enterprise Server ہوسٹس"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "GitHub کا سائن اِن غائب یا میعاد ختم ہے۔ مطابقت پذیری جاری رکھنے کے لیے دوبارہ منسلک ہوں۔"
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub، کوئی git URL، یا مقامی راستہ۔"
 
@@ -5063,9 +5084,6 @@ msgstr "آپ کے AI ایجنٹس کو رہنمائی دیتا ہے کہ یہا�
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install یا https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "منتخب تبصرے ایک ہی بار میں ایجنٹ کے حوالے کریں۔ یہ دستاویز پر صرف اسی دستاویز کے تبصرے؛ یہ پروجیکٹ پر تمام منتخب تبصرے۔ تبصرے ٹیب بند ہونے پر کچھ نہیں ہوتا۔"
 
 msgid "Hard break"
 msgstr "سخت وقفہ"
@@ -5890,6 +5908,9 @@ msgstr "کسی بھی فولڈر کی گہرائی میں log.md یا log.mdx ک
 
 msgid "Leave these comments out of this message"
 msgstr "ان تبصروں کو اس پیغام سے باہر رکھیں"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "ایجنٹ چیٹس کو براؤزر استعمال کرنے دیں"
@@ -9079,6 +9100,9 @@ msgstr "محفوظ کرنا ناکام: {error}"
 msgid "Save queued message"
 msgstr "قطار میں موجود پیغام محفوظ کریں"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "یہ تبصرہ محفوظ کریں (Enter)"
 
@@ -9370,9 +9394,6 @@ msgstr "بھیجیں"
 msgid "Send & continue"
 msgstr "بھیجیں اور جاری رکھیں"
 
-msgid "Send checked comments to chat"
-msgstr "منتخب تبصرے چیٹ میں بھیجیں"
-
 msgid "Send comments to"
 msgstr "تبصرے یہاں بھیجیں"
 
@@ -9432,6 +9453,9 @@ msgstr "بھیج دیا گیا، مگر تبصروں کو مکمل نشان زد
 
 msgid "Separator"
 msgstr "علیحدہ کنندہ"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "سرور دستاویزات نہیں کھول سکتا"
@@ -9587,6 +9611,9 @@ msgstr "مشترکہ ریپازٹریز"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "اس پروجیکٹ کے سب لوگوں کے ساتھ مشترک۔ پروجیکٹ فولڈر میں محفوظ ہوتا ہے اور git کے ذریعے اسی کے ساتھ جاتا ہے۔"
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "دستاویز شیئر کرنے کے لیے GitHub ریپازٹری درکار ہے۔ اس پروجیکٹ کے لیے ایک بنائیں۔"
@@ -10024,6 +10051,9 @@ msgstr "پرانی Git انٹری"
 
 msgid "Star us on GitHub"
 msgstr "GitHub پر ہمیں ستارہ دیں"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "اسکرین اس وقت جیسی دکھ رہی ہے اس کا اسکرین شاٹ لے کر بگ رپورٹ شروع کریں۔"
@@ -10554,6 +10584,9 @@ msgstr "تصدیق شدہ حساب کا معاہدہ۔ صرف Attested Computati
 
 msgid "The audit could not be completed. Try again."
 msgstr "آڈٹ مکمل نہیں ہو سکا۔ دوبارہ کوشش کریں۔"
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "بورڈ تک رسائی نہیں ہو سکی۔ ہو سکتا ہے وہ موجود نہ ہو، یا سرور آف لائن ہو۔"
@@ -12009,9 +12042,6 @@ msgstr "فعال ہونے پر، ایجنٹ ہر ترمیم کے بعد پیش �
 
 msgid "When the agent runs its scheduled work."
 msgstr "ایجنٹ اپنا طے شدہ کام کب چلاتا ہے۔"
-
-msgid "When the Comments tab is open"
-msgstr "جب تبصرے ٹیب کھلا ہو"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "جب آپ کسی بیرونی لنک پر ماؤس لے جاتے ہیں تو صفحے کا پیش منظر ڈیٹا لانے کے لیے اس کا URL منزل کی سائٹ کو بھیجا جاتا ہے — ہر پیش منظر والے لنک کے لیے ایک درخواست۔"

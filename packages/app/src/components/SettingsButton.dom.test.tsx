@@ -63,14 +63,16 @@ describe('SettingsButton runtime behavior', () => {
     expect(button.querySelector('svg')).not.toBeNull();
   });
 
-  test('on the BB host, the gear opens the in-editor settings hash', async () => {
+  test('on the BB host, the gear asks BB to open this plugin settings page', async () => {
     markBbEditorHost();
+    const parent = { postMessage: vi.fn() };
+    vi.spyOn(window, 'parent', 'get').mockReturnValue(parent as unknown as Window);
     await renderSettingsButton();
     act(() => {
       fireEvent.click(screen.getByTestId('header-settings-button'));
     });
-    expect(window.location.hash).toBe('#settings');
-    expect(window.location.pathname).toBe('/');
+    expect(parent.postMessage).toHaveBeenCalledWith({ type: 'open-knowledge:bb-settings' }, '*');
+    expect(window.location.hash).toBe('');
   });
 
   test('with the host flag off, the gear still opens the in-editor settings hash', async () => {

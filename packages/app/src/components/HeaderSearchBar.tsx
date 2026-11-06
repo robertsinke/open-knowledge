@@ -8,6 +8,12 @@ import { Search } from '@/lib/host-icons';
 import { formatShortcut } from '@/lib/keyboard-shortcuts';
 import { cn } from '@/lib/utils';
 
+export const OPEN_COMMAND_PALETTE_EVENT = 'ok:open-command-palette';
+
+export function requestOpenCommandPalette(): void {
+  window.dispatchEvent(new Event(OPEN_COMMAND_PALETTE_EVENT));
+}
+
 interface HeaderSearchBarProps {
   onClick: () => void;
   className?: string;

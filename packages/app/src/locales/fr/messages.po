@@ -1275,11 +1275,20 @@ msgstr "Ajouter une étiquette"
 msgid "Add the <0>{cliCommand}</0> command to your terminal"
 msgstr "Ajoutez la commande <0>{cliCommand}</0> à votre terminal"
 
+msgid "Add the checked comments, or the open inline comment, to chat. On the BB editor this writes the thread draft even when the composer is not the active surface. Off that host, hands them to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment."
+msgstr ""
+
 msgid "Add the next matching source selection."
 msgstr "Ajoute la sélection source correspondante suivante."
 
 msgid "Add to {gitignorePath}"
 msgstr "Ajouter à {gitignorePath}"
+
+msgid "Add to chat"
+msgstr ""
+
+msgid "Add to chat ({0})"
+msgstr ""
 
 msgid "Add to Dictionary"
 msgstr "Ajouter au dictionnaire"
@@ -2498,6 +2507,9 @@ msgstr "Commenter ce bloc de code ou interroger l’IA à son sujet"
 msgid "Comments"
 msgstr "Commentaires"
 
+msgid "Comments tab, or the inline comment card"
+msgstr ""
+
 msgid "Commit and sync"
 msgstr "Valider et synchroniser"
 
@@ -3364,6 +3376,9 @@ msgstr "Crée un dossier à partir du document ou du dossier courant."
 msgid "Create a new branch, or check out an existing one, in its own window."
 msgstr "Créez une nouvelle branche, ou extrayez-en une existante, dans sa propre fenêtre."
 
+msgid "Create a new file <0/>"
+msgstr ""
+
 msgid "Create a new list item from the current list item."
 msgstr "Crée un nouvel élément de liste à partir de l'élément courant."
 
@@ -3627,6 +3642,9 @@ msgstr "Refusé — {optionName}"
 
 msgid "Deny"
 msgstr "Refuser"
+
+msgid "Deployed origin"
+msgstr ""
 
 msgid "Describe the project you want to create"
 msgstr "Décrivez le projet que vous voulez créer"
@@ -4995,6 +5013,9 @@ msgstr "Hôtes GitHub Enterprise Server"
 msgid "GitHub sign-in is missing or expired. Reconnect to resume syncing."
 msgstr "La connexion GitHub est absente ou expirée. Reconnectez-vous pour reprendre la synchronisation."
 
+msgid "GitHub sync for this project is a BB setting."
+msgstr ""
+
 msgid "GitHub, a git URL, or a local path."
 msgstr "GitHub, une URL git, ou un chemin local."
 
@@ -5063,9 +5084,6 @@ msgstr "Indique à vos agents IA comment travailler ici."
 
 msgid "guides/install or https://example.com"
 msgstr "guides/install ou https://example.com"
-
-msgid "Hand the checked comments to an agent in one turn. On This doc, that document's comments only; on This project, every checked comment. Does nothing while the Comments tab is closed."
-msgstr "Transmet les commentaires cochés à un agent en un seul tour. Sur Ce document, uniquement les commentaires de ce document ; sur Ce projet, tous les commentaires cochés. Sans effet tant que l'onglet Commentaires est fermé."
 
 msgid "Hard break"
 msgstr "Saut de ligne forcé"
@@ -5890,6 +5908,9 @@ msgstr "Excluez des Problèmes, des indicateurs de l’explorateur de fichiers, 
 
 msgid "Leave these comments out of this message"
 msgstr "Ne pas inclure ces commentaires dans ce message"
+
+msgid "Leave this empty to use this workspace's local server."
+msgstr ""
 
 msgid "Let agent chats use a browser"
 msgstr "Laisser les chats d'agents utiliser un navigateur"
@@ -9079,6 +9100,9 @@ msgstr "Échec de l'enregistrement : {error}"
 msgid "Save queued message"
 msgstr "Enregistrer le message en file d'attente"
 
+msgid "Save server"
+msgstr ""
+
 msgid "Save this comment (Enter)"
 msgstr "Enregistrer ce commentaire (Entrée)"
 
@@ -9370,9 +9394,6 @@ msgstr "Envoyer"
 msgid "Send & continue"
 msgstr "Envoyer et continuer"
 
-msgid "Send checked comments to chat"
-msgstr "Envoyer les commentaires cochés dans la discussion"
-
 msgid "Send comments to"
 msgstr "Envoyer les commentaires à"
 
@@ -9432,6 +9453,9 @@ msgstr "Envoyé, mais les commentaires n'ont pas pu être marqués comme traité
 
 msgid "Separator"
 msgstr "Séparateur"
+
+msgid "Server"
+msgstr ""
 
 msgid "Server can't open documents"
 msgstr "Le serveur ne peut pas ouvrir de documents"
@@ -9587,6 +9611,9 @@ msgstr "Dépôts partagés"
 
 msgid "Shared with everyone on this project. Stored in the project folder and travels with it through git."
 msgstr "Partagé avec tous les membres du projet. Stocké dans le dossier du projet et le suit via git."
+
+msgid "Sharing"
+msgstr ""
 
 msgid "Sharing a doc needs a GitHub repository. Create one for this project."
 msgstr "Partager un document nécessite un dépôt GitHub. Créez-en un pour ce projet."
@@ -10024,6 +10051,9 @@ msgstr "entrée Git obsolète"
 
 msgid "Star us on GitHub"
 msgstr "Mettez-nous une étoile sur GitHub"
+
+msgid "Start a blank file, or scaffold from a template."
+msgstr ""
 
 msgid "Start a bug report with a screenshot of the screen as it looks right now."
 msgstr "Démarre un rapport de bug avec une capture d'écran de ce qui est affiché à cet instant."
@@ -10554,6 +10584,9 @@ msgstr "Le contrat de calcul attesté. S'applique uniquement aux documents tapé
 
 msgid "The audit could not be completed. Try again."
 msgstr "L'audit n'a pas pu être terminé. Réessayez."
+
+msgid "The BB thread composer is not open."
+msgstr ""
 
 msgid "The board could not be reached. It may not exist, or the server may be offline."
 msgstr "Le tableau est injoignable. Il n'existe peut-être pas, ou le serveur est peut-être hors ligne."
@@ -12009,9 +12042,6 @@ msgstr "Une fois activé, l'agent ouvre ou actualise l'aperçu après chaque mod
 
 msgid "When the agent runs its scheduled work."
 msgstr "Quand l'agent effectue son travail planifié."
-
-msgid "When the Comments tab is open"
-msgstr "Lorsque l'onglet Commentaires est ouvert"
 
 msgid "When you hover an external link, its URL is sent to the destination site to fetch the page's preview metadata — one request per previewed link."
 msgstr "Quand vous survolez un lien externe, son URL est envoyée au site de destination pour récupérer les métadonnées d'aperçu de la page — une requête par lien prévisualisé."

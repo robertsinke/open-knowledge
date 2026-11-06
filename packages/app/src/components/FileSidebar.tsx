@@ -25,7 +25,10 @@ import {
   useHandoffDispatch,
 } from '@/components/handoff/useHandoffDispatch';
 import { useInstalledAgents } from '@/components/handoff/useInstalledAgents';
+import { requestOpenCommandPalette } from '@/components/HeaderSearchBar';
 import { OnboardingCardMount } from '@/components/OnboardingCard';
+import { SettingsButton } from '@/components/SettingsButton';
+import { SyncStatusBadge } from '@/components/SyncStatusBadge';
 import {
   SidebarToolbarButton as ToolbarButton,
   type SidebarToolbarButtonProps as ToolbarButtonProps,
@@ -87,6 +90,8 @@ import {
   useDefaultRegisteredAgent,
   useRegisteredAgents,
 } from '@/lib/acp/registered-agents';
+import { authPromptStore } from '@/lib/auth-prompt-store';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { useSettingsLoadingReason } from '@/lib/config-context';
 import { useConfigContext } from '@/lib/config-provider';
 import { subscribeToCreateTopLevelFile } from '@/lib/create-file-events';
@@ -111,6 +116,7 @@ import {
   FoldVertical,
   ListCollapse,
   PanelLeftClose,
+  Search,
   Share2,
   SquarePen,
   UnfoldVertical,
@@ -140,6 +146,18 @@ const SIDEBAR_INTERACTIVE_CONTROL_SELECTOR =
 export function isInteractiveSidebarControl(target: EventTarget | null): boolean {
   if (typeof Element === 'undefined' || !(target instanceof Element)) return false;
   return target.closest(SIDEBAR_INTERACTIVE_CONTROL_SELECTOR) !== null;
+}
+
+function SidebarHostActions() {
+  return (
+    <div className="flex shrink-0 items-center gap-0.5" data-testid="sidebar-chrome-footer">
+      <SyncStatusBadge
+        onSignIn={() => authPromptStore.request('auth')}
+        onSetIdentity={() => authPromptStore.request('identity')}
+      />
+      <SettingsButton />
+    </div>
+  );
 }
 
 export function FileSidebar() {
@@ -182,6 +200,7 @@ function SettingsLoadingMenuGroupTooltip({
 
 function FileSidebarInner() {
   const { t } = useLingui();
+  const bbHost = isBbEditorHost();
   const fileSidebarSide = useFileSidebarSide();
   const fileSidebarEdge = physicalSide(fileSidebarSide, useDocumentDirection());
   const settingsLoadingReasonId = useId();
@@ -649,7 +668,7 @@ function FileSidebarInner() {
                       aria-label={t`Files toolbar`}
                       data-testid="sidebar-toolbar"
                       className={cn(
-                        'flex items-center gap-0.5',
+                        'flex shrink-0 items-center gap-0.5',
                         isElectronHost && '[&>*]:[-webkit-app-region:no-drag]',
                       )}
                     >
@@ -782,6 +801,14 @@ function FileSidebarInner() {
                           </DropdownMenuContent>
                         ) : null}
                       </DropdownMenu>
+                      {bbHost ? (
+                        <ToolbarButton
+                          icon={Search}
+                          label={t`Search`}
+                          shortcutId="command-palette"
+                          onClick={requestOpenCommandPalette}
+                        />
+                      ) : null}
                       <ToolbarButton
                         icon={SquarePen}
                         label={t`New file`}
@@ -821,10 +848,25 @@ function FileSidebarInner() {
                 </SidebarGroup>
               </Collapsible>
               {cover ? <ConflictsSection /> : null}
-              {showSkillsSection ? <SkillsSidebarDock filesOpen={filesOpen} /> : null}
+              {showSkillsSection ? (
+                <SkillsSidebarDock
+                  filesOpen={filesOpen}
+                  trailing={bbHost && filesOpen ? <SidebarHostActions /> : null}
+                />
+              ) : null}
             </SidebarContent>
-            <SidebarFooter className="px-0 empty:hidden">
+            <SidebarFooter
+              className={cn(
+                'empty:hidden',
+                bbHost && (!showSkillsSection || !filesOpen) ? 'p-0' : 'px-0',
+              )}
+            >
               <OnboardingCardMount />
+              {bbHost && (!showSkillsSection || !filesOpen) ? (
+                <div className="flex items-center justify-end px-2 py-1.5">
+                  <SidebarHostActions />
+                </div>
+              ) : null}
             </SidebarFooter>
             <SidebarRail
               enableToggle={false}

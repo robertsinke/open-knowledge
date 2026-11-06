@@ -27,6 +27,7 @@ import plugin, {
   deployedOriginKey,
   editorOriginFrom,
   initCliArgs,
+  startCliArgs,
   mcpUrlKey,
   pluginRepoRoot,
   projectMarkerPath,
@@ -579,6 +580,10 @@ interface DeployedOriginHandler {
 }
 
 describe("workspace project server", () => {
+  it("starts the local server with the switch that skips OpenKnowledge auto-sync", () => {
+    expect(startCliArgs).toEqual(["start", "--no-open-browser", "--no-auto-sync"]);
+  });
+
   it("stores a deployed origin from the settings RPC on the key U1 reads", async () => {
     const root = tempDir("rpc-origin");
     const memory = new Map<string, unknown>();

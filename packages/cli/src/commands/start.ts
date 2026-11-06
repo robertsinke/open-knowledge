@@ -333,6 +333,7 @@ interface BootStartServerOptions {
   singleFile?: string;
   projectDir?: string;
   terminalAuthAvailable?: boolean;
+  skipOpenKnowledgeAutoSync?: boolean;
 }
 
 export interface BootedStartServer {
@@ -533,6 +534,7 @@ export async function bootStartServer(opts: BootStartServerOptions): Promise<Boo
         : {}),
       ...(opts.reactShellDistDir ? { reactShellDistDir: opts.reactShellDistDir } : {}),
       ...(opts.terminalAuthAvailable === true ? { terminalAuthAvailable: true } : {}),
+      ...(opts.skipOpenKnowledgeAutoSync === true ? { skipOpenKnowledgeAutoSync: true } : {}),
     });
   } catch (err) {
     await reapOwnedEphemeralDir();
@@ -576,6 +578,7 @@ interface StartCommandOptions {
   projectDir?: string;
   externalUrl?: string;
   terminalAuth?: boolean;
+  autoSync?: boolean;
 }
 
 export function resolveStartConfig(
@@ -730,6 +733,7 @@ export async function runStartCommand(configArg: Config, opts: StartCommandOptio
       ...(opts.singleFile ? { singleFile: opts.singleFile } : {}),
       ...(opts.projectDir ? { projectDir: opts.projectDir } : {}),
       ...(opts.terminalAuth === true ? { terminalAuthAvailable: true } : {}),
+      ...(opts.autoSync === false ? { skipOpenKnowledgeAutoSync: true } : {}),
     });
   } catch (err) {
     if (err instanceof OkDirMissingError) {
@@ -1009,6 +1013,7 @@ export function startCommand(getConfig: () => Config): Command {
       '--no-open-browser',
       'Do not open the browser after start (interactive loopback starts open it by default)',
     )
+    .option('--no-auto-sync', 'Do not start OpenKnowledge auto-sync on this local server')
     .option(
       '--only <module>',
       "Serve one module: 'server' (API + MCP only, no shell or browser)",

@@ -424,6 +424,7 @@ export interface ServerOptions {
   checkPushPermissionFn?: (opts: CheckPushPermissionOptions) => Promise<PushPermission>;
   pullIntervalSeconds?: number;
   pushIntervalSeconds?: number;
+  skipOpenKnowledgeAutoSync?: boolean;
   embeddingsKeyStore?: EmbeddingsKeyStore | null;
   embedderLoader?: (input: LoadOpenAiEmbedderInput) => Promise<Embedder | null>;
   singleDocRelPath?: string;
@@ -6135,84 +6136,86 @@ export function createServer(options: ServerOptions): ServerInstance {
       log.warn({ err }, '[conflicts] boot prune of merge-native entries failed');
     }
 
-    const syncCredentialConfig = await resolveSyncCredentialConfig();
-    const bootAutoSyncMode = readProjectAutoSyncMode();
-    const bootAutoSyncIntervals = readProjectAutoSyncIntervals();
-    if (bootAutoSyncMode.mode !== 'off') {
-      log.info(
-        { mode: bootAutoSyncMode.mode, source: bootAutoSyncMode.source },
-        '[sync] mode active at boot',
-      );
-    }
-    try {
-      syncEngine = new SyncEngine({
-        declaredGitHubHosts,
-        projectDir,
-        contentDir,
-        contentFilter,
-        contentRoot,
-        mcpTomlEditor: options.mcpTomlEditor,
-        mode: bootAutoSyncMode.mode,
-        pullIntervalSeconds:
-          options.pullIntervalSeconds ?? bootAutoSyncIntervals.pullIntervalSeconds,
-        pushIntervalSeconds:
-          options.pushIntervalSeconds ?? bootAutoSyncIntervals.pushIntervalSeconds,
-        credentialConfig: syncCredentialConfig,
-        resolveCredentialConfig: resolveSyncCredentialConfig,
-        cc1Broadcaster,
-        conflicts,
-        detectGh: options.detectGh,
-        detectGhAccounts: options.detectGhAccounts,
-        tokenStore: options.tokenStore,
-        checkPushPermissionFn: options.checkPushPermissionFn,
-        setBatchInProgress: batchFlagFor('sync-engine'),
-        onStateChange: (state) => {
-          log.info({ state }, `[sync] state → ${state}`);
-        },
-        checkpointBeforeStrandedConversion: async ({ branch, ahead }) => {
-          const shadow = shadowRef.current;
-          if (!shadow) return;
-          await safetyCheckpoint(
-            shadow,
-            contentRoot ?? '',
-            { action: 'pull-only-stranded-conversion', context: { ahead } },
-            branch,
-          );
-        },
-        checkpointBeforeOverlayRestore: async ({ branch, paths }) => {
-          const shadow = shadowRef.current;
-          if (!shadow) return;
-          await safetyCheckpoint(
-            shadow,
-            contentRoot ?? '',
-            { action: 'pull-only-overlay-restore', context: { paths } },
-            branch,
-          );
-        },
-        onAutoDisable: async (reason) => {
-          log.warn({ reason }, '[sync] auto-disabled — persisting to project-local config');
-          const result = await writeConfigPatch({
-            cwd: projectDir,
-            scope: 'project-local',
-            patch: { autoSync: { enabled: false } },
-          });
-          if (!result.ok) {
-            log.error(
-              {
-                result,
-                reason,
-                humanError: humanFormat(result.error),
-                configPath: resolveConfigPath('project-local', projectDir),
-              },
-              '[sync] failed to persist auto-disable — next restart WILL re-enable sync and re-trigger the same failure. Check permissions on the config path.',
+    if (options.skipOpenKnowledgeAutoSync !== true) {
+      const syncCredentialConfig = await resolveSyncCredentialConfig();
+      const bootAutoSyncMode = readProjectAutoSyncMode();
+      const bootAutoSyncIntervals = readProjectAutoSyncIntervals();
+      if (bootAutoSyncMode.mode !== 'off') {
+        log.info(
+          { mode: bootAutoSyncMode.mode, source: bootAutoSyncMode.source },
+          '[sync] mode active at boot',
+        );
+      }
+      try {
+        syncEngine = new SyncEngine({
+          declaredGitHubHosts,
+          projectDir,
+          contentDir,
+          contentFilter,
+          contentRoot,
+          mcpTomlEditor: options.mcpTomlEditor,
+          mode: bootAutoSyncMode.mode,
+          pullIntervalSeconds:
+            options.pullIntervalSeconds ?? bootAutoSyncIntervals.pullIntervalSeconds,
+          pushIntervalSeconds:
+            options.pushIntervalSeconds ?? bootAutoSyncIntervals.pushIntervalSeconds,
+          credentialConfig: syncCredentialConfig,
+          resolveCredentialConfig: resolveSyncCredentialConfig,
+          cc1Broadcaster,
+          conflicts,
+          detectGh: options.detectGh,
+          detectGhAccounts: options.detectGhAccounts,
+          tokenStore: options.tokenStore,
+          checkPushPermissionFn: options.checkPushPermissionFn,
+          setBatchInProgress: batchFlagFor('sync-engine'),
+          onStateChange: (state) => {
+            log.info({ state }, `[sync] state → ${state}`);
+          },
+          checkpointBeforeStrandedConversion: async ({ branch, ahead }) => {
+            const shadow = shadowRef.current;
+            if (!shadow) return;
+            await safetyCheckpoint(
+              shadow,
+              contentRoot ?? '',
+              { action: 'pull-only-stranded-conversion', context: { ahead } },
+              branch,
             );
-          }
-        },
-      });
-      await syncEngine.start();
-    } catch (err) {
-      log.warn({ err }, '[server] SyncEngine failed to start — sync disabled');
-      syncEngine = null;
+          },
+          checkpointBeforeOverlayRestore: async ({ branch, paths }) => {
+            const shadow = shadowRef.current;
+            if (!shadow) return;
+            await safetyCheckpoint(
+              shadow,
+              contentRoot ?? '',
+              { action: 'pull-only-overlay-restore', context: { paths } },
+              branch,
+            );
+          },
+          onAutoDisable: async (reason) => {
+            log.warn({ reason }, '[sync] auto-disabled — persisting to project-local config');
+            const result = await writeConfigPatch({
+              cwd: projectDir,
+              scope: 'project-local',
+              patch: { autoSync: { enabled: false } },
+            });
+            if (!result.ok) {
+              log.error(
+                {
+                  result,
+                  reason,
+                  humanError: humanFormat(result.error),
+                  configPath: resolveConfigPath('project-local', projectDir),
+                },
+                '[sync] failed to persist auto-disable — next restart WILL re-enable sync and re-trigger the same failure. Check permissions on the config path.',
+              );
+            }
+          },
+        });
+        await syncEngine.start();
+      } catch (err) {
+        log.warn({ err }, '[server] SyncEngine failed to start — sync disabled');
+        syncEngine = null;
+      }
     }
 
     signalChannel('files');

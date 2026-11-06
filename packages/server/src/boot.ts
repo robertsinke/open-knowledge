@@ -162,6 +162,7 @@ export interface BootServerOptions
     | 'watcherBackend'
     | 'watcherClock'
     | 'freshnessIntervalMs'
+    | 'skipOpenKnowledgeAutoSync'
   > {
   config: Config;
   skipAutoInit?: boolean;
@@ -438,6 +439,7 @@ async function bootServerInner(
     watcherBackend: opts.watcherBackend,
     watcherClock: opts.watcherClock,
     freshnessIntervalMs: opts.freshnessIntervalMs,
+    ...(opts.skipOpenKnowledgeAutoSync === true ? { skipOpenKnowledgeAutoSync: true } : {}),
   });
 
   const {

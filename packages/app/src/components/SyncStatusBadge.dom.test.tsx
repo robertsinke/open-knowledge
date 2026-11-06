@@ -5,6 +5,7 @@ import { type ReactNode, useEffect, useReducer } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 import {
   __resetPaneVisibilityStoreForTests,
   type PaneVisibilityRequest,
@@ -623,6 +624,7 @@ describe('SyncStatusBadge runtime behavior', () => {
     worktreeLastReadAt = null;
     triggered.length = 0;
     triggerRejection = null;
+    clearBbEditorHost();
   });
 
   test('exports the SyncStatusBadge component', async () => {
@@ -643,6 +645,38 @@ describe('SyncStatusBadge runtime behavior', () => {
     await renderBadge();
 
     expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  test('on the BB host, no remote still shows the sync control and offers no push or pull', async () => {
+    markBbEditorHost();
+    status = {
+      ...baseStatus,
+      state: 'dormant',
+      hasRemote: false,
+      syncEnabled: false,
+      remote: null,
+    } as GitSyncStatus;
+    await renderBadge();
+
+    expect(screen.getByRole('button', { name: 'Sync status: No git remote' })).toBeTruthy();
+    expect(screen.queryByTestId('sync-popover-pull')).toBeNull();
+    expect(screen.queryByTestId('sync-popover-push')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Pull' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Push' })).toBeNull();
+  });
+
+  test('on the BB host, a click does not run OpenKnowledge manual sync', async () => {
+    markBbEditorHost();
+    status = { ...baseStatus, state: 'idle' };
+    projectLocalConfig = { autoSync: { mode: 'off' } };
+    await renderBadge();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Sync status: Synced' }));
+
+    expect(triggered).toEqual([]);
+    expect(screen.queryByTestId('sync-popover-pull')).toBeNull();
+    expect(screen.queryByTestId('sync-popover-push')).toBeNull();
+    expect(screen.queryByTestId('sync-popover-sync')).toBeNull();
   });
 
   test('Manual never renders as a fault — no warning glyph, no "disabled" copy', async () => {

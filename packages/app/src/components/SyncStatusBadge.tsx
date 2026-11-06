@@ -21,6 +21,7 @@ import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
 import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
 import type { GitWorktreeStatus } from '@/hooks/use-git-worktree-status';
 import { useGitWorktreeStatus } from '@/hooks/use-git-worktree-status';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { useConfigContext } from '@/lib/config-provider';
 import { hashFromAssetPath, hashFromDocName, isSameHash } from '@/lib/doc-hash';
 import { engineSyncMode } from '@/lib/engine-sync-mode';
@@ -1455,41 +1456,51 @@ export function SyncStatusBadge({ onSignIn, onSetIdentity }: SyncStatusBadgeProp
     return null;
   }
 
-  if (!status.hasRemote) return null;
+  if (!isBbEditorHost() && !status.hasRemote) return null;
 
   const label = badgeLabel(status);
   const syncStateLabel = syncStateLabelFor(status);
   const showIdentityDot = Boolean(status.identityUnresolved);
+  const button = (
+    <Button
+      variant="ghost"
+      size="icon-sm"
+      className="text-muted-foreground relative"
+      aria-label={
+        showIdentityDot
+          ? t`Sync status: ${syncStateLabel} — git identity unset`
+          : t`Sync status: ${syncStateLabel}`
+      }
+    >
+      <BadgeIcon status={status} size="size-4" />
+      {label && (
+        <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none font-medium bg-background border rounded-full px-0.5">
+          {label}
+        </span>
+      )}
+      {!label && showIdentityDot && (
+        <span
+          className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-warning ring-2 ring-background"
+          aria-hidden
+        />
+      )}
+    </Button>
+  );
+
+  if (isBbEditorHost()) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent>{tooltipLabel(status)}</TooltipContent>
+      </Tooltip>
+    );
+  }
 
   return (
     <Popover>
       <Tooltip>
         <TooltipTrigger asChild>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="text-muted-foreground relative"
-              aria-label={
-                showIdentityDot
-                  ? t`Sync status: ${syncStateLabel} — git identity unset`
-                  : t`Sync status: ${syncStateLabel}`
-              }
-            >
-              <BadgeIcon status={status} size="size-4" />
-              {label && (
-                <span className="absolute -top-0.5 -right-0.5 text-[9px] leading-none font-medium bg-background border rounded-full px-0.5">
-                  {label}
-                </span>
-              )}
-              {!label && showIdentityDot && (
-                <span
-                  className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-warning ring-2 ring-background"
-                  aria-hidden
-                />
-              )}
-            </Button>
-          </PopoverTrigger>
+          <PopoverTrigger asChild>{button}</PopoverTrigger>
         </TooltipTrigger>
         <TooltipContent>{tooltipLabel(status)}</TooltipContent>
       </Tooltip>

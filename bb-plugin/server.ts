@@ -23,7 +23,7 @@ export const initCliArgs = [
   "--json",
 ] as const;
 
-export const startCliArgs = ["start", "--no-open-browser"] as const;
+export const startCliArgs = ["start", "--no-open-browser", "--no-auto-sync"] as const;
 
 export const rpcContract = defineRpcContract({
   editorOrigin: {

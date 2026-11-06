@@ -28,6 +28,8 @@ blob-report/
 .claude/
 .codex/
 .open-knowledge/
+# Machine-local OpenKnowledge state: identity, caches, receipts, sync.
+.ok/local/
 .mirror-output/
 /test-doc.md
 

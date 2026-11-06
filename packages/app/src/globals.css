@@ -7231,6 +7231,27 @@ html[data-bb-editor-host] [data-editor-header] {
   font-weight: 400;
 }
 
+html[data-bb-editor-host] [data-slot='pane-card'] {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-bb-editor-host] [data-slot='pane-card']::after {
+  content: none;
+}
+
+/* Same band as the sync and settings row: the 32px gear plus py-1.5. */
+html[data-bb-editor-host] [data-editor-footer] {
+  height: calc(2rem + 0.75rem);
+  min-height: calc(2rem + 0.75rem);
+  align-items: center;
+  line-height: 1;
+}
+
+html[data-bb-editor-host] [data-editor-footer] > * {
+  align-self: center;
+}
+
 /* Same size as a BB thread message (text-sm / leading-relaxed). Headings stay em. */
 html[data-bb-editor-host] .editor-doc-scroll .ProseMirror {
   font-size: 0.8125rem;

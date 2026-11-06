@@ -43,6 +43,7 @@ export function EditorFooter({
             ? t`Selection statistics`
             : t`Document statistics`
       }
+      data-editor-footer=""
       className="relative flex h-6 shrink-0 items-center justify-between gap-3 bg-background px-3 text-2xs text-muted-foreground"
     >
       <div

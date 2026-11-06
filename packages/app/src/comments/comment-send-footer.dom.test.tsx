@@ -1,10 +1,34 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { Button } from '@/components/ui/button';
+import {
+  bbCommentChatAdd,
+  bbCommentChatComposer,
+  bbCommentChatRead,
+  readBbCommentChatMessage,
+} from '@/lib/bb-comment-chat';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
+import type { CommentThread } from './types';
 
 const sent: (readonly string[])[] = [];
+const threads = new Map<string, CommentThread>();
+const dispatchComments = vi.fn();
 let openSession: { kind: 'thread'; agentId: string; iconUrl: string | null } | null = null;
+
+function logEntry(id: string, docName: string, quote: string): CommentThread {
+  return {
+    id,
+    docName,
+    target: { kind: 'body' },
+    anchor: { quote, prefix: '', suffix: '', start: 0, end: quote.length },
+    status: 'open',
+    body: 'press it?',
+    createdAt: 1,
+    updatedAt: 1,
+    queued: true,
+  };
+}
 
 vi.doMock('@/components/acp/RegisteredAgentIcon', () => ({
   RegisteredAgentIcon: () => null,
@@ -43,12 +67,32 @@ vi.doMock('./use-comment-delivery', () => ({ useCommentDispatch: () => () => {} 
 vi.doMock('./use-send-queue', () => ({
   useSendQueue: () => (ids: readonly string[]) => sent.push(ids),
 }));
+vi.doMock('./store', () => ({
+  dispatchComments: (...args: unknown[]) => dispatchComments(...args),
+  getThreadById: (id: string) => threads.get(id) ?? null,
+}));
 
 afterEach(() => {
   cleanup();
   sent.length = 0;
+  threads.clear();
+  dispatchComments.mockClear();
   openSession = null;
+  clearBbEditorHost();
+  vi.restoreAllMocks();
 });
+
+function parentReply(mounted: boolean): void {
+  vi.spyOn(window.parent, 'postMessage').mockImplementation((data: unknown) => {
+    if (readBbCommentChatMessage(data)?.intent !== 'read') return;
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: bbCommentChatComposer(mounted),
+        source: window.parent,
+      }),
+    );
+  });
+}
 
 test('footer names an open chat in the button and shortcut tooltip', async () => {
   openSession = { kind: 'thread', agentId: 'agent', iconUrl: null };
@@ -86,4 +130,65 @@ test('footer shows the selection and Enter glyph, and sends the selected threads
   expect(screen.getByRole('button', { name: 'Start a new chat' })).toBeTruthy();
   fireEvent.click(screen.getByTestId('comments-send'));
   expect(sent).toEqual([['a', 'b']]);
+});
+
+test('Add to BB chat appends the path and quote and leaves the log entry', async () => {
+  markBbEditorHost();
+  const entry = logEntry('a', 'recipes/stir-fry', 'the tofu');
+  threads.set(entry.id, entry);
+  const posted: unknown[] = [];
+  vi.spyOn(window.parent, 'postMessage').mockImplementation((data: unknown) => {
+    posted.push(data);
+    if (readBbCommentChatMessage(data)?.intent !== 'read') return;
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: bbCommentChatComposer(true),
+        source: window.parent,
+      }),
+    );
+  });
+  const { CommentSendFooter } = await import('./CommentSendFooter');
+  render(
+    <CommentSendFooter
+      threadIds={['a']}
+      totalCount={1}
+      selection={<span>Bulk selection</span>}
+      testIdPrefix="comments"
+    />,
+  );
+
+  const button = screen.getByRole('button', { name: 'Add to BB chat' });
+  await waitFor(() => expect((button as HTMLButtonElement).disabled).toBe(false));
+  fireEvent.click(button);
+  expect(posted).toContainEqual(bbCommentChatRead());
+  expect(posted).toContainEqual(bbCommentChatAdd('recipes/stir-fry', 'the tofu'));
+  expect(sent).toEqual([]);
+  expect(dispatchComments).not.toHaveBeenCalled();
+  expect(threads.get('a')).toBe(entry);
+});
+
+test('Add to BB chat reports a missing thread composer and keeps the log entry', async () => {
+  markBbEditorHost();
+  const entry = logEntry('a', 'recipes/stir-fry', 'the tofu');
+  threads.set(entry.id, entry);
+  parentReply(false);
+  const { CommentSendFooter } = await import('./CommentSendFooter');
+  render(
+    <CommentSendFooter
+      threadIds={['a']}
+      totalCount={1}
+      selection={<span>Bulk selection</span>}
+      testIdPrefix="comments"
+    />,
+  );
+
+  const button = screen.getByRole('button', { name: 'Add to BB chat' });
+  await waitFor(() =>
+    expect(screen.getByRole('status').textContent).toContain('The BB thread composer is not open.'),
+  );
+  expect((button as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(button);
+  expect(sent).toEqual([]);
+  expect(dispatchComments).not.toHaveBeenCalled();
+  expect(threads.get('a')).toBe(entry);
 });

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
+import { addCommentsToBbChat } from './bb-chat-comment';
 import { getSelectedQueue, getSelectedQueueForDoc } from './store';
 import { useSendQueue } from './use-send-queue';
 import { getVisibleCommentScope } from './visible-scope';
@@ -18,6 +20,10 @@ export function CommentQueueShortcut() {
         visible.scope === 'doc' ? getSelectedQueueForDoc(visible.docName) : getSelectedQueue();
       if (ids.length === 0) return;
       event.preventDefault();
+      if (isBbEditorHost()) {
+        addCommentsToBbChat(ids);
+        return;
+      }
       sendQueue(ids);
     }
     window.addEventListener('keydown', onKeyDown);

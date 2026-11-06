@@ -8,6 +8,11 @@ import { cleanup, waitFor } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { loadPluginApp, renderSlot } from "@get-bb/plugin-sdk/testing/app";
 import {
+  bbCommentChatAdd,
+  bbCommentChatBlock,
+  bbCommentChatComposer,
+} from "../packages/app/src/lib/bb-comment-chat";
+import {
   bbDeployedOriginCurrent,
   bbDeployedOriginRead,
   bbDeployedOriginSet,
@@ -481,6 +486,88 @@ describe("OpenKnowledge editor plugin", () => {
       );
     });
     expect(memory.has(deployedOriginKey(root))).toBe(false);
+  });
+
+  function renderCommentEditor(threadId: string | null, text: string) {
+    return renderSlot(
+      { component: ThreadEditor },
+      { threadId: "thr_comment", environment: { id: "env_comment" } },
+      {
+        context: { threadId },
+        composer: { text },
+        rpc: {
+          editorOrigin: () => ({
+            origin: "http://127.0.0.1:4173",
+            editorUrl: "http://127.0.0.1:4173/bb.html",
+            mcpUrl: "http://127.0.0.1:4173/mcp",
+            source: "local" as const,
+          }),
+        },
+        sdk: {
+          environments: {
+            get: async () => ({ path: "/tmp/workspace-comment" }) as never,
+          },
+        },
+      },
+    );
+  }
+
+  function commentFrame(): Window {
+    const child = document.createElement("iframe");
+    document.body.appendChild(child);
+    const childWindow = child.contentWindow;
+    if (childWindow === null) throw new Error("missing frame window");
+    return childWindow;
+  }
+
+  it("appends a comment path and quote at the end of the open thread composer", async () => {
+    const slot = renderCommentEditor("thr_comment", "Keep this.");
+    await slot.findByTitle("OpenKnowledge editor");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbCommentChatAdd("recipes/stir-fry", "the tofu"),
+        source: commentFrame(),
+      }),
+    );
+    expect(slot.composer.text).toBe(
+      `Keep this.\n\n${bbCommentChatBlock("recipes/stir-fry", "the tofu")}`,
+    );
+    expect(slot.composer.focusCount).toBe(1);
+  });
+
+  it("ignores a comment message from an origin other than the iframed project", async () => {
+    const slot = renderCommentEditor("thr_comment", "Keep this.");
+    await slot.findByTitle("OpenKnowledge editor");
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "https://evil.example",
+        data: bbCommentChatAdd("recipes/stir-fry", "the tofu"),
+        source: commentFrame(),
+      }),
+    );
+    expect(slot.composer.text).toBe("Keep this.");
+    expect(slot.composer.focusCount).toBe(0);
+  });
+
+  it("reports that no thread composer is mounted and leaves the composer unchanged", async () => {
+    const slot = renderCommentEditor(null, "Keep this.");
+    await slot.findByTitle("OpenKnowledge editor");
+    const childWindow = commentFrame();
+    const replies: unknown[] = [];
+    vi.spyOn(childWindow, "postMessage").mockImplementation((data: unknown) => {
+      replies.push(data);
+    });
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbCommentChatAdd("recipes/stir-fry", "the tofu"),
+        source: childWindow,
+      }),
+    );
+    expect(slot.composer.text).toBe("Keep this.");
+    expect(slot.composer.focusCount).toBe(0);
+    expect(replies).toEqual([bbCommentChatComposer(false)]);
   });
 });
 

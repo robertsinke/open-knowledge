@@ -12,6 +12,7 @@ vi.doMock('./use-send-queue', () => ({
 vi.doMock('./store', () => ({
   getSelectedQueue: () => ['t1', 't2', 't3'],
   getSelectedQueueForDoc: (docName: string) => (docName === 'recipes/stir-fry' ? ['t1', 't2'] : []),
+  getThreadById: () => null,
 }));
 
 const overlay = { open: false };

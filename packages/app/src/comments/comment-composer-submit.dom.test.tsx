@@ -3,6 +3,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react';
 import { afterEach, describe, expect, onTestFinished, test, vi } from 'vitest';
 import { mentionRecencyAttribute } from '@/components/acp/composer-mention-input.test-helper';
+import { BB_COMMENT_CHAT_MESSAGE } from '@/lib/bb-comment-chat';
 
 vi.doMock('@lingui/react/macro', () => ({
   ...actualLinguiMacro,
@@ -137,6 +138,26 @@ async function openComposer() {
 }
 
 describe('the comment composer', () => {
+  test('submitting a comment creates the log entry and does not change the BB composer', async () => {
+    const post = vi.spyOn(window.parent, 'postMessage');
+    const field = await openComposer();
+    fireEvent.change(field, { target: { value: 'press it?' } });
+    fireEvent.click(screen.getByRole('button', { name: /add comment/i }));
+
+    expect(captured.created).toHaveLength(1);
+    expect(captured.created[0]?.docName).toBe('recipes/stir-fry');
+    expect(captured.created[0]?.quote).toBe('the tofu');
+    expect(
+      post.mock.calls.some(
+        (call) =>
+          typeof call[0] === 'object' &&
+          call[0] !== null &&
+          (call[0] as { type?: string }).type === BB_COMMENT_CHAT_MESSAGE,
+      ),
+    ).toBe(false);
+    post.mockRestore();
+  });
+
   test('Add Comment files the passage with the context that disambiguates it', async () => {
     const field = await openComposer();
     fireEvent.change(field, { target: { value: 'press it?' } });

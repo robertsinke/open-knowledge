@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   definePluginApp,
   useBbContext,
+  useComposer,
   useRpc,
   useSdk,
   type PluginFileOpenerProps,
   type PluginNavPanelProps,
   type PluginSettingsSectionProps,
 } from "@get-bb/plugin-sdk/app";
+import {
+  bbCommentChatBlock,
+  bbCommentChatComposer,
+  readBbCommentChatMessage,
+} from "../packages/app/src/lib/bb-comment-chat";
 import {
   bbDeployedOriginCurrent,
   deployedOriginSetting,
@@ -39,6 +45,26 @@ function editorFrameUrl(editorUrl: string, documentPath: string | null): string 
   return documentPath === null ? editorUrl : `${editorUrl}${editorDocumentHash(documentPath)}`;
 }
 
+function postToMessageSource(event: MessageEvent, data: unknown): void {
+  const source = event.source;
+  if (source instanceof Window) {
+    source.postMessage(data, event.origin);
+    return;
+  }
+  if (source !== null && typeof source.postMessage === "function" && !("start" in source)) {
+    (source as unknown as Window).postMessage(data, event.origin);
+  }
+}
+
+function postComposerStatus(
+  origin: string | null,
+  target: Window | null | undefined,
+  mounted: boolean,
+): void {
+  if (origin === null || target == null) return;
+  target.postMessage(bbCommentChatComposer(mounted), origin);
+}
+
 function EditorSettings(_props: PluginSettingsSectionProps) {
   return (
     <p>
@@ -56,10 +82,27 @@ function EditorSurface({
   documentPath?: string | null;
 }) {
   const rpc = useRpc<typeof rpcContract>();
+  const composer = useComposer();
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const framedOriginRef = useRef<string | null>(null);
+  const composerRef = useRef(composer);
+  composerRef.current = composer;
+  const threadComposerMounted = composer.scope.kind === "thread";
+  const threadComposerMountedRef = useRef(threadComposerMounted);
+  threadComposerMountedRef.current = threadComposerMounted;
 
   useEffect(() => {
+    postComposerStatus(
+      framedOriginRef.current,
+      frameRef.current?.contentWindow,
+      threadComposerMounted,
+    );
+  }, [threadComposerMounted]);
+
+  useEffect(() => {
+    framedOriginRef.current = null;
     if (workspaceRoot === undefined || workspaceRoot === null) return;
     const root = workspaceRoot;
     let active = true;
@@ -72,9 +115,15 @@ function EditorSurface({
         (next) => {
           if (!active || id !== request) return;
           framedOrigin = next.origin;
+          framedOriginRef.current = next.origin;
           deployedOrigin = next.source === "deployed" ? next.origin : "";
           setError(null);
           setUrl(editorFrameUrl(next.editorUrl, documentPath));
+          postComposerStatus(
+            next.origin,
+            frameRef.current?.contentWindow,
+            threadComposerMountedRef.current,
+          );
         },
         (reason: unknown) => {
           if (!active || id !== request) return;
@@ -85,23 +134,35 @@ function EditorSurface({
     const onMessage = (event: MessageEvent) => {
       if (framedOrigin === null || event.origin !== framedOrigin) return;
       const message = readBbDeployedOriginMessage(event.data);
-      if (!message) return;
-      if (message.intent === "read") {
-        const source = event.source;
-        const current = bbDeployedOriginCurrent(deployedOrigin);
-        if (source instanceof Window) {
-          source.postMessage(current, event.origin);
-        } else if (
-          source !== null &&
-          typeof source.postMessage === "function" &&
-          !("start" in source)
-        ) {
-          (source as unknown as Window).postMessage(current, event.origin);
+      if (message) {
+        if (message.intent === "read") {
+          postToMessageSource(event, bbDeployedOriginCurrent(deployedOrigin));
+          return;
         }
+        if (message.intent !== "set") return;
+        void applySet(message.origin);
         return;
       }
-      if (message.intent !== "set") return;
-      void applySet(message.origin);
+      const comment = readBbCommentChatMessage(event.data);
+      if (!comment) return;
+      if (comment.intent === "read") {
+        postToMessageSource(event, bbCommentChatComposer(threadComposerMountedRef.current));
+        return;
+      }
+      if (comment.intent !== "add") return;
+      if (!threadComposerMountedRef.current) {
+        postToMessageSource(event, bbCommentChatComposer(false));
+        return;
+      }
+      try {
+        composerRef.current.insert(bbCommentChatBlock(comment.path, comment.quote), {
+          at: "end",
+          block: true,
+        });
+        composerRef.current.focus();
+      } catch {
+        postToMessageSource(event, bbCommentChatComposer(false));
+      }
     };
     async function applySet(raw: string): Promise<void> {
       let next: string | null;
@@ -141,8 +202,16 @@ function EditorSurface({
         }}
       >
         <iframe
+          ref={frameRef}
           title="OpenKnowledge editor"
           src={url}
+          onLoad={() => {
+            postComposerStatus(
+              framedOriginRef.current,
+              frameRef.current?.contentWindow,
+              threadComposerMountedRef.current,
+            );
+          }}
           style={{ flex: "1 1 auto", width: "100%", height: "100%", border: 0 }}
         />
       </div>

@@ -1,6 +1,5 @@
 import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ListPlus, MoreVertical } from 'lucide-react';
 import { AddPropertiesButton } from '@/components/AddPropertiesButton';
 import { SkillEditorActions } from '@/components/SkillEditorActions';
 import { SkillLevelSelect } from '@/components/SkillLevelSelect';
@@ -14,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useSkillScopeMove } from '@/hooks/use-skill-scope-move';
+import { ListPlus, MoreVertical } from '@/lib/host-icons';
 
 export function SkillToolbarControls({
   scope,

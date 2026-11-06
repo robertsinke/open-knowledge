@@ -1,8 +1,8 @@
-import { Bot } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { ClaudeIcon } from '@/components/icons/claude';
 import { CodexBrandIcon } from '@/components/icons/codex';
 import { CursorIcon } from '@/components/icons/cursor';
+import { Bot } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export function RegisteredAgentIcon({

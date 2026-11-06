@@ -6,16 +6,6 @@ import type {
   SkillsListEntry,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  ArrowLeftRight,
-  Copy,
-  CopyPlus,
-  DownloadCloud,
-  FilePlus,
-  FolderOpen,
-  PencilLine,
-  Trash2,
-} from 'lucide-react';
 import { lazy, type ReactNode, Suspense, useState } from 'react';
 import { toast } from 'sonner';
 import { OpenInAgentContextSubmenu } from '@/components/handoff/OpenInAgentContextSubmenu';
@@ -58,6 +48,16 @@ import {
 } from '@/components/skill-menu-primitives';
 import { useOpenSkill } from '@/hooks/use-open-skill';
 import { beginSkillWrite, endSkillWrite } from '@/lib/documents-events';
+import {
+  ArrowLeftRight,
+  Copy,
+  CopyPlus,
+  DownloadCloud,
+  FilePlus,
+  FolderOpen,
+  PencilLine,
+  Trash2,
+} from '@/lib/host-icons';
 import { revealInFileManagerLabel } from '@/lib/platform-labels';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { skillDir, useSkillScopeLabels } from '@/lib/skill-scope';

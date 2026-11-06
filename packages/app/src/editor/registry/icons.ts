@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react';
 import {
   AlignCenter,
   AppWindow,
@@ -9,7 +10,6 @@ import {
   GitBranch,
   Image,
   LayoutPanelTop,
-  type LucideIcon,
   MessageSquareWarning,
   PanelTop,
   Paperclip,
@@ -19,7 +19,7 @@ import {
   Volume2,
   Workflow,
   ZoomIn,
-} from 'lucide-react';
+} from '@/lib/host-icons';
 
 const ICON_COMPONENTS: Record<string, LucideIcon> = {
   AlignCenter,

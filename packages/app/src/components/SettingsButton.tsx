@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/react/macro';
-import { Settings } from 'lucide-react';
 import { type FC, useEffect, useRef } from 'react';
 import { preloadSettingsOnIntent } from '@/components/settings/SettingsDialogBodyLazy';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Settings } from '@/lib/host-icons';
 import { openSettings } from '@/lib/use-settings-route';
 
 const PREFETCH_INTENT_DELAY_MS = 50;

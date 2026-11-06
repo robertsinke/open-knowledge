@@ -20,6 +20,13 @@ import { componentPropsBudgetError } from '@inkeep/open-knowledge-core/registry'
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
+import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
+import { emitStartComment } from '@/comments/store';
+import { Button } from '@/components/ui/button';
+import { useIsEmbedded } from '@/hooks/use-is-embedded';
+import { hashFromDocName, hashFromMirrorSource } from '@/lib/doc-hash';
 import {
   ArrowDown,
   ArrowUp,
@@ -29,14 +36,7 @@ import {
   Settings2,
   Sparkles,
   Trash2,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
-import { emitStartComment } from '@/comments/store';
-import { Button } from '@/components/ui/button';
-import { useIsEmbedded } from '@/hooks/use-is-embedded';
-import { hashFromDocName, hashFromMirrorSource } from '@/lib/doc-hash';
+} from '@/lib/host-icons';
 import {
   Popover,
   PopoverAnchor,

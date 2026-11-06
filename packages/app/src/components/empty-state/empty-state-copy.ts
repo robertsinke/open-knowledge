@@ -1,5 +1,6 @@
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 
 export function getEmptyStateCopy({
   isOnboarding,
@@ -8,6 +9,12 @@ export function getEmptyStateCopy({
   isOnboarding: boolean;
   isEmbedded: boolean;
 }): { title: MessageDescriptor; subtitle: MessageDescriptor } {
+  if (isBbEditorHost()) {
+    return {
+      title: msg`Create something great.`,
+      subtitle: msg`Start a blank file, or scaffold from a template.`,
+    };
+  }
   if (isOnboarding) {
     return {
       title: msg`What would you like to create?`,

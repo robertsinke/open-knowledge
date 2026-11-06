@@ -29,6 +29,7 @@ import { resolve } from 'node:path';
 export const RENDERER_HTML_ENTRIES = {
   index: 'index.html',
   uninstall: 'uninstall.html',
+  bb: 'bb.html',
 } as const satisfies Record<string, `${string}.html`>;
 
 export type RendererEntryName = keyof typeof RENDERER_HTML_ENTRIES;
@@ -44,5 +45,6 @@ export function rendererHtmlInput(appRoot: string): Record<RendererEntryName, st
   return {
     index: resolve(appRoot, RENDERER_HTML_ENTRIES.index),
     uninstall: resolve(appRoot, RENDERER_HTML_ENTRIES.uninstall),
+    bb: resolve(appRoot, RENDERER_HTML_ENTRIES.bb),
   };
 }

@@ -3,7 +3,6 @@
 
 import { t } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Undo2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +16,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAgentDiffView } from '@/lib/agent-diff-store';
+import { Undo2 } from '@/lib/host-icons';
 import type { BurstData } from '@/lib/use-activity-panel';
 
 interface ActivityPanelBurstRowProps {

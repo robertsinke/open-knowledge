@@ -1,5 +1,6 @@
-import { type LucideProps, Sparkles } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
 import type { SVGProps } from 'react';
+import { Sparkles } from '@/lib/host-icons';
 import { ClaudeIcon } from './claude';
 import { ClineIcon } from './cline';
 import { CodexIcon } from './codex';

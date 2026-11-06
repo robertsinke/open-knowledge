@@ -1,7 +1,7 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { ArrowUpRight } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { PluginBetaBadge } from './PluginBetaBadge';
 import { ScopeBadge, type SettingsScope } from './ScopeBadge';

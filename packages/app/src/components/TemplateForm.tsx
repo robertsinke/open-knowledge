@@ -10,7 +10,6 @@ import {
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { X } from 'lucide-react';
 import { useId, useState } from 'react';
 import { toast } from 'sonner';
 import { TemplateBodyTextarea } from '@/components/TemplateBody';
@@ -19,6 +18,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/c
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { moveTemplate, saveTemplate } from '@/lib/folder-config-api';
+import { X } from '@/lib/host-icons';
 
 export function slugifyTemplateName(name: string): string {
   return canonicalTemplateName(name)

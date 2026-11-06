@@ -1,13 +1,13 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider';
 import { SKILL_NAME_REGEX, type SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Gauge, Type } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { PropertyDisplayRow } from '@/components/PropertyDisplayRow';
 import { PropertyPanel } from '@/components/PropertyPanel';
 import { SkillCostValue } from '@/components/SkillCostValue';
 import { Input } from '@/components/ui/input';
 import { useSkills } from '@/hooks/use-skills';
+import { Gauge, Type } from '@/lib/host-icons';
 import { SKILL_RESERVED_KEYS } from '@/lib/reserved-property-keys';
 import { skillEntryDirs } from '@/lib/skill-scope';
 

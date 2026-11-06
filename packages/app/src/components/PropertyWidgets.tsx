@@ -16,16 +16,6 @@ import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format, parse, parseISO } from 'date-fns';
-import {
-  Braces,
-  Calendar as CalendarIcon,
-  Hash,
-  List,
-  Pencil,
-  SquareCheck,
-  Type,
-  X,
-} from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -41,6 +31,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { dispatchTagClickEvent } from '@/editor/extensions/tag-click-plugin';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import {
+  Braces,
+  Calendar as CalendarIcon,
+  Hash,
+  List,
+  Pencil,
+  SquareCheck,
+  Type,
+  X,
+} from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { PropertyInlineLinks } from './PropertyInlineLinks';
 import { hasInlineLinks } from './property-inline-link-tokens';

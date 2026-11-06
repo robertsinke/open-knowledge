@@ -15,37 +15,6 @@ import {
 import { plural } from '@lingui/core/macro';
 import { Plural, useLingui } from '@lingui/react/macro';
 import {
-  ArrowUp,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  CircleCheck,
-  Download,
-  FileText,
-  FolderInput,
-  Globe,
-  History,
-  Link2,
-  ListPlus,
-  MousePointer2,
-  Plus,
-  RotateCcw,
-  Search,
-  Settings2,
-  Share2,
-  ShieldAlert,
-  Shuffle,
-  Sparkles,
-  Square,
-  SquarePen,
-  Terminal as TerminalIcon,
-  Trash2,
-  TriangleAlert,
-  Wrench,
-  X,
-  Zap,
-} from 'lucide-react';
-import {
   type ComponentProps,
   Fragment,
   type ReactNode,
@@ -203,6 +172,37 @@ import {
 import { useBugReport } from '@/lib/bug-report-capture';
 import { docNameFromHash, filePathToDocName, hashFromDocName } from '@/lib/doc-hash';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import {
+  ArrowUp,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  CircleCheck,
+  Download,
+  FileText,
+  FolderInput,
+  Globe,
+  History,
+  Link2,
+  ListPlus,
+  MousePointer2,
+  Plus,
+  RotateCcw,
+  Search,
+  Settings2,
+  Share2,
+  ShieldAlert,
+  Shuffle,
+  Sparkles,
+  Square,
+  SquarePen,
+  Terminal as TerminalIcon,
+  Trash2,
+  TriangleAlert,
+  Wrench,
+  X,
+  Zap,
+} from '@/lib/host-icons';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { formatToolList, formatUnitList } from '@/lib/tool-list-format';

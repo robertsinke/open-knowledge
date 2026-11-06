@@ -5,10 +5,10 @@ import {
   isValidFrontmatterTagValue,
 } from '@inkeep/open-knowledge-core/frontmatter/tags';
 import { useLingui } from '@lingui/react/macro';
-import { XIcon } from 'lucide-react';
 import { type Ref, useEffect, useId, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { XIcon } from '@/lib/host-icons';
 import { isImeCompositionKey } from '@/lib/ime-composition';
 import { cn } from '@/lib/utils';
 

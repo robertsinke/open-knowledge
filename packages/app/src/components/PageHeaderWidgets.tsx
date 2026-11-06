@@ -2,7 +2,6 @@
 
 import { ALLOWED_IMAGE_MIME_TYPES } from '@inkeep/open-knowledge-core/constants/upload';
 import { useLingui } from '@lingui/react/macro';
-import { ImagePlus, Smile, Upload, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { FrimousseEmojiPicker } from '@/components/emoji-picker';
 import type { CommonWidgetProps } from '@/components/PropertyWidgets';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UploadFailedError, UploadRejectedError } from '@/editor/image-upload/upload-failure';
 import { uploadFile } from '@/editor/image-upload/upload-file';
+import { ImagePlus, Smile, Upload, X } from '@/lib/host-icons';
 import { useSingleFileMode } from '@/lib/single-file-mode';
 import { cn } from '@/lib/utils';
 

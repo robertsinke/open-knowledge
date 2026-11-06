@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react/macro';
-import { ImageOff } from 'lucide-react';
 import type { CSSProperties, ImgHTMLAttributes } from 'react';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { OPT_OUT_ATTR } from '@/editor/clipboard/clipboard-sanitize';
 import type { ImageTargetExistence } from '@/editor/components/image-target-existence';
+import { ImageOff } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 type LoadingImageProps = ImgHTMLAttributes<HTMLImageElement> & {

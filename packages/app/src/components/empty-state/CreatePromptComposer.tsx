@@ -5,7 +5,6 @@ import {
   type TerminalCli,
 } from '@inkeep/open-knowledge-core/handoff';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, Check, ChevronDown, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { AttachFilesButton } from '@/components/acp/AttachFilesButton';
@@ -74,6 +73,7 @@ import {
 } from '@/lib/acp/registered-agents';
 import { VISIBLE_TARGETS } from '@/lib/handoff/targets';
 import { hasValidPromptInput } from '@/lib/has-valid-prompt-input';
+import { ArrowUpRight, Check, ChevronDown, SlidersHorizontal, Sparkles } from '@/lib/host-icons';
 import { writePreferredAgent } from '@/lib/preferred-agent-store';
 import {
   IN_APP_THREAD_ID,

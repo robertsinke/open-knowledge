@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowRight, Check, Mail, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,6 +9,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { Spinner } from '@/components/ui/spinner';
+import { ArrowRight, Check, Mail, X } from '@/lib/host-icons';
 import { type SubscribeSource, submitSubscribe } from '@/lib/subscribe';
 import { cn } from '@/lib/utils';
 

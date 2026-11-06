@@ -10,7 +10,6 @@ import {
   type RuleDisplayCategory,
 } from '@inkeep/open-knowledge-core/markdown/lint';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, ChevronRight, Info, RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -28,6 +27,7 @@ import {
   writeMarkdownlintRule,
 } from '@/editor/lint-config-client';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { ArrowUpRight, ChevronRight, Info, RotateCcw } from '@/lib/host-icons';
 import { RuleOptionField, type RuleOptionValue } from './rule-option-field';
 
 type RuleValues = Record<string, MarkdownlintRuleSetting>;

@@ -1,5 +1,12 @@
 // oxlint-disable ok/no-raw-html-interactive-element -- pre-rule backlog — file uses raw <button>/<input>/<textarea> awaiting shadcn migration; tracked at https://github.com/inkeep/open-knowledge/blob/main/lint-plugins/ok-rules/README.md#no-raw-html-interactive-element
 import { Trans, useLingui } from '@lingui/react/macro';
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Spinner } from '@/components/ui/spinner';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import type { OkPackId, OkSeedPackInfo } from '@/lib/desktop-bridge-types';
 import {
   ArrowRight,
   BookMarked,
@@ -11,14 +18,7 @@ import {
   Network,
   PenLine,
   StickyNote,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Spinner } from '@/components/ui/spinner';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import type { OkPackId, OkSeedPackInfo } from '@/lib/desktop-bridge-types';
+} from '@/lib/host-icons';
 import { seedClient } from '@/lib/seed-client';
 import { cn } from '@/lib/utils';
 

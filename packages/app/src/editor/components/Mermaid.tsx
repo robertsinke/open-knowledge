@@ -2,6 +2,11 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import type { PanzoomObject } from '@panzoom/panzoom';
 import type { MermaidWysiwygEditor } from '@visimer/core';
 import type { MermaidCanvasView } from '@visimer/dom';
+import { type ComponentProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
+import { createActivityParks, useActivityPark } from '@/lib/activity-park.tsx';
 import {
   AlertTriangle,
   ArrowDown,
@@ -12,12 +17,7 @@ import {
   RefreshCcw,
   ZoomIn,
   ZoomOut,
-} from 'lucide-react';
-import { type ComponentProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { useReducedMotion } from '@/hooks/use-reduced-motion';
-import { createActivityParks, useActivityPark } from '@/lib/activity-park.tsx';
+} from '@/lib/host-icons';
 import { createRetryingLoader } from '@/lib/retrying-loader.ts';
 import { cn } from '@/lib/utils.ts';
 import { useJsxComponentHost } from './jsx-host-context.tsx';

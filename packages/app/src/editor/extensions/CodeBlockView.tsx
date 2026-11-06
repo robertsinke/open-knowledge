@@ -6,17 +6,6 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
-import {
-  Check,
-  ChevronDown,
-  Copy,
-  Eye,
-  EyeOff,
-  Pencil,
-  Settings2,
-  Sparkles,
-  Trash2,
-} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useId, useRef, useState } from 'react';
 import { emitStartComment } from '@/comments/store';
@@ -32,6 +21,17 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
 import { subscribeColorThemeEpoch } from '@/lib/color-theme-epoch';
+import {
+  Check,
+  ChevronDown,
+  Copy,
+  Eye,
+  EyeOff,
+  Pencil,
+  Settings2,
+  Sparkles,
+  Trash2,
+} from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { OPT_OUT_ATTR } from '../clipboard/index.ts';
 import { CodePreviewEditModal } from '../components/CodePreviewEditModal';

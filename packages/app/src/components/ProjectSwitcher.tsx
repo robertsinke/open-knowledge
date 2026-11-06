@@ -1,14 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  ChevronDown,
-  FileText,
-  Folder,
-  FolderOpen,
-  GitBranch,
-  LayoutGrid,
-  Plus,
-  Search,
-} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,6 +14,16 @@ import { useCurrentBranch } from '@/hooks/use-current-branch';
 import { useWorktrees } from '@/hooks/use-worktrees';
 import type { OkDesktopBridge, RecentProjectEntry } from '@/lib/desktop-bridge-types';
 import { runWithToast as runWithToastBase } from '@/lib/error-state';
+import {
+  ChevronDown,
+  FileText,
+  Folder,
+  FolderOpen,
+  GitBranch,
+  LayoutGrid,
+  Plus,
+  Search,
+} from '@/lib/host-icons';
 import { subscribeLocalMenuAction } from '@/lib/local-menu-action-bus';
 import { CreateProjectDialog } from './CreateProjectDialog';
 import { checkoutIdentity } from './checkout-identity';

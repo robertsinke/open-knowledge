@@ -1,10 +1,9 @@
 // oxlint-disable ok/no-physical-direction-utility -- pre-rule backlog — physical margin/padding/inset utilities predate the rule; drain by swapping ml/mr → ms/me, pl/pr → ps/pe, left/right → start/end, then deleting this line. See https://github.com/inkeep/open-knowledge/blob/main/lint-plugins/ok-rules/README.md#no-physical-direction-utility
 
 import { mediaKindForSidebarAssetExtension } from '@inkeep/open-knowledge-core/constants/upload';
-import { File, Film, FolderOpen, ImageIcon, Volume2 } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import { getFileExtension } from '@/components/file-tree-rename-validation';
-import { lucideIconToSvgString } from '@/editor/registry/lucide-svg';
+import { File, Film, FolderOpen, fileIconSvg, ImageIcon, Volume2 } from '@/lib/host-icons';
 import { cn } from '@/lib/utils.ts';
 
 export const MARKDOWN_FILE_ICON_VIEWBOX = '0 0 32 32';
@@ -22,15 +21,15 @@ function isMarkdownExt(ext: string): boolean {
 function iconSvgForExt(ext: string): string {
   switch (mediaKindForSidebarAssetExtension(ext)) {
     case 'image':
-      return lucideIconToSvgString(ImageIcon);
+      return fileIconSvg('ImageIcon');
     case 'video':
-      return lucideIconToSvgString(Film);
+      return fileIconSvg('Film');
     case 'audio':
-      return lucideIconToSvgString(Volume2);
+      return fileIconSvg('Volume2');
     case 'excalidraw':
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${EXCALIDRAW_FILE_ICON_VIEWBOX}" fill="currentColor" aria-hidden="true"><path d="${EXCALIDRAW_FILE_ICON_PATH_D}"/></svg>`;
     default:
-      return lucideIconToSvgString(File);
+      return fileIconSvg('File');
   }
 }
 
@@ -93,7 +92,7 @@ export function FileEntryPathIcon({
 
 export function fileEntryPathIconToSvgString(path: string): string {
   const { kind, bodyIndexed } = fileEntryIconFieldsForPath(path);
-  if (kind === 'folder') return lucideIconToSvgString(FolderOpen);
+  if (kind === 'folder') return fileIconSvg('FolderOpen');
 
   const ext = bodyIndexed === false ? getFileExtension(path) : getFileExtension(path) || '.md';
   const normalizedExt = ext.toLowerCase();

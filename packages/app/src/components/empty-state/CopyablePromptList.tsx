@@ -1,11 +1,11 @@
 import { useLingui } from '@lingui/react/macro';
-import { Check, Copy } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
   type CreateScenario,
   useCreateSuggestions,
 } from '@/components/empty-state/use-create-suggestions';
 import { Button } from '@/components/ui/button';
+import { Check, Copy } from '@/lib/host-icons';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { cn } from '@/lib/utils';
 

@@ -1,10 +1,10 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Code, Workflow } from 'lucide-react';
 import { useState } from 'react';
 import { TextViewer } from '@/components/TextViewer';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { MermaidView } from '@/editor/components/Mermaid';
+import { Code, Workflow } from '@/lib/host-icons';
 import { useViewerText, type ViewerTextSource } from './use-viewer-text';
 import { ViewerErrorPane, ViewerLoadingPane } from './ViewerStatusPane';
 import { resolveViewerOpenFile } from './viewer-open-file';

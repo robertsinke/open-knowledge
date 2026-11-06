@@ -19,16 +19,6 @@ import {
   summarizeAppliesTo,
 } from '@inkeep/open-knowledge-core/markdown/lint';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import {
-  ArrowUpRight,
-  CircleAlert,
-  FileText,
-  GitMerge,
-  Plus,
-  Power,
-  SquarePen,
-  Trash2,
-} from 'lucide-react';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { DeleteConfirmationDialog } from '@/components/DeleteConfirmationDialog';
@@ -78,6 +68,16 @@ import { useSkills } from '@/hooks/use-skills';
 import { useConfigContext } from '@/lib/config-provider';
 import { hashFromAssetPath } from '@/lib/doc-hash';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import {
+  ArrowUpRight,
+  CircleAlert,
+  FileText,
+  GitMerge,
+  Plus,
+  Power,
+  SquarePen,
+  Trash2,
+} from '@/lib/host-icons';
 import { requestSchemaFieldsView } from '@/lib/schema-fields-view-intent';
 import { installPackSkill } from '@/lib/skills-api';
 import { countMatchingDocs } from './applies-to-folder-globs';

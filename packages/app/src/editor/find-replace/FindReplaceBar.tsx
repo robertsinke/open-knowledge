@@ -1,4 +1,10 @@
 import { Trans, useLingui } from '@lingui/react/macro';
+import type { KeyboardEvent, RefObject } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import { Toggle } from '@/components/ui/toggle';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   CaseSensitive,
   ChevronDown,
@@ -7,13 +13,7 @@ import {
   ReplaceAll,
   WholeWord,
   X,
-} from 'lucide-react';
-import type { KeyboardEvent, RefObject } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
-import { Toggle } from '@/components/ui/toggle';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+} from '@/lib/host-icons';
 
 interface FindReplaceBarProps {
   findInputRef: RefObject<HTMLInputElement | null>;

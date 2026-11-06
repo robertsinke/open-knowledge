@@ -8,7 +8,6 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { PanelBottomIcon, PanelRightIcon, XIcon } from 'lucide-react';
 import {
   type ReactElement,
   type ReactNode,
@@ -29,6 +28,7 @@ import { InputGroup, InputGroupInput } from '@/components/ui/input-group';
 import { PANE_CARD_TOP_BAR_CLASS } from '@/components/ui/pane-card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { PanelBottomIcon, PanelRightIcon, XIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import {
   createTabReorderModifier,

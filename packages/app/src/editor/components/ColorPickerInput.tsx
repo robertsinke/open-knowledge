@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
-import { Eraser } from 'lucide-react';
 import { useRef } from 'react';
+import { Eraser } from '@/lib/host-icons';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { cn } from '../../lib/utils';

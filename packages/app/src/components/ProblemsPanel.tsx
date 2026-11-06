@@ -11,22 +11,7 @@ import {
 } from '@inkeep/open-knowledge-core/markdown/lint';
 import type { BrokenLinkSuppression } from '@inkeep/open-knowledge-core/schemas/api';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import {
-  AlertCircle,
-  AlertTriangle,
-  ChevronRight,
-  ChevronsDownUp,
-  ChevronsUpDown,
-  File as FileIcon,
-  FilePlus2,
-  Image as ImageIcon,
-  Info,
-  Link2,
-  type LucideIcon,
-  RefreshCw,
-  Sparkles,
-  Wrench,
-} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import {
   type ReactElement,
   type ReactNode,
@@ -71,6 +56,21 @@ import { AUDIT_SUPERSEDED, runValidationAudit } from '@/editor/validation-audit-
 import { createPageFromSeedAndUpdate } from '@/lib/create-page';
 import { filePathToDocName, hashFromDocName } from '@/lib/doc-hash';
 import { invalidatesLocalTargetAudit, subscribeToDocumentsChanged } from '@/lib/documents-events';
+import {
+  AlertCircle,
+  AlertTriangle,
+  ChevronRight,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  File as FileIcon,
+  FilePlus2,
+  Image as ImageIcon,
+  Info,
+  Link2,
+  RefreshCw,
+  Sparkles,
+  Wrench,
+} from '@/lib/host-icons';
 import {
   cancelProjectFixSweep,
   startProjectFixSweep,

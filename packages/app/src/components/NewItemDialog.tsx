@@ -3,7 +3,6 @@
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check, ChevronsUpDown } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { usePageList } from '@/components/PageListContext';
@@ -33,6 +32,7 @@ import {
   useFolderConfig,
 } from '@/hooks/use-folder-config';
 import { createPageRequest, openCreatedPage } from '@/lib/create-page-request';
+import { Check, ChevronsUpDown } from '@/lib/host-icons';
 import {
   isEditableShortcutTarget,
   matchesKeyboardShortcut,

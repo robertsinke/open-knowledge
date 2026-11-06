@@ -1,6 +1,7 @@
 import { lazy, type ReactElement, Suspense } from 'react';
 import { App } from '@/App';
 import { NavigatorApp } from '@/components/NavigatorApp';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import type { OkDesktopBridge } from '@/lib/desktop-bridge-types';
 
 const TerminalWindowApp = lazy(() =>
@@ -8,6 +9,7 @@ const TerminalWindowApp = lazy(() =>
 );
 
 export function selectDesktopRootApp(bridge: OkDesktopBridge | undefined): ReactElement {
+  if (isBbEditorHost()) return <App />;
   if (bridge?.config.mode === 'terminal') {
     return (
       <Suspense fallback={null}>

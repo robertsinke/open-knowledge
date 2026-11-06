@@ -8,7 +8,6 @@ import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import type { SkillPreview as SkillPreviewData } from '@inkeep/open-knowledge-core/skills-catalog/schema';
 import { estimateSkillCost } from '@inkeep/open-knowledge-core/skills-catalog/skill-cost';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlignLeft, Eye, Gauge, Tag, Type } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { PropertyDisplayRow } from '@/components/PropertyDisplayRow';
 import { ProseFindBar } from '@/components/ProseFindBar';
@@ -18,6 +17,7 @@ import { SkillModeBanner } from '@/components/SkillModeBanner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useFindInViewer } from '@/hooks/use-find-in-viewer';
 import { subscribeToSkillsChanged } from '@/lib/documents-events';
+import { AlignLeft, Eye, Gauge, Tag, Type } from '@/lib/host-icons';
 import { skillTint } from '@/lib/skill-tint';
 import { fetchSkillPreview } from '@/lib/skills-api';
 

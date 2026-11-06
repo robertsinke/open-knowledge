@@ -2,7 +2,6 @@
 import type { PropDef } from '@inkeep/open-knowledge-core/registry/types';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { ChevronDown, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
@@ -38,6 +37,7 @@ import {
   mediaUrlValidationMessage,
   validateMediaUrl,
 } from '@/editor/utils/validate-media-url.ts';
+import { ChevronDown, Upload } from '@/lib/host-icons';
 import { useSingleFileMode } from '@/lib/single-file-mode';
 import { CodeMirrorPropInput } from './CodeMirrorPropInput.tsx';
 

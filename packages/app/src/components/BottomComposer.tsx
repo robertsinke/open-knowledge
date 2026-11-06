@@ -6,7 +6,6 @@ import {
   type TerminalCli,
 } from '@inkeep/open-knowledge-core/handoff';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, ChevronDown, TextQuote, X } from 'lucide-react';
 import { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
 import { toast } from 'sonner';
 import {
@@ -81,6 +80,7 @@ import {
   useRegisteredAgents,
 } from '@/lib/acp/registered-agents';
 import { VISIBLE_TARGETS } from '@/lib/handoff/targets';
+import { ArrowUpRight, ChevronDown, TextQuote, X } from '@/lib/host-icons';
 import { matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { isNoteWindow } from '@/lib/note-window-mode';
 import { recordOnboardingAskedAi } from '@/lib/onboarding-signals';

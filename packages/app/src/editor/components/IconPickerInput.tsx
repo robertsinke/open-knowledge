@@ -1,7 +1,7 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import { Command as CommandPrimitive } from 'cmdk';
-import { ChevronDown, X } from 'lucide-react';
 import { useState } from 'react';
+import { ChevronDown, X } from '@/lib/host-icons';
 import { Button } from '../../components/ui/button';
 import {
   Command,

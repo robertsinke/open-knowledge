@@ -1,9 +1,9 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Kbd } from '@/components/ui/kbd';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Sparkles } from '@/lib/host-icons';
 import { formatShortcut, formatShortcutLabel } from '@/lib/keyboard-shortcuts';
 import { emitStartComment } from './store';
 

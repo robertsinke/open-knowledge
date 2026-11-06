@@ -1,10 +1,10 @@
 import { Plural, useLingui } from '@lingui/react/macro';
-import { ChevronUp, GitBranch, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCurrentBranch } from '@/hooks/use-current-branch';
 import { useWorktrees } from '@/hooks/use-worktrees';
 import type { DocumentStats } from '@/lib/document-stats';
+import { ChevronUp, GitBranch, Sparkles } from '@/lib/host-icons';
 import { checkoutIdentity } from './checkout-identity';
 
 interface EditorFooterProps {

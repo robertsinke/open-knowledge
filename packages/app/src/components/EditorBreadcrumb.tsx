@@ -2,7 +2,6 @@ import {
   parseManagedArtifactName,
   parseTemplateContentDocName,
 } from '@inkeep/open-knowledge-core/constants/cc1';
-import { MoreHorizontalIcon } from 'lucide-react';
 import { Fragment } from 'react';
 import { UserText } from '@/components/UserText';
 import {
@@ -13,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { tabParts } from '@/editor/editor-tabs';
+import { MoreHorizontalIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 interface EditorBreadcrumbProps {

@@ -1,4 +1,7 @@
 import { Trans } from '@lingui/react/macro';
+import type { AutoSyncOnboardingVariant } from '@/components/auto-sync-onboarding-gate';
+import { DisclosureWarning, DisclosureWarningItem } from '@/components/DisclosureWarning';
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import {
   ArrowDownToLine,
   ArrowRightLeft,
@@ -6,10 +9,7 @@ import {
   GitCommitVertical,
   GitMerge,
   Laptop,
-} from 'lucide-react';
-import type { AutoSyncOnboardingVariant } from '@/components/auto-sync-onboarding-gate';
-import { DisclosureWarning, DisclosureWarningItem } from '@/components/DisclosureWarning';
-import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
+} from '@/lib/host-icons';
 
 interface SyncVariantProps {
   variant?: AutoSyncOnboardingVariant;

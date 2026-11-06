@@ -1,7 +1,7 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import type * as React from 'react';
+import { ChevronRightIcon, MoreHorizontalIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<'nav'>) {

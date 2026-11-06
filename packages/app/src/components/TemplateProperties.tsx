@@ -5,12 +5,12 @@ import {
   templateRenameTarget,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { FolderGit2, Type } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { PropertyDisclosure } from '@/components/PropertyDisclosure';
 import { PropertyDisplayRow } from '@/components/PropertyDisplayRow';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { FolderGit2, Type } from '@/lib/host-icons';
 import { useFrontmatterField } from '@/lib/use-frontmatter-field';
 
 export function TemplateProperties({

@@ -6,7 +6,6 @@ import type {
 } from '@inkeep/open-knowledge-core/skills-catalog/schema';
 import { skillsShSkillLinks } from '@inkeep/open-knowledge-core/skills-catalog/source-fields';
 import { Trans } from '@lingui/react/macro';
-import { ArrowUpRightIcon, ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { requestFilesSectionReveal } from '@/components/files-section-reveal-store';
 import { SkillBundlePreview } from '@/components/SkillBundlePreview';
@@ -31,6 +30,7 @@ import { useOpenSkill } from '@/hooks/use-open-skill';
 import { useSkillOrigin } from '@/hooks/use-skill-origin';
 import { useSkills } from '@/hooks/use-skills';
 import { hashFromSkillFile, hashFromSkillPreview, type SkillPreviewFlavor } from '@/lib/doc-hash';
+import { ArrowUpRightIcon, ChevronDown } from '@/lib/host-icons';
 import { skillEntryLiveDocName } from '@/lib/managed-artifact-doc-name';
 import { openManagedArtifactTab } from '@/lib/open-managed-artifact-tab';
 import { useSkillScopeLabels } from '@/lib/skill-scope';

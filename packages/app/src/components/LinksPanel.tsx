@@ -13,15 +13,6 @@ import {
 import { t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useQuery } from '@tanstack/react-query';
-import {
-  ArrowUpRight,
-  ChevronDown,
-  ChevronRight,
-  File,
-  Folder,
-  Image as ImageIcon,
-  TriangleAlert,
-} from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -45,6 +36,15 @@ import { HttpResponseParseError } from '@/editor/http-client';
 import { rememberPendingSourceNavigation } from '@/editor/source-editor-navigation';
 import { type CreatePageSeed, createPageFromSeedAndUpdate } from '@/lib/create-page';
 import { hashFromDocName } from '@/lib/doc-hash';
+import {
+  ArrowUpRight,
+  ChevronDown,
+  ChevronRight,
+  File,
+  Folder,
+  Image as ImageIcon,
+  TriangleAlert,
+} from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { resolveTargetNavigationIntent } from './target-navigation-intent';
 

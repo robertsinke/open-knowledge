@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/react/macro';
-import { SquarePen } from 'lucide-react';
 import { SkillModeBanner } from '@/components/SkillModeBanner';
+import { SquarePen } from '@/lib/host-icons';
 import { skillDisplayName } from '@/lib/skill-scope';
 
 export function SkillEditBanner({ name }: { name: string }) {

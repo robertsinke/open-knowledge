@@ -1,9 +1,10 @@
 import type { ConfigBinding } from '@inkeep/open-knowledge-core/config/bind-config-doc';
 import type { OkignoreBinding } from '@inkeep/open-knowledge-core/config/bind-okignore-doc';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { TriangleAlert } from 'lucide-react';
 import { type ComponentType, lazy } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
+import { TriangleAlert } from '@/lib/host-icons';
 import { lazyWithPreload } from '@/lib/lazy-with-preload';
 import { SettingsSectionHeader } from './SettingsSectionHeader';
 import { FIELDS_USER_PREFERENCES } from './settings-fields';
@@ -190,6 +191,20 @@ export function SettingsDialogBody({
       <AccountSection userBinding={userBinding} />
     ) : (
       <UserConfigPending loadFailed={userLoadFailed} />
+    );
+  }
+  if (activeId === 'sync' && isBbEditorHost()) {
+    return (
+      <section
+        aria-labelledby="settings-sync-sharing-title"
+        className="space-y-8"
+        data-testid="settings-sync-sharing"
+      >
+        <SettingsSectionHeader titleId="settings-sync-sharing-title" title={<Trans>Sharing</Trans>}>
+          <Trans>GitHub sync for this project is a BB setting.</Trans>
+        </SettingsSectionHeader>
+        <SharingSection />
+      </section>
     );
   }
   if (activeId === 'sync') {

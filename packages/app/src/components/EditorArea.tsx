@@ -6,7 +6,6 @@ import {
   isMarkdownlintJsonConfig,
 } from '@inkeep/open-knowledge-core/markdown/lint';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronLeft, PanelRightClose } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import {
   lazy,
@@ -75,6 +74,7 @@ import { useDocConflict } from '@/hooks/use-conflicts';
 import { useDocumentStats } from '@/hooks/use-document-stats';
 import { useSelectionStats } from '@/hooks/use-selection-stats';
 import { closeAgentDiff, useAgentDiffView } from '@/lib/agent-diff-store';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import type { OkDesktopBridge } from '@/lib/desktop-bridge-types';
 import { docNameFromHash, hashFromDocName, isSameHash } from '@/lib/doc-hash';
 import { getInitialDocPanelWidth, writeDocPanelWidth } from '@/lib/doc-panel-width-store';
@@ -83,6 +83,7 @@ import { type DockLayout, dockPaneMinExtent, EMPTY_DOCK_LAYOUT } from '@/lib/doc
 import type { DockNode } from '@/lib/dock-tree';
 import { focusAwayFromHiddenEditor, focusWaitsForEditor } from '@/lib/editor-hidden-focus';
 import { type EditorSidebar, resolveEditorSidebarFit } from '@/lib/editor-sidebar-fit';
+import { ChevronLeft, PanelRightClose } from '@/lib/host-icons';
 import { matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { subscribeLocalMenuAction } from '@/lib/local-menu-action-bus';
 import { isNoteWindow } from '@/lib/note-window-mode';
@@ -758,8 +759,9 @@ function EditorAreaInner({
   const { resolvedTheme } = useTheme();
   const xtermBackground = useLiveXtermTheme(resolvedTheme).background;
 
-  const agentsUnitShown = !noteWindow && agentsVisible;
-  const terminalUnitShown = !noteWindow && terminalAvailable && terminalVisible;
+  const bbEditorHost = isBbEditorHost();
+  const agentsUnitShown = !bbEditorHost && !noteWindow && agentsVisible;
+  const terminalUnitShown = !bbEditorHost && !noteWindow && terminalAvailable && terminalVisible;
   const terminalPlacement = dockTerminalPlacement(dockTree);
   const [dockLayout, setDockLayout] = useState<DockLayout>(EMPTY_DOCK_LAYOUT);
   const editorVisibleRef = useRef(editorVisible);

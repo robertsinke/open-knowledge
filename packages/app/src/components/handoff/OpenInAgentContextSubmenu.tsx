@@ -9,7 +9,6 @@ import {
 } from '@inkeep/open-knowledge-core/handoff';
 import { t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, SlidersHorizontal, Sparkles } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
 import {
@@ -30,6 +29,7 @@ import {
 import { useEnabledOverrides } from '@/lib/acp/enabled-agents';
 import { useRegisteredAgents } from '@/lib/acp/registered-agents';
 import { VISIBLE_TARGETS } from '@/lib/handoff/targets';
+import { ArrowUpRight, SlidersHorizontal, Sparkles } from '@/lib/host-icons';
 import { openAgentSettings } from '@/lib/use-settings-route';
 import { DesktopAppName } from './agent-launcher-labels';
 import { TargetIcon } from './OpenInAgentMenuItem';

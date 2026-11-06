@@ -1,8 +1,8 @@
 import { useLingui } from '@lingui/react/macro';
-import { ChevronDown, ChevronRight } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import type { PlanEntry } from '@/lib/acp/thread-event-model';
+import { ChevronDown, ChevronRight } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export interface PlanApprovalHandlers {

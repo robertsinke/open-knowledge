@@ -88,6 +88,7 @@
   /* Font tokens */
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-code: "JetBrains Mono Variable", monospace;
 
   /* Strong custom easing curves (Emil / easing.dev) — punchier than default ease-out */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
@@ -1838,7 +1839,7 @@ section[data-editor-pane-id] {
   padding: 0.75em 1em;
   margin-bottom: 0.5em;
   overflow-x: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875em;
   line-height: 1.6;
   @apply scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground/30 dark:scrollbar-thumb-muted-foreground/50 rounded-lg;
@@ -1879,7 +1880,7 @@ section[data-editor-pane-id] {
   border: 1px solid var(--border);
   border-bottom: 0;
   border-radius: 0.5rem 0.5rem 0 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.75rem;
   color: var(--ok-codeblock-title-foreground);
   user-select: none;
@@ -1961,7 +1962,7 @@ section[data-editor-pane-id] {
   background: transparent;
   color: var(--muted-foreground);
   font-size: 0.6875rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   cursor: pointer;
   transition:
     background-color 0.1s,
@@ -2064,7 +2065,7 @@ section[data-editor-pane-id] {
   background: var(--syntax-bg);
   border-radius: 0.25em;
   padding: 0.15em 0.35em;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
   font-size: 0.875em;
 }
 
@@ -2910,7 +2911,7 @@ body[data-editor-tab-dragging] * {
 /* CodeMirror polish */
 .cm-editor {
   font-size: 14px;
-  font-family: var(--font-mono);
+  font-family: var(--font-code);
 }
 
 /* SourceEditor (full-page source mode) reserves a usable baseline height;
@@ -2958,7 +2959,7 @@ body[data-editor-tab-dragging] * {
 }
 
 .cm-scroller {
-  @apply font-mono! scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground/30 dark:scrollbar-thumb-muted-foreground/50;
+  @apply font-code! scrollbar-thin scrollbar-track-transparent scrollbar-thumb-muted-foreground/30 dark:scrollbar-thumb-muted-foreground/50;
 }
 
 .cm-gutters.cm-gutters-before {
@@ -3386,8 +3387,8 @@ button:active:not(:disabled) {
 
 @theme inline {
   --font-heading: var(--font-sans);
-  --font-sans: "Inter Variable", sans-serif;
-  --font-mono: "JetBrains Mono Variable", monospace;
+  --font-sans: var(--font-ui-sans);
+  --font-mono: var(--font-ui-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -3444,6 +3445,9 @@ button:active:not(:disabled) {
 
 :root {
   color-scheme: light;
+  --font-ui-sans: "Inter Variable", sans-serif;
+  --font-ui-mono: "JetBrains Mono Variable", monospace;
+  --font-code: "JetBrains Mono Variable", monospace;
 
   /* Sidebar inset variant applies m-2 (8px top + 8px bottom) to SidebarInset — offset its height accordingly */
   --layout-inset-offset: 16px;
@@ -6658,7 +6662,7 @@ html [data-editor-file-list-slot] [data-slot="sidebar-inner"] {
 }
 
 .inline-code {
-  @apply font-mono bg-muted text-inherit border border-border rounded-md px-1 py-0.5 text-sm;
+  @apply font-code bg-muted text-inherit border border-border rounded-md px-1 py-0.5 text-sm;
 }
 
 /* Rendered (WYSIWYG) Timeline diff — inline track-changes decorations.
@@ -6899,7 +6903,7 @@ html [data-editor-file-list-slot] [data-slot="sidebar-inner"] {
    of <diffs-container>. */
 .activity-panel-diff {
   --diffs-font-size: 0.75rem;
-  --diffs-font-family: var(--font-mono);
+  --diffs-font-family: var(--font-code);
 }
 
 /* Pointer marker drawn into the frame a bug-report screenshot is taken on.
@@ -7076,4 +7080,72 @@ html:not([data-color-theme]):not(.dark) [data-slot="kbd"] {
   color: var(--popover-foreground);
   background: var(--popover);
   box-shadow: var(--shadow-md, 0 2px 8px oklch(0% 0 0 / 0.15));
+}
+
+html[data-bb-editor-host],
+html[data-bb-editor-host][data-color-theme] {
+  --canvas: oklch(1 0 0);
+  --ink: oklch(0.3211 0 0);
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--canvas);
+  --card-foreground: var(--ink);
+  --popover: var(--canvas);
+  --popover-foreground: var(--ink);
+  --border: color-mix(in oklch, var(--ink) 14%, var(--canvas));
+  --input: color-mix(in oklch, var(--ink) 29.5%, var(--canvas));
+  --sidebar: color-mix(in oklch, var(--ink) 2.2%, var(--canvas));
+  --sidebar-foreground: var(--ink);
+  --sidebar-border: color-mix(in oklch, var(--ink) 14%, var(--canvas));
+  --sidebar-accent: color-mix(in oklch, var(--ink) 8%, var(--canvas));
+  --sidebar-accent-foreground: var(--ink);
+  --font-ui-sans: "Inter Variable", Inter, sans-serif;
+  --font-sans: "Inter Variable", Inter, sans-serif;
+  --font-ui-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --font-code: "JetBrains Mono Variable", monospace;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.375rem;
+}
+
+html[data-bb-editor-host].dark,
+html[data-bb-editor-host][data-color-theme].dark {
+  --canvas: oklch(0.195 0 0);
+  --ink: oklch(0.81 0 0);
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--canvas);
+  --card-foreground: var(--ink);
+  --popover: var(--canvas);
+  --popover-foreground: var(--ink);
+  --border: color-mix(in oklch, var(--ink) 19.4%, var(--canvas));
+  --input: color-mix(in oklch, var(--ink) 32.6%, var(--canvas));
+  --sidebar: color-mix(in oklch, var(--ink) 4.3%, var(--canvas));
+  --sidebar-foreground: var(--ink);
+  --sidebar-border: color-mix(in oklch, var(--ink) 18.1%, var(--canvas));
+  --sidebar-accent: color-mix(in oklch, var(--ink) 12%, var(--canvas));
+  --sidebar-accent-foreground: var(--ink);
+}
+
+html[data-bb-editor-host]
+  :is(
+    pre,
+    code,
+    .cm-editor,
+    .cm-scroller,
+    .ok-codeblock,
+    .ok-codeblock-title,
+    .inline-code,
+    .pierre-diff,
+    .conflict-view,
+    .activity-panel-diff
+  ) {
+  --font-mono: var(--font-code);
+  --font-ui-mono: var(--font-code);
+  --diffs-font-family: var(--font-code);
 }

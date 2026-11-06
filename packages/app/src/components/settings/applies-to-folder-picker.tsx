@@ -1,5 +1,4 @@
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Check, ChevronsUpDown, FolderTree } from 'lucide-react';
 import { useId, useState } from 'react';
 import { useOptionalPageList } from '@/components/PageListContext';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import {
   CommandList,
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Check, ChevronsUpDown, FolderTree } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import {
   buildFolderRows,

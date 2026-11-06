@@ -1,6 +1,5 @@
 import type { ShareFreshness } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, Check, Info, RefreshCw, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -10,6 +9,7 @@ import {
 } from '@/hooks/use-enable-sync-with-confirm';
 import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { ArrowUpRight, Check, Info, RefreshCw, TriangleAlert } from '@/lib/host-icons';
 import { triggerSync } from '@/lib/trigger-sync';
 import { cn } from '@/lib/utils';
 import { EnableSyncConfirmDialog } from './EnableSyncConfirmDialog';

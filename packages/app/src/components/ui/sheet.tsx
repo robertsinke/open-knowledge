@@ -1,11 +1,11 @@
 'use client';
 
 import { Trans } from '@lingui/react/macro';
-import { XIcon } from 'lucide-react';
 import { Dialog as SheetPrimitive } from 'radix-ui';
 import type * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { ignoreToastInteractOutside } from '@/components/ui/toast-outside-guard';
+import { XIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {

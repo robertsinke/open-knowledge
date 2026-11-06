@@ -1,6 +1,5 @@
 import type { SkillFolderLinkPreview } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowRight, Copy, Trash2, Unlink } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -12,6 +11,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { ArrowRight, Copy, Trash2, Unlink } from '@/lib/host-icons';
 
 export interface SkillFolderLinkConfirmDialogProps {
   open: boolean;

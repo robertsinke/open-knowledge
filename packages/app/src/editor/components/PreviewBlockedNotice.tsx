@@ -1,5 +1,5 @@
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ShieldAlert, X } from 'lucide-react';
+import { ShieldAlert, X } from '@/lib/host-icons';
 import type { PreviewBlockedRequest } from '../extensions/preview-iframe-header';
 
 export interface PreviewBlockedNoticeProps {

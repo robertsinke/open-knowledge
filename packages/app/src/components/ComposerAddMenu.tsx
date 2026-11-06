@@ -1,5 +1,4 @@
 import { useLingui } from '@lingui/react/macro';
-import { AtSign, MessageSquare, Paperclip, Plus, SquareSlash } from 'lucide-react';
 import {
   type ComponentProps,
   createContext,
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { openFilePicker } from '@/lib/file-picker';
+import { AtSign, MessageSquare, Paperclip, Plus, SquareSlash } from '@/lib/host-icons';
 
 const ComposerFocusActionContext = createContext<((action: () => void) => void) | null>(null);
 

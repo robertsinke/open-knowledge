@@ -4,9 +4,9 @@ import { useLingui } from '@lingui/react/macro';
 import { NodeSelection } from '@tiptap/pm/state';
 import type { Editor } from '@tiptap/react';
 import { useEditorState } from '@tiptap/react';
-import { AlignCenter, AlignLeft, AlignRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { AlignCenter, AlignLeft, AlignRight } from '@/lib/host-icons';
 import { ALIGNABLE_DESCRIPTOR_NAMES } from '../utils/alignable-descriptors.ts';
 import { runWithAlignAnimation } from '../utils/animate-align-change.ts';
 

@@ -1,5 +1,6 @@
 import type { InlineAssetMediaKind } from '@inkeep/open-knowledge-core/constants/upload';
-import { FileText, Film, FolderOpen, Image, type LucideIcon, Volume2 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { FileText, Film, FolderOpen, Image, Volume2 } from '@/lib/host-icons';
 
 export interface FileIconDescriptor {
   kind?: 'folder' | 'file' | 'page' | 'document' | 'asset' | 'anchor' | 'create';

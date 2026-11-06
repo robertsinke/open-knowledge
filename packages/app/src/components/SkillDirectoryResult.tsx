@@ -2,12 +2,12 @@ import type { SkillsListEntry } from '@inkeep/open-knowledge-core/schemas/api';
 import type { SkillSearchResult } from '@inkeep/open-knowledge-core/skills-catalog/schema';
 import type { SkillCostTiers } from '@inkeep/open-knowledge-core/skills-catalog/skill-cost';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check, Package } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { formatSkillTokens } from '@/components/SkillCostValue';
 import { SkillDirectoryCard } from '@/components/SkillDirectoryCard';
 import { Badge } from '@/components/ui/badge';
 import { formatInstalls } from '@/lib/format-installs';
+import { Check, Package } from '@/lib/host-icons';
 import { peekSkillCardCost, resolveSkillCardCost } from '@/lib/skill-card-cost';
 
 function PublisherAvatar({ login }: { login: string | null }) {

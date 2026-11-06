@@ -1,8 +1,8 @@
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
-import { Sparkles, SquareTerminal } from 'lucide-react';
 import type { ComponentType, SVGProps } from 'react';
 import { EditorPaneIcon } from '@/components/icons/editor-pane';
+import { Sparkles, SquareTerminal } from '@/lib/host-icons';
 import type { PaneId } from '@/lib/pane-visibility-store';
 
 export const PANE_ICON = {

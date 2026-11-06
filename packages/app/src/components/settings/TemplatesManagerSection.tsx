@@ -1,6 +1,5 @@
 import { templateContentDocName } from '@inkeep/open-knowledge-core/constants/cc1';
 import { Trans } from '@lingui/react/macro';
-import { Plus } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { NewTemplateDialog } from '@/components/NewTemplateDialog';
 import { TemplateDeleteDialog } from '@/components/TemplateDeleteDialog';
@@ -9,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { type TemplateMenuEntry, useFolderConfig } from '@/hooks/use-folder-config';
+import { Plus } from '@/lib/host-icons';
 import { openManagedArtifactTab } from '@/lib/open-managed-artifact-tab';
 import { useSettingsRoute } from '@/lib/use-settings-route';
 import type { SettingsScope } from './ScopeBadge';

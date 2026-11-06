@@ -1,5 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlertCircleIcon, CheckIcon, CopyIcon, InfoIcon, MailIcon, XIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useId, useState, useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Spinner } from '@/components/ui/spinner';
 import type { BugReportSendManager, BugReportSendOperation } from '@/lib/bug-report-send-manager';
 import { formatBundleSize } from '@/lib/bug-report-support';
+import { AlertCircleIcon, CheckIcon, CopyIcon, InfoIcon, MailIcon, XIcon } from '@/lib/host-icons';
 import { revealInFileManagerLabel } from '@/lib/platform-labels';
 
 const COPIED_RESET_MS = 1500;

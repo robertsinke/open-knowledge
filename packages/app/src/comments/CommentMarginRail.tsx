@@ -2,11 +2,11 @@
 
 import { useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/react';
-import { MessageSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { getEditorView } from '@/editor/utils/get-editor-view';
+import { MessageSquare } from '@/lib/host-icons';
 import { useEditorPaneOnScreen } from '@/lib/use-editor-pane-on-screen';
 import { cn } from '@/lib/utils';
 import { createAnchorResolver, findQuoteRange } from './anchor-search';

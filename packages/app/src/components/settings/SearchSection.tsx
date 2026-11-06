@@ -23,7 +23,6 @@ import {
   type SemanticIndexStatus,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -43,6 +42,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { useSemanticSearchStatus } from '@/hooks/use-semantic-search-status';
 import { useConfigContext } from '@/lib/config-provider';
+import { ChevronRight } from '@/lib/host-icons';
 import {
   type EmbeddingsKeyTransport,
   httpEmbeddingsKeyTransport,

@@ -27,7 +27,6 @@ import {
 } from '@inkeep/open-knowledge-core/config/errors';
 import { CONFIG_DOC_NAME_OKIGNORE } from '@inkeep/open-knowledge-core/constants/cc1';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { AlertTriangle, Check, GripVertical, X } from 'lucide-react';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { usePageList } from '@/components/PageListContext';
@@ -37,6 +36,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { subscribeToConfigIgnoreNestedError } from '@/lib/config-ignore-nested-error-events';
 import { subscribeToConfigValidationRejected } from '@/lib/config-validation-events';
+import { AlertTriangle, Check, GripVertical, X } from '@/lib/host-icons';
 import { saveHeldRejection } from '@/lib/save-held-message';
 import { cn } from '@/lib/utils';
 import {

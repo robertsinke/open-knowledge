@@ -1,6 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/react';
-import { ArrowUpRight, CornerDownLeft, Link, Trash2 } from 'lucide-react';
 import {
   type Dispatch,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -14,6 +13,7 @@ import { usePageList } from '@/components/PageListContext';
 import { Button } from '@/components/ui/button';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ArrowUpRight, CornerDownLeft, Link, Trash2 } from '@/lib/host-icons';
 import { formatShortcut, matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { detectClipboardPrefillUrl } from '../clipboard/lone-url';
 import { setPendingLinkEdit } from '../extensions/link-edit-autoopen';

@@ -8,7 +8,6 @@ import { sanitizeFolderName } from '@inkeep/open-knowledge-core/utils/sanitize-f
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ArrowLeft } from 'lucide-react';
 import { type RefObject, useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { CreatedItemsList, CreatedItemsSkeleton } from '@/components/CreatedItemsList';
@@ -42,6 +41,7 @@ import type {
   OkScaffoldPlan,
   OkSeedPackInfo,
 } from '@/lib/desktop-bridge-types';
+import { ArrowLeft } from '@/lib/host-icons';
 import { PACK_BLURBS } from '@/lib/pack-copy';
 import { seedClient } from '@/lib/seed-client';
 import { cn } from '@/lib/utils';

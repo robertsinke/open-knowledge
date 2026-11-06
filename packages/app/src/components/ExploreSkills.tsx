@@ -2,7 +2,6 @@ import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import type { SkillSearchResult } from '@inkeep/open-knowledge-core/skills-catalog/schema';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Search } from 'lucide-react';
 import { type ComponentProps, useEffect, useState } from 'react';
 import { SkillDirectoryGrid } from '@/components/SkillDirectoryGrid';
 import { Button } from '@/components/ui/button';
@@ -18,6 +17,7 @@ import {
 } from '@/components/ui/select';
 import { useOpenKnowledgeSkills } from '@/hooks/use-openknowledge-skills';
 import { usePopularSkills } from '@/hooks/use-popular-skills';
+import { Search } from '@/lib/host-icons';
 import { searchSkills } from '@/lib/skills-api';
 
 const TOPICS: ReadonlyArray<{ label: ReturnType<typeof msg>; query: string }> = [

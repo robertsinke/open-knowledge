@@ -1,11 +1,11 @@
 import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import { useLingui } from '@lingui/react/macro';
-import { Eye } from 'lucide-react';
 import { useRef } from 'react';
 import { ProseFindBar } from '@/components/ProseFindBar';
 import { SkillMarkdownLoader } from '@/components/SkillMarkdownLoader';
 import { TextViewer } from '@/components/TextViewer';
 import { useFindInViewer } from '@/hooks/use-find-in-viewer';
+import { Eye } from '@/lib/host-icons';
 import { loadSkillFileText } from '@/lib/skills-api';
 
 const MARKDOWN_EXTENSIONS = new Set(['md', 'mdx']);

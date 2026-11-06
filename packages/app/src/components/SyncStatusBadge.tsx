@@ -12,6 +12,18 @@ import type { SyncPausedReason } from '@inkeep/open-knowledge-core/sync-paused-r
 import type { MessageDescriptor } from '@lingui/core';
 import { msg, plural, t } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
+import { useEffect, useState } from 'react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Spinner } from '@/components/ui/spinner';
+import { useConflicts } from '@/hooks/use-conflicts';
+import { useBadgeSyncControls } from '@/hooks/use-enable-sync-with-confirm';
+import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
+import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
+import type { GitWorktreeStatus } from '@/hooks/use-git-worktree-status';
+import { useGitWorktreeStatus } from '@/hooks/use-git-worktree-status';
+import { useConfigContext } from '@/lib/config-provider';
+import { hashFromAssetPath, hashFromDocName, isSameHash } from '@/lib/doc-hash';
+import { engineSyncMode } from '@/lib/engine-sync-mode';
 import {
   AlertTriangle,
   ArrowDown,
@@ -25,19 +37,7 @@ import {
   RefreshCw,
   Settings2,
   UserCog,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Spinner } from '@/components/ui/spinner';
-import { useConflicts } from '@/hooks/use-conflicts';
-import { useBadgeSyncControls } from '@/hooks/use-enable-sync-with-confirm';
-import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
-import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
-import type { GitWorktreeStatus } from '@/hooks/use-git-worktree-status';
-import { useGitWorktreeStatus } from '@/hooks/use-git-worktree-status';
-import { useConfigContext } from '@/lib/config-provider';
-import { hashFromAssetPath, hashFromDocName, isSameHash } from '@/lib/doc-hash';
-import { engineSyncMode } from '@/lib/engine-sync-mode';
+} from '@/lib/host-icons';
 import { revealEditor } from '@/lib/reveal-editor';
 import { triggerSync } from '@/lib/trigger-sync';
 import { openAccountSettings, openSyncSettings } from '@/lib/use-settings-route';

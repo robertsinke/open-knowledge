@@ -1,5 +1,4 @@
 import { useLingui } from '@lingui/react/macro';
-import { CircleAlert, Moon, Pencil, Plus, Sun, Trash2 } from 'lucide-react';
 import type { Ref } from 'react';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
@@ -11,6 +10,7 @@ import {
   defaultThemeTokens,
   resolveCustomScheme,
 } from '@/lib/color-themes';
+import { CircleAlert, Moon, Pencil, Plus, Sun, Trash2 } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 type SeedInput = Record<string, unknown> | undefined;

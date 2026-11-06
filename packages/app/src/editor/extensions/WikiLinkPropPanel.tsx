@@ -7,6 +7,9 @@ import { resolveWikiLinkTarget } from '@inkeep/open-knowledge-core/utils/wiki-li
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/core';
 import { posToDOMRect } from '@tiptap/core';
+import { useEffect, useId, useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 import {
   CircleAlert,
   File,
@@ -16,10 +19,7 @@ import {
   Pencil,
   Plus,
   Trash2,
-} from 'lucide-react';
-import { useEffect, useId, useRef, useState } from 'react';
-import { toast } from 'sonner';
-import { Spinner } from '@/components/ui/spinner';
+} from '@/lib/host-icons';
 import { InteractionPropPanel } from '../../components/InteractionPropPanel';
 import { resolveLinkTargetIntent } from '../../components/link-target-intent';
 import { usePageList } from '../../components/PageListContext';

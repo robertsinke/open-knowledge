@@ -4,7 +4,6 @@
 import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import type { SkillDiscover } from '@inkeep/open-knowledge-core/skills-catalog/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { FileArchive, Folder, GitBranch } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
+import { FileArchive, Folder, GitBranch } from '@/lib/host-icons';
 import { announceSkillImport } from '@/lib/skill-import-toast';
 import { SKILL_SCOPE_ORDER, useSkillScopeLabels } from '@/lib/skill-scope';
 import { discoverSkillsInSource, importSkill, uploadSkill } from '@/lib/skills-api';

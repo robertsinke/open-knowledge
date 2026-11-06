@@ -1,5 +1,5 @@
 import { toDesktopAssetHref } from '@inkeep/open-knowledge-core/utils/asset-href';
-import { FileUp } from 'lucide-react';
+import { FileUp } from '@/lib/host-icons';
 
 interface FileProps {
   src?: string;

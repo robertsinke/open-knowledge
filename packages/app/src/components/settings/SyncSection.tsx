@@ -7,7 +7,6 @@ import {
   type SyncMode,
 } from '@inkeep/open-knowledge-core/config/auto-sync-mode';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, ChevronRight } from 'lucide-react';
 import { type RefObject, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { AuthModal } from '@/components/AuthModal';
@@ -45,6 +44,7 @@ import {
 import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
 import { useConfigContext } from '@/lib/config-provider';
 import { engineSyncMode } from '@/lib/engine-sync-mode';
+import { ArrowUpRight, ChevronRight } from '@/lib/host-icons';
 import { consumeSyncAdvancedIntent } from '@/lib/use-settings-route';
 import { ScopeBadge } from './ScopeBadge';
 import { SettingsSectionHeader } from './SettingsSectionHeader';

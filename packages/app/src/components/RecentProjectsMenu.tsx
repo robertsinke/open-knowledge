@@ -6,7 +6,6 @@ import type {
   WorktreeSelectorModel,
 } from '@inkeep/open-knowledge-core/git/worktree-selector-model';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Check, GitBranch, Plus, Search } from 'lucide-react';
 import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import type { OkDesktopBridge, RecentProjectEntry } from '@/lib/desktop-bridge-types';
+import { Check, GitBranch, Plus, Search } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { worktreeCreateErrorCopy } from '@/lib/worktree-create-error';
 import { refreshWorktrees } from '@/lib/worktree-store';

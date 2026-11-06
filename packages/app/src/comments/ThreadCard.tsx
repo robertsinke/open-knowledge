@@ -1,5 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { CheckCheck, MapPin, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import type { PanelScope } from '@/components/PanelScopeHeader';
@@ -14,6 +13,7 @@ import {
   type ComposerMentionInputHandle,
 } from '@/editor/ComposerMentionInput';
 import { getEditorView } from '@/editor/utils/get-editor-view';
+import { CheckCheck, MapPin, Pencil, RotateCcw, Trash2 } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { captureSelectionContext, findQuoteRange } from './anchor-search';
 import { propertyAddress, revealThread } from './comment-chips';

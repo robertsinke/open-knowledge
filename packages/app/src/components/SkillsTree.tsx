@@ -8,22 +8,6 @@ import type { CatalogSkill } from '@inkeep/open-knowledge-core/skills-catalog/sc
 import { Trans, useLingui } from '@lingui/react/macro';
 import { FILE_TREE_TAG_NAME, type FileTreeSortComparator } from '@pierre/trees';
 import { useFileTree } from '@pierre/trees/react';
-import {
-  ArrowUpRight,
-  Compass,
-  Copy as CopyIcon,
-  DownloadCloud,
-  Eye,
-  FilePlus,
-  LibraryBig,
-  Package,
-  Pin,
-  PinOff,
-  Sparkles,
-  SquarePen,
-  Trash2,
-  Upload,
-} from 'lucide-react';
 import { __iconNode as packageIcon } from 'lucide-react/dist/esm/icons/package';
 import { useTheme } from 'next-themes';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
@@ -85,6 +69,22 @@ import { asDirectoryHandle } from '@/components/use-selection-mirror';
 import { useOpenSkill } from '@/hooks/use-open-skill';
 import { useSettingsLoadingReason } from '@/lib/config-context';
 import { openExternalUrl } from '@/lib/external-link';
+import {
+  ArrowUpRight,
+  Compass,
+  Copy as CopyIcon,
+  DownloadCloud,
+  Eye,
+  FilePlus,
+  LibraryBig,
+  Package,
+  Pin,
+  PinOff,
+  Sparkles,
+  SquarePen,
+  Trash2,
+  Upload,
+} from '@/lib/host-icons';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { groupDeletableSkills, groupUpdatableSkills } from '@/lib/skill-group-update';
 import {

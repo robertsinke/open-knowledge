@@ -1,7 +1,7 @@
 import { t } from '@lingui/core/macro';
 import { Plural, Trans } from '@lingui/react/macro';
-import { Clock3, FolderOpen, Link2 } from 'lucide-react';
 import { useState } from 'react';
+import { Clock3, FolderOpen, Link2 } from '@/lib/host-icons';
 import type { InternalDocPreview } from './internal-doc-preview.ts';
 
 const MINUTE_MS = 60_000;

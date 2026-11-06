@@ -1,11 +1,11 @@
 import { plural } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { ChevronRight } from 'lucide-react';
 import { type ReactNode, type Ref, useState } from 'react';
 import { Badge, NOTIFICATION_BADGE_MAX } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ChevronRight } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export function PropertyDisclosure({

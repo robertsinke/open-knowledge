@@ -1,6 +1,7 @@
 import { File, Film, ImageIcon, Volume2 } from 'lucide-react';
-import { describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test } from 'vitest';
 import { lucideIconToSvgString } from '@/editor/registry/lucide-svg';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 import {
   fileEntryPathIconToSvgString,
   MARKDOWN_FILE_ICON_PATH_D,
@@ -8,6 +9,10 @@ import {
 } from './file-entry-icon';
 
 describe('fileEntryPathIconToSvgString', () => {
+  afterEach(() => {
+    clearBbEditorHost();
+  });
+
   test('uses the media-specific lucide icon for video assets', () => {
     expect(fileEntryPathIconToSvgString('clips/demo.mp4')).toBe(lucideIconToSvgString(Film));
   });
@@ -30,5 +35,18 @@ describe('fileEntryPathIconToSvgString', () => {
 
   test('keeps generic files on the fallback file icon', () => {
     expect(fileEntryPathIconToSvgString('data/example.csv')).toBe(lucideIconToSvgString(File));
+  });
+
+  test('uses Hugeicons for a matched file icon on the BB editor host', () => {
+    markBbEditorHost();
+    const svg = fileEntryPathIconToSvgString('clips/demo.mp4');
+    expect(svg).toContain('data-icon-set="hugeicons"');
+    expect(svg).toContain('data-icon-name="Film"');
+    expect(svg).not.toBe(lucideIconToSvgString(Film));
+  });
+
+  test('keeps the markdown glyph on the host', () => {
+    markBbEditorHost();
+    expect(fileEntryPathIconToSvgString('notes.md')).toContain(MARKDOWN_FILE_ICON_PATH_D);
   });
 });

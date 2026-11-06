@@ -1,5 +1,5 @@
 import type { Editor } from '@tiptap/core';
-import { Sparkles } from 'lucide-react';
+import { Sparkles } from '@/lib/host-icons';
 import { getSkillNamesForScope } from '@/lib/skill-name-set';
 import { skillDocTarget } from '../extensions/skill-path-links';
 import type { SlashCommandItem } from './items';

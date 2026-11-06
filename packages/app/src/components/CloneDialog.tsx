@@ -2,10 +2,10 @@
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { GlobeIcon, LockIcon } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { getLastKnownSignedIn, recordAuthStatus } from '@/lib/auth-state-cache';
+import { GlobeIcon, LockIcon } from '@/lib/host-icons';
 import {
   type AuthQueryTransport,
   httpAuthQueryTransport,

@@ -6,7 +6,6 @@ import {
   isFrontmatterValueEmpty,
 } from '@inkeep/open-knowledge-core/frontmatter/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight, FolderCog, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -22,6 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { AsyncState, FolderConfigSnapshot } from '@/hooks/use-folder-config';
 import { saveFolderConfig } from '@/lib/folder-config-api';
 import { frontmatterYamlPath } from '@/lib/folder-config-paths';
+import { ChevronRight, FolderCog, Plus } from '@/lib/host-icons';
 
 interface Props {
   folderPath: string;

@@ -1,6 +1,5 @@
 import type { HandoffTarget, TargetData, TerminalCli } from '@inkeep/open-knowledge-core/handoff';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, Check, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
 import { DesktopAppName } from '@/components/handoff/agent-launcher-labels';
@@ -17,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ArrowUpRight, Check, ChevronDown, SlidersHorizontal } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export interface TerminalCliRow {

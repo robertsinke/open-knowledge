@@ -2,7 +2,6 @@
 
 import type { SharePublishOwner } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { CheckCircle2, Copy, ExternalLink, XCircle } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { AuthModal } from '@/components/AuthModal';
@@ -30,6 +29,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { useDocumentContext } from '@/editor/DocumentContext';
 import { docNameToMarkdownPath } from '@/lib/doc-paths';
+import { CheckCircle2, Copy, ExternalLink, XCircle } from '@/lib/host-icons';
 import { isPermissionsPolicyRefusal, scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import {
   canSubmitPublish,

@@ -13,19 +13,6 @@ import {
 } from '@inkeep/open-knowledge-core/utils/identity';
 import { plural, t } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import {
-  ArrowDownToLine,
-  ArrowLeftRight,
-  ChevronDown,
-  ChevronRight,
-  GitBranch,
-  HardDrive,
-  History,
-  RotateCcw,
-  Sparkles,
-  Undo2,
-  User,
-} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -44,6 +31,19 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { closeAgentDiff } from '@/lib/agent-diff-store';
+import {
+  ArrowDownToLine,
+  ArrowLeftRight,
+  ChevronDown,
+  ChevronRight,
+  GitBranch,
+  HardDrive,
+  History,
+  RotateCcw,
+  Sparkles,
+  Undo2,
+  User,
+} from '@/lib/host-icons';
 import { createSelfSchedulingPoll, type PollOutcome } from '@/lib/self-scheduling-poll';
 import {
   closeTimelineDiff,

@@ -7,9 +7,9 @@ import { keymap } from '@tiptap/pm/keymap';
 import { PluginKey } from '@tiptap/pm/state';
 import { ReactRenderer } from '@tiptap/react';
 import Suggestion, { type SuggestionKeyDownProps, type SuggestionProps } from '@tiptap/suggestion';
-import { X } from 'lucide-react';
 import { fileEntryPathIconToSvgString } from '@/components/file-entry-icon';
 import { normalizeDocNameInput } from '@/lib/doc-paths';
+import { X } from '@/lib/host-icons';
 import { docNameToRelativePath } from '@/lib/workspace-paths';
 import {
   clearSuggestionSelectableCount,

@@ -1,9 +1,9 @@
 import { humanFormat } from '@inkeep/open-knowledge-core/config/errors';
 import { useLingui } from '@lingui/react/macro';
-import { EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useConfigContext } from '@/lib/config-provider';
+import { EyeOff } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { attributeTreeHiddenAxes } from './file-tree-utils';
 

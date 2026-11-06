@@ -3,7 +3,6 @@ import {
   type TemplatesListSuccess,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Info } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { CopyablePromptList } from '@/components/empty-state/CopyablePromptList';
 import { CreatePromptComposer } from '@/components/empty-state/CreatePromptComposer';
@@ -16,10 +15,12 @@ import { SeedDialog } from '@/components/SeedDialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { type AsyncState, useAllTemplates } from '@/hooks/use-folder-config';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { emitCreateTopLevelFile } from '@/lib/create-file-events';
 import type { OkPackId } from '@/lib/desktop-bridge-types';
 import { subscribeToDocumentsChanged } from '@/lib/documents-events';
 import { fetchDocumentListShared } from '@/lib/documents-fetch';
+import { Info } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export function EmptyEditorState({
@@ -100,7 +101,7 @@ export function EmptyEditorState({
     if (!next) setSeedDialogInitialPackId(undefined);
   }
 
-  if (terminalOpen || agentsOpen) {
+  if (isBbEditorHost() || terminalOpen || agentsOpen) {
     return (
       <div
         data-testid="empty-editor-state"
@@ -193,7 +194,11 @@ function PanelEmptyState({
         celebrateSignal={celebrateSignal}
         onRageStreak={onRageStreak}
       />
-      <FileCreationActions templatesState={templatesState} compact />
+      <FileCreationActions
+        templatesState={templatesState}
+        compact
+        alignWithHeaderCopy={isBbEditorHost()}
+      />
     </div>
   );
 }

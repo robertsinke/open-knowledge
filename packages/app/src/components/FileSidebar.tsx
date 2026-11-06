@@ -3,20 +3,6 @@
 import { humanFormat } from '@inkeep/open-knowledge-core/config/errors';
 import { Trans, useLingui } from '@lingui/react/macro';
 import {
-  ChevronLeft,
-  ChevronRight,
-  Copy,
-  FilePlus,
-  FolderOpen,
-  FolderPlus,
-  FoldVertical,
-  ListCollapse,
-  PanelLeftClose,
-  Share2,
-  SquarePen,
-  UnfoldVertical,
-} from 'lucide-react';
-import {
   type FC,
   type MouseEventHandler,
   type ReactElement,
@@ -115,6 +101,20 @@ import {
   emitFileTreeMenuActionRename,
 } from '@/lib/file-tree-menu-action-events';
 import { VISIBLE_TARGETS } from '@/lib/handoff/targets';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  FilePlus,
+  FolderOpen,
+  FolderPlus,
+  FoldVertical,
+  ListCollapse,
+  PanelLeftClose,
+  Share2,
+  SquarePen,
+  UnfoldVertical,
+} from '@/lib/host-icons';
 import { subscribeLocalMenuAction } from '@/lib/local-menu-action-bus';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { ProfilerBoundary } from '@/lib/perf';

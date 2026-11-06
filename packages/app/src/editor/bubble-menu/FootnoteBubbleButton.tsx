@@ -6,10 +6,10 @@ import {
 import { useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/react';
 import { useEditorState } from '@tiptap/react';
-import { Superscript } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Superscript } from '@/lib/host-icons';
 
 function hasFootnoteSchema(editor: Editor): boolean {
   const nodes = editor.schema.nodes;

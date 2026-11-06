@@ -1,5 +1,4 @@
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Paperclip, X } from 'lucide-react';
 import {
   type ClipboardEvent,
   type ComponentProps,
@@ -13,6 +12,7 @@ import {
 } from 'react';
 import { isExternalFileDrag } from '@/components/file-tree-adapter';
 import { collectImageFiles } from '@/lib/acp/image-attachment';
+import { Paperclip, X } from '@/lib/host-icons';
 import {
   ACCEPTED_IMAGE_TYPES,
   formatFileSize,

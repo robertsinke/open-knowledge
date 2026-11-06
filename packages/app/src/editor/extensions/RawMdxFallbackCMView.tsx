@@ -12,7 +12,6 @@ import type { Node as PmNode, Schema } from '@tiptap/pm/model';
 import type { Selection as PmSelection } from '@tiptap/pm/state';
 import { NodeSelection, Selection } from '@tiptap/pm/state';
 import { NodeViewWrapper } from '@tiptap/react';
-import { Trash2 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef } from 'react';
 import {
@@ -20,6 +19,7 @@ import {
   relabelCodeMirrorContent,
 } from '@/editor/code-mirror-content-attributes';
 import { useConfigContext } from '@/lib/config-provider';
+import { Trash2 } from '@/lib/host-icons';
 import { markUserTyping } from '../observers';
 import { getEditorView } from '../utils/get-editor-view';
 import { getYDoc } from '../utils/get-ydoc';

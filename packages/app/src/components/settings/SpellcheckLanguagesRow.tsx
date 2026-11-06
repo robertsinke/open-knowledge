@@ -1,6 +1,5 @@
 import { i18n } from '@lingui/core';
 import { useLingui } from '@lingui/react/macro';
-import { RotateCcw } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -17,6 +16,7 @@ import {
   useComboboxAnchor,
 } from '@/components/ui/combobox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { RotateCcw } from '@/lib/host-icons';
 import { SavedIndicator } from './field-controls';
 import { isSpellcheckLanguageSelectionAvailable } from './settings-host-gates';
 

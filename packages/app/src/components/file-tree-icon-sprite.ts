@@ -1,3 +1,5 @@
+import BotIcon from '@hugeicons/core-free-icons/BotIcon';
+import Link04Icon from '@hugeicons/core-free-icons/Link04Icon';
 import { __iconNode as botIcon } from 'lucide-react/dist/esm/icons/bot';
 import { __iconNode as link2Icon } from 'lucide-react/dist/esm/icons/link-2';
 import {
@@ -6,6 +8,7 @@ import {
   MARKDOWN_FILE_ICON_PATH_D,
   MARKDOWN_FILE_ICON_VIEWBOX,
 } from '@/components/file-entry-icon';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 
 export const LINK_DECORATION_ICON_ID = 'ok-file-tree-link-decoration';
 export const AGENT_DECORATION_ICON_ID = 'ok-file-tree-agent-decoration';
@@ -14,7 +17,7 @@ export const EXCALIDRAW_FILE_ICON_ID = 'ok-file-tree-excalidraw';
 const MARKDOWN_FILE_ICON_SYMBOL = `<symbol id="${MARKDOWN_FILE_ICON_ID}" viewBox="${MARKDOWN_FILE_ICON_VIEWBOX}" fill="currentColor"><path d="${MARKDOWN_FILE_ICON_PATH_D}"/></symbol>`;
 const EXCALIDRAW_FILE_ICON_SYMBOL = `<symbol id="${EXCALIDRAW_FILE_ICON_ID}" viewBox="${EXCALIDRAW_FILE_ICON_VIEWBOX}" fill="currentColor"><path d="${EXCALIDRAW_FILE_ICON_PATH_D}"/></symbol>`;
 
-type IconNode = [string, Record<string, string>][];
+type IconNode = readonly (readonly [string, { readonly [key: string]: string | number }])[];
 
 function iconNodeToSvg(iconNode: IconNode): string {
   return iconNode
@@ -32,9 +35,17 @@ function createLucideSpriteSymbol(id: string, iconNode: IconNode): string {
   return `<symbol id="${id}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${symbolContent}</symbol>`;
 }
 
+function createHostSpriteSymbol(id: string, iconNode: IconNode): string {
+  return `<symbol id="${id}" viewBox="0 0 24 24" fill="none">${iconNodeToSvg(iconNode)}</symbol>`;
+}
+
+function decorationSymbol(id: string, lucide: IconNode, huge: IconNode): string {
+  return isBbEditorHost() ? createHostSpriteSymbol(id, huge) : createLucideSpriteSymbol(id, lucide);
+}
+
 export const FILE_TREE_DECORATION_SPRITE_SHEET = `<svg data-icon-sprite aria-hidden="true" width="0" height="0">
-  ${createLucideSpriteSymbol(LINK_DECORATION_ICON_ID, link2Icon)}
-  ${createLucideSpriteSymbol(AGENT_DECORATION_ICON_ID, botIcon)}
+  ${decorationSymbol(LINK_DECORATION_ICON_ID, link2Icon, Link04Icon)}
+  ${decorationSymbol(AGENT_DECORATION_ICON_ID, botIcon, BotIcon)}
   ${MARKDOWN_FILE_ICON_SYMBOL}
   ${EXCALIDRAW_FILE_ICON_SYMBOL}
 </svg>`;

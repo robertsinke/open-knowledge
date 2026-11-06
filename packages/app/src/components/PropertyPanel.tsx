@@ -30,7 +30,6 @@ import {
   isFrontmatterValueEmpty,
 } from '@inkeep/open-knowledge-core/frontmatter/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlertTriangle, Plus } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { CommentedDocProvider } from '@/comments/CommentedDocContext';
 import { PropertyCommentButton } from '@/comments/PropertyCommentButton';
@@ -61,6 +60,7 @@ import {
 import { usePublishFrontmatterSelection } from '@/hooks/use-selection-context';
 import { enumConstraintsForDoc } from '@/lib/frontmatter-enum-constraints';
 import { schemaFieldsForDoc } from '@/lib/frontmatter-schema-fields';
+import { AlertTriangle, Plus } from '@/lib/host-icons';
 
 interface StagedDraft extends AddDraft {
   id: string;

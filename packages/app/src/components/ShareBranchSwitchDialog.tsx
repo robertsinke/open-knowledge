@@ -4,10 +4,8 @@ import type { WorktreeCreateResult } from '@inkeep/open-knowledge-core/git/workt
 import { i18n } from '@lingui/core';
 import { plural } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AppWindow, GitBranch, MapPin } from 'lucide-react';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { toast } from 'sonner';
-
 import { ShareMetadataRows } from '@/components/share-metadata-rows';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,6 +24,7 @@ import {
   type OkShareReceivedPayload,
   shareTargetPath,
 } from '@/lib/desktop-bridge-types';
+import { AppWindow, GitBranch, MapPin } from '@/lib/host-icons';
 import {
   applyBranchInfo,
   applyCheckoutOutcome,

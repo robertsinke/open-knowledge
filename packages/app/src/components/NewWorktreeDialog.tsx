@@ -3,7 +3,6 @@
 import { stripRemotePrefix } from '@inkeep/open-knowledge-core/git/worktree-selector-model';
 import type { MessageDescriptor } from '@lingui/core';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check, ChevronsUpDown, Cloud, FolderOpen, GitBranch, Plus, Search } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,15 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { OkDesktopBridge } from '@/lib/desktop-bridge-types';
+import {
+  Check,
+  ChevronsUpDown,
+  Cloud,
+  FolderOpen,
+  GitBranch,
+  Plus,
+  Search,
+} from '@/lib/host-icons';
 import { worktreeCreateErrorCopy } from '@/lib/worktree-create-error';
 import { refreshWorktrees } from '@/lib/worktree-store';
 

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/react/macro';
+import type { ComponentType, ReactNode } from 'react';
 import {
   Copy,
   CopyPlus,
@@ -13,8 +14,7 @@ import {
   SquarePen,
   Trash2,
   UnfoldVertical,
-} from 'lucide-react';
-import type { ComponentType, ReactNode } from 'react';
+} from '@/lib/host-icons';
 
 interface MenuItemProps {
   children?: ReactNode;

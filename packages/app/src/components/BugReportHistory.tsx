@@ -1,6 +1,5 @@
 import type { OkBugReportListRow } from '@inkeep/open-knowledge-core/logger-types';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronDownIcon, FolderOpenIcon, MailIcon, RotateCwIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Spinner } from '@/components/ui/spinner';
 import { bugReportSendManager } from '@/lib/bug-report-send-manager';
 import { bugReportNoteTitle, formatBundleSize, supportMailtoUrl } from '@/lib/bug-report-support';
+import {
+  ChevronDownIcon,
+  FolderOpenIcon,
+  MailIcon,
+  RotateCwIcon,
+  Trash2Icon,
+} from '@/lib/host-icons';
 import { revealInFileManagerLabel } from '@/lib/platform-labels';
 
 type PendingAction = 'retrying' | 'deleting';

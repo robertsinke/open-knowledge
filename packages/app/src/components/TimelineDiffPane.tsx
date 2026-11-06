@@ -2,7 +2,6 @@
 
 import { ProblemDetailsSchema } from '@inkeep/open-knowledge-core/schemas/api';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ChevronDown, ChevronUp, PanelRightClose, PanelRightOpen, Undo2, X } from 'lucide-react';
 import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { MAX_RENDERED_CHANGES, PropertyDiffBlock } from '@/components/PropertyDiffBlock';
@@ -24,6 +23,14 @@ import {
   PROPERTY_CHANGE_ANCHOR_SELECTOR,
   watchPierreShadowRoots,
 } from '@/lib/diff-change-nav';
+import {
+  ChevronDown,
+  ChevronUp,
+  PanelRightClose,
+  PanelRightOpen,
+  Undo2,
+  X,
+} from '@/lib/host-icons';
 import { LruStringCache } from '@/lib/lru-string-cache';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import {

@@ -5,7 +5,6 @@ import {
 } from '@inkeep/open-knowledge-core/agent-registry';
 import { TERMINAL_CLIS, type TerminalCli } from '@inkeep/open-knowledge-core/handoff';
 import { useLingui } from '@lingui/react/macro';
-import { TriangleAlert } from 'lucide-react';
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +12,7 @@ import {
   applyAgentConnectionIntents,
   subscribeAgentConnectionChanges,
 } from '@/lib/agent-connections';
+import { TriangleAlert } from '@/lib/host-icons';
 import {
   type ApplyConnections,
   ConfigureConnectionDialog,

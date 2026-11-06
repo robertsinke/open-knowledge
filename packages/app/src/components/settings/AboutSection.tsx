@@ -1,11 +1,11 @@
 import { Trans } from '@lingui/react/macro';
-import { ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import type { OkAboutInfo, OkUpdateMode } from '@/lib/desktop-bridge-types';
+import { ArrowUpRight } from '@/lib/host-icons';
 import { SettingsSectionHeader } from './SettingsSectionHeader';
 
 const UNAVAILABLE_REREAD_INTERVAL_MS = 3000;

@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
-import { GitBranch } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { GitBranch } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 

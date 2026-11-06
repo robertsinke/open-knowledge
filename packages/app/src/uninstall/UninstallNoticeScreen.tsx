@@ -3,9 +3,9 @@ import type {
   UninstallNoticeScreen as UninstallNoticeSpec,
 } from '@inkeep/open-knowledge-core/uninstall-bridge';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check } from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
 import { Button } from '@/components/ui/button';
+import { Check } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 interface UninstallNoticeScreenProps {

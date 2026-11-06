@@ -1,8 +1,8 @@
 import { useLingui } from '@lingui/react/macro';
-import { PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button.tsx';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { PanelLeftClose, PanelLeftOpen, PanelRightClose, PanelRightOpen } from '@/lib/host-icons';
 import { formatShortcut, formatShortcutLabel } from '@/lib/keyboard-shortcuts';
 import { isNoteWindow } from '@/lib/note-window-mode';
 import { physicalSide } from '@/lib/sidebar-side-store';

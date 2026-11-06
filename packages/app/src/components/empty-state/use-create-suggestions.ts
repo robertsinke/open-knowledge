@@ -1,7 +1,7 @@
 import type { CreateScenario } from '@inkeep/open-knowledge-core/handoff';
 import { useLingui } from '@lingui/react/macro';
-import { Bird, FileCode2, ListTree, Network, Telescope } from 'lucide-react';
 import type { ComponentType } from 'react';
+import { Bird, FileCode2, ListTree, Network, Telescope } from '@/lib/host-icons';
 
 export type { CreateScenario };
 

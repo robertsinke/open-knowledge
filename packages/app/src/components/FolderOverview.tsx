@@ -2,7 +2,6 @@
 
 import { t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowDown, ArrowUp, ArrowUpDown, File, Folder, FolderOpen, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { FolderPropertiesCard } from '@/components/FolderPropertiesCard';
 import { FolderTimelineCard } from '@/components/FolderTimelineCard';
@@ -25,6 +24,7 @@ import {
 } from '@/components/ui/table';
 import { useFolderConfig } from '@/hooks/use-folder-config';
 import { hashFromDocName } from '@/lib/doc-hash';
+import { ArrowDown, ArrowUp, ArrowUpDown, File, Folder, FolderOpen, Plus } from '@/lib/host-icons';
 
 type SortKey = 'name' | 'modified';
 type SortDir = 'asc' | 'desc';

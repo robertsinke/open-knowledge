@@ -22,7 +22,6 @@ import {
   RESERVED_FRONTMATTER_KEY,
 } from '@inkeep/open-knowledge-core/frontmatter/schema';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { PropertyCommentButton } from '@/comments/PropertyCommentButton';
 import { useFrontmatterBinding } from '@/components/FrontmatterBindingContext';
@@ -36,6 +35,7 @@ import { describeError } from '@/components/frontmatter-error-utils';
 import { coerceValue, defaultValueForType } from '@/components/PropertyWidgets';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronRight, Plus } from '@/lib/host-icons';
 
 interface ObjectWidgetProps {
   keyName: string;

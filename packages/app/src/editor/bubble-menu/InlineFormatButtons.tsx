@@ -1,9 +1,9 @@
 import type { Editor } from '@tiptap/react';
 import { useEditorState } from '@tiptap/react';
-import { Bold, Code, Highlighter, Italic, Strikethrough, Underline } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Bold, Code, Highlighter, Italic, Strikethrough, Underline } from '@/lib/host-icons';
 import {
   formatShortcut,
   formatShortcutLabel,

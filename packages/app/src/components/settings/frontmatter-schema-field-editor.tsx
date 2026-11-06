@@ -5,16 +5,7 @@ import type {
   SchemaParentPathSegment,
 } from '@inkeep/open-knowledge-core/markdown/lint';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  Braces,
-  Brackets,
-  CaseSensitive,
-  Hash,
-  ListChecks,
-  type LucideIcon,
-  ToggleLeft,
-  Trash2,
-} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -36,6 +27,15 @@ import {
   useProjectLintConfig,
   writeFrontmatterSchemaField,
 } from '@/editor/lint-config-client';
+import {
+  Braces,
+  Brackets,
+  CaseSensitive,
+  Hash,
+  ListChecks,
+  ToggleLeft,
+  Trash2,
+} from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 const FIELD_TYPES = ['string', 'number', 'boolean', 'array', 'object'] as const;

@@ -4,6 +4,7 @@
  */
 
 import { Trans } from '@lingui/react/macro';
+import type { LucideIcon } from 'lucide-react';
 import {
   AlertOctagon,
   AlertTriangle,
@@ -18,11 +19,10 @@ import {
   Info,
   Lightbulb,
   ListTodo,
-  type LucideIcon,
   MessageSquareWarning,
   Quote,
   Zap,
-} from 'lucide-react';
+} from '@/lib/host-icons';
 import { resolveLucideIcon } from './lucide-icon-allowlist.ts';
 
 const TYPE_ICON: Record<CalloutType, LucideIcon> = {

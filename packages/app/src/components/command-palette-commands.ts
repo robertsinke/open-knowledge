@@ -14,6 +14,15 @@ import {
 } from '@inkeep/open-knowledge-core/constants/menu-labels';
 import type { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/core/macro';
+import type { ComponentType } from 'react';
+import { requestDocPanelTab } from '@/components/doc-panel-events';
+import { DiscordIcon } from '@/components/icons/discord';
+import { GithubIcon } from '@/components/icons/github';
+import type { ResolvedNavigationTarget } from '@/components/navigation-targets';
+import { PANE_ICON } from '@/components/pane-icons';
+import { requestSkillsDockExpanded } from '@/components/skills-dock-expanded-store';
+import type { OkDesktopBridge, OkMenuAction } from '@/lib/desktop-bridge-types';
+import { requestDockPaneMove } from '@/lib/dock-move-requests';
 import {
   ArrowLeftRight,
   Blocks,
@@ -52,16 +61,7 @@ import {
   Trash2,
   UnfoldVertical,
   X,
-} from 'lucide-react';
-import type { ComponentType } from 'react';
-import { requestDocPanelTab } from '@/components/doc-panel-events';
-import { DiscordIcon } from '@/components/icons/discord';
-import { GithubIcon } from '@/components/icons/github';
-import type { ResolvedNavigationTarget } from '@/components/navigation-targets';
-import { PANE_ICON } from '@/components/pane-icons';
-import { requestSkillsDockExpanded } from '@/components/skills-dock-expanded-store';
-import type { OkDesktopBridge, OkMenuAction } from '@/lib/desktop-bridge-types';
-import { requestDockPaneMove } from '@/lib/dock-move-requests';
+} from '@/lib/host-icons';
 import { i18n } from '@/lib/i18n';
 import type { KeyboardShortcutId } from '@/lib/keyboard-shortcuts';
 import { openDocInNoteWindow } from '@/lib/open-note-window';

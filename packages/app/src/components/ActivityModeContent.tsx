@@ -2,7 +2,6 @@
 
 import { t } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { withLargeFileOpenGuard } from '@/components/navigation-targets';
@@ -11,6 +10,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { useDocumentContext, useDocumentTransition } from '@/editor/DocumentContext';
 import { openAgentDiff, setAgentDiffMax } from '@/lib/agent-diff-store';
 import { hashFromDocName } from '@/lib/doc-hash';
+import { AlertCircle, ArrowLeft } from '@/lib/host-icons';
 import { closeTimelineDiff } from '@/lib/timeline-diff-store';
 import type { FileData } from '@/lib/use-activity-panel';
 import { useActivityPanel } from '@/lib/use-activity-panel';

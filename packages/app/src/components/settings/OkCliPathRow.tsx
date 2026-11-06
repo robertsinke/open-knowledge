@@ -1,6 +1,5 @@
 // oxlint-disable ok/no-raw-error-toast -- pre-rule backlog: toasts here show raw error text; delete this line once the file maps each failure to written copy. See https://github.com/inkeep/open-knowledge/blob/main/lint-plugins/ok-rules/README.md#no-raw-error-toast
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { okCliCommandName } from '@/lib/channel-cli-copy';
 import type { OkIntegrationsStatus } from '@/lib/desktop-bridge-types';
+import { Info } from '@/lib/host-icons';
 
 export function OkCliPathRow() {
   const { t } = useLingui();

@@ -1,10 +1,10 @@
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { RadioGroup as RadioGroupPrimitive } from 'radix-ui';
 import type { ComponentType } from 'react';
 import { RadioGroup } from '@/components/ui/radio-group';
+import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from '@/lib/host-icons';
 import { narrowThemePreference, type ThemePreference } from '@/lib/use-apply-config-theme';
 import { cn } from '@/lib/utils';
 

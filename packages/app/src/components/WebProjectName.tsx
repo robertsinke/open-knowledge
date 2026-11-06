@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
-import { Folder } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Folder } from '@/lib/host-icons';
 import { extractFolderBasename } from '@/lib/path-utils';
 import { useWorkspace } from '@/lib/use-workspace';
 

@@ -1,6 +1,5 @@
 import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRightIcon, PackageIcon } from 'lucide-react';
 import { useState } from 'react';
 import {
   type SkillBundleDisclosure,
@@ -8,6 +7,7 @@ import {
 } from '@/components/SkillPluginBundleDialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { ArrowUpRightIcon, PackageIcon } from '@/lib/host-icons';
 
 export function SkillPluginBundleBanner({
   bundle,

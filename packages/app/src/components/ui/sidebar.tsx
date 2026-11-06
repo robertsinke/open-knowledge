@@ -1,7 +1,6 @@
 import { detectEmbeddedHostFromBrowser } from '@inkeep/open-knowledge-core/constants/embedded-host';
 import { useLingui } from '@lingui/react/macro';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { PanelLeft, PanelLeftOpen, PanelRight, PanelRightOpen } from 'lucide-react';
 import { Slot } from 'radix-ui';
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSidebarResize } from '@/hooks/use-sidebar-resize';
+import { PanelLeft, PanelLeftOpen, PanelRight, PanelRightOpen } from '@/lib/host-icons';
 import { formatShortcutLabel, matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { revealEditorBeforeActing } from '@/lib/reveal-editor';

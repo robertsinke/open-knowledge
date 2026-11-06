@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react/macro';
-import { MoreHorizontalIcon } from 'lucide-react';
 import { type ReactNode, type RefObject, useLayoutEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import type { GitSyncStatus } from '@/hooks/use-git-sync-status';
+import { MoreHorizontalIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { displayState } from './SyncStatusBadge';
 

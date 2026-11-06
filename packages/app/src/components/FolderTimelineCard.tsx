@@ -4,20 +4,20 @@ import { ProblemDetailsSchema } from '@inkeep/open-knowledge-core/schemas/api';
 import type { TimelineEntry } from '@inkeep/open-knowledge-core/types/timeline';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import type { LucideIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { subscribeToTemplatesChanged } from '@/lib/documents-events';
 import {
   ArrowLeftRight,
   FilePlus,
   FolderCog,
   History,
-  type LucideIcon,
   Pencil,
   Trash2,
   User,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { subscribeToTemplatesChanged } from '@/lib/documents-events';
+} from '@/lib/host-icons';
 
 function formatRelative(iso: string): string {
   const diffSec = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);

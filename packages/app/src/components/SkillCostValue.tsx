@@ -4,8 +4,8 @@ import {
   type SkillCostTiers,
 } from '@inkeep/open-knowledge-core/skills-catalog/skill-cost';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlertTriangle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { AlertTriangle } from '@/lib/host-icons';
 
 export function formatSkillTokens(tokens: number): string {
   if (tokens < 1000) return `${tokens}`;

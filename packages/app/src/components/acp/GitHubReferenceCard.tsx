@@ -1,5 +1,8 @@
 import type { GitHubReferencePreview } from '@inkeep/open-knowledge-core/schemas/api';
 import { useLingui } from '@lingui/react/macro';
+import type { LucideIcon } from 'lucide-react';
+import { type ReactNode, useState } from 'react';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import {
   CircleCheck,
   CircleDot,
@@ -8,10 +11,7 @@ import {
   GitPullRequest,
   GitPullRequestClosed,
   GitPullRequestDraft,
-  type LucideIcon,
-} from 'lucide-react';
-import { type ReactNode, useState } from 'react';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+} from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import { useGitHubReference } from './github-reference';
 import {

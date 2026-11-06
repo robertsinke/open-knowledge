@@ -1,5 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight, Compass, SquarePen } from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { AddSkillTab } from '@/components/ImportSkillDialog';
 import { SidebarToolbarButton } from '@/components/SidebarToolbarButton';
@@ -17,6 +16,7 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { useCreateBlankSkill } from '@/hooks/use-create-blank-skill';
 import { useOpenSkill } from '@/hooks/use-open-skill';
+import { ChevronRight, Compass, SquarePen } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 const ImportSkillDialog = lazy(() =>

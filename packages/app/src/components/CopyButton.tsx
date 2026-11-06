@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react/macro';
-import { Check, Copy } from 'lucide-react';
 import type * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Check, Copy } from '@/lib/host-icons';
 
 const COPIED_RESET_MS = 1500;
 

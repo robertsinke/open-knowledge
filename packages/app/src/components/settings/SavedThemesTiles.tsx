@@ -3,7 +3,6 @@ import {
   parseSavedThemeId,
 } from '@inkeep/open-knowledge-core/theme/theme-plugins';
 import { useLingui } from '@lingui/react/macro';
-import { TriangleAlert } from 'lucide-react';
 import { type SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,7 @@ import {
   resolveColorThemeSelection,
   resolveCustomScheme,
 } from '@/lib/color-themes';
+import { TriangleAlert } from '@/lib/host-icons';
 import { useSavedThemes } from '@/lib/saved-themes-client';
 import { ColorThemePicker, type ColorThemePickerProps } from './ColorThemePicker';
 

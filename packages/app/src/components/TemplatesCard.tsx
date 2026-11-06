@@ -1,6 +1,5 @@
 import { templateContentDocName } from '@inkeep/open-knowledge-core/constants/cc1';
 import { Trans } from '@lingui/react/macro';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { InheritedBadge } from '@/components/FrontmatterRow';
 import { NewItemDialog } from '@/components/NewItemDialog';
@@ -16,6 +15,7 @@ import type {
   FolderConfigSnapshot,
   TemplateMenuEntry,
 } from '@/hooks/use-folder-config';
+import { Plus } from '@/lib/host-icons';
 import { openManagedArtifactTab } from '@/lib/open-managed-artifact-tab';
 
 interface Props {

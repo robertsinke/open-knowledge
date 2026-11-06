@@ -1464,6 +1464,16 @@ Homepage: https://react-hook-form.com
 
 Copyright (c) 2019-present Beier(Bill) Luo
 
+### `@hugeicons/core-free-icons@4.4.0`
+Homepage: https://hugeicons.com
+
+Copyright (c) 2025 Hugeicons
+
+### `@hugeicons/react@1.1.10`
+Homepage: https://hugeicons.com
+
+Copyright (c) 2025 Hugeicons
+
 ### `@iconify/types@2.0.0`
 Homepage: https://github.com/iconify/iconify
 

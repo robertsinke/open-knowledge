@@ -1,8 +1,8 @@
 import { toDesktopAssetHref } from '@inkeep/open-knowledge-core/utils/asset-href';
 import { parsePdfAnchor } from '@inkeep/open-knowledge-core/utils/pdf-anchor';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check, ChevronDown, PanelLeft, ZoomIn, ZoomOut } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, PanelLeft, ZoomIn, ZoomOut } from '@/lib/host-icons';
 import { computeBaseScale, type PdfLayoutMode } from './pdf-layout.ts';
 
 interface PdfProps {

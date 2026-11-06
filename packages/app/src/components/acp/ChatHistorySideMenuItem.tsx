@@ -1,6 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
-import { PanelLeft, PanelRight } from 'lucide-react';
 import { ContextMenuItem } from '@/components/ui/context-menu';
+import { PanelLeft, PanelRight } from '@/lib/host-icons';
 import { type LogicalSide, moveChatHistory, physicalSide } from '@/lib/sidebar-side-store';
 import { useDocumentDirection } from '@/lib/use-document-direction';
 

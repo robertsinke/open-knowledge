@@ -20,7 +20,6 @@ import { EDITOR_LABELS } from '@inkeep/open-knowledge-core/constants/editors';
 import { TERMINAL_CLI_IDS } from '@inkeep/open-knowledge-core/handoff';
 import { plural } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Folder, Info, Monitor, Sparkles, TriangleAlert, X } from 'lucide-react';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { AgentBrandIcon } from '@/components/AgentIconCluster';
 import {
@@ -52,6 +51,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { connectionPathDisplay, sharedPathDisplays } from '@/lib/agent-connection-paths';
 import type { ApplyAgentConnectionsResult } from '@/lib/agent-connections';
 import { guidanceText, mcpServerLabel, troubleshootingText } from '@/lib/agent-guidance-copy';
+import { Folder, Info, Monitor, Sparkles, TriangleAlert, X } from '@/lib/host-icons';
 import { formatToolList } from '@/lib/tool-list-format';
 import { groupHeadingFor } from './group-heading';
 

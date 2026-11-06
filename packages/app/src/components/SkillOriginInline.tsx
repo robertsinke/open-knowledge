@@ -1,12 +1,12 @@
 import type { SkillScope } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, RefreshCw, Undo2 } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSkillOrigin } from '@/hooks/use-skill-origin';
+import { ArrowUpRight, RefreshCw, Undo2 } from '@/lib/host-icons';
 
 const LazySkillUpdateConflictDialog = lazy(async () => {
   const mod = await import('@/components/SkillUpdateConflictDialog');

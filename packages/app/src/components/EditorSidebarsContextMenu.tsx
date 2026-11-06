@@ -1,5 +1,4 @@
 import { useLingui } from '@lingui/react/macro';
-import { ArrowLeftRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 import {
   ContextMenu,
@@ -7,6 +6,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu';
+import { ArrowLeftRight } from '@/lib/host-icons';
 import { swapEditorSidebars } from '@/lib/sidebar-side-store';
 
 export function EditorSidebarsContextMenu({ children }: { readonly children: ReactNode }) {

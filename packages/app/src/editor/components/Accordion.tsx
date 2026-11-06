@@ -4,7 +4,7 @@
  * content visible / editable).
  */
 
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight } from '@/lib/host-icons';
 import { resolveLucideIcon } from './lucide-icon-allowlist.ts';
 
 interface AccordionProps {

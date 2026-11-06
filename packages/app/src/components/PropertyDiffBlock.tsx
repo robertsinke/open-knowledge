@@ -4,11 +4,11 @@ import type {
   PropertyChange,
 } from '@inkeep/open-knowledge-core/frontmatter-diff';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Minus, Pencil, Plus } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { PropertyDisclosure } from '@/components/PropertyDisclosure';
 import { PropertyDisplayRow } from '@/components/PropertyDisplayRow';
 import { ComplexValueWidget, isComplexValue, TYPE_ICON } from '@/components/PropertyWidgets';
+import { Minus, Pencil, Plus } from '@/lib/host-icons';
 
 export const MAX_RENDERED_CHANGES = 50;
 

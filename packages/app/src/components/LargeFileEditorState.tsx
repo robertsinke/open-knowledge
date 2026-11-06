@@ -1,6 +1,5 @@
 import { formatFileSize } from '@inkeep/open-knowledge-core/utils/file-size';
 import { Trans } from '@lingui/react/macro';
-import { ArrowLeft, FileWarning } from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { ArrowLeft, FileWarning } from '@/lib/host-icons';
 
 interface LargeFileEditorStateProps {
   docName: string;

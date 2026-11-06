@@ -7,24 +7,24 @@ import {
 import { computeInitials, deriveIconColor } from '@inkeep/open-knowledge-core/utils/identity';
 import { plural, t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
+import type { LucideProps } from 'lucide-react';
+import { type FC, useEffect, useRef, useState } from 'react';
+import { AgentIcon } from '@/components/icons/AgentIcon';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useDocumentContext } from '@/editor/DocumentContext';
 import {
   Bird,
   Cat,
   Dog,
   Fish,
-  type LucideProps,
   Rabbit,
   Rat,
   Shrimp,
   Snail,
   Squirrel,
   Turtle,
-} from 'lucide-react';
-import { type FC, useEffect, useRef, useState } from 'react';
-import { AgentIcon } from '@/components/icons/AgentIcon';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { useDocumentContext } from '@/editor/DocumentContext';
+} from '@/lib/host-icons';
 import type { AwarenessUser } from './identity.ts';
 import type { AgentParticipant, HumanParticipant, Participant, usePresence } from './use-presence';
 

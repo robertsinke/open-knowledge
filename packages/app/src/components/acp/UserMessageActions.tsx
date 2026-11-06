@@ -1,6 +1,5 @@
 import type { AttachmentPart } from '@inkeep/open-knowledge-core/acp/thread-protocol';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronDown, Pencil } from 'lucide-react';
 import { type ReactNode, use, useEffect, useRef, useState } from 'react';
 import { useCalendarDayNow } from '@/components/acp/calendar-day-store';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
@@ -26,6 +25,7 @@ import {
 import { useEnabledOverrides } from '@/lib/acp/enabled-agents';
 import { enabledThreadAgents } from '@/lib/acp/launcher-selection';
 import { type RegisteredAgent, useRegisteredAgents } from '@/lib/acp/registered-agents';
+import { ChevronDown, Pencil } from '@/lib/host-icons';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { cn } from '@/lib/utils';
 import { MentionRecencyContext } from './mention-recency-context';

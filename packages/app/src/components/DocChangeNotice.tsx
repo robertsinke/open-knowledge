@@ -1,11 +1,11 @@
 import type { DocNoticeWire } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { History, X } from 'lucide-react';
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { requestDocPanelTab } from '@/components/doc-panel-events';
 import { SkillModeBanner } from '@/components/SkillModeBanner';
 import { Button } from '@/components/ui/button';
 import { useDocNotices } from '@/hooks/use-doc-notices';
+import { History, X } from '@/lib/host-icons';
 import { saveHeldMessage } from '@/lib/save-held-message';
 import { useSingleFileMode } from '@/lib/single-file-mode';
 

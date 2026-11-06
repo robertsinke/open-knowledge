@@ -1,5 +1,5 @@
-import { Box, Image } from 'lucide-react';
 import { describe, expect, test } from 'vitest';
+import { Box, Image } from '@/lib/host-icons';
 import { getDescriptor } from './index.ts';
 import {
   resolveDescriptorPlaceholder,

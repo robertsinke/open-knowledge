@@ -2,10 +2,10 @@
 
 import { graphemePrefix, graphemeSuffix } from '@inkeep/open-knowledge-core/utils/grapheme-clip';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { MessageSquare, X } from 'lucide-react';
 import { setPropertiesCollapsed } from '@/components/properties-collapsed-store';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { MessageSquare, X } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 import type { DispatchPayload } from './comments-client';
 import { revealPropertyValueRange } from './property-row-rect';

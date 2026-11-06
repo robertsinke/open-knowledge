@@ -7,17 +7,6 @@ import { horizontalListSortingStrategy, SortableContext, useSortable } from '@dn
 import { isMarkdownDocFile } from '@inkeep/open-knowledge-core/constants/upload';
 import { Trans, useLingui } from '@lingui/react/macro';
 import {
-  AlertTriangle,
-  CopyX,
-  PanelLeft,
-  PanelRight,
-  PinIcon,
-  PlusIcon,
-  SquareArrowOutUpRight,
-  Trash2,
-  XIcon,
-} from 'lucide-react';
-import {
   type HTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
@@ -60,6 +49,17 @@ import { useDocConflict } from '@/hooks/use-conflicts';
 import { skillFileForDocName } from '@/hooks/use-reconcile-skill-tabs';
 import { useSkills } from '@/hooks/use-skills';
 import { emitFileTreeMenuActionRename } from '@/lib/file-tree-menu-action-events';
+import {
+  AlertTriangle,
+  CopyX,
+  PanelLeft,
+  PanelRight,
+  PinIcon,
+  PlusIcon,
+  SquareArrowOutUpRight,
+  Trash2,
+  XIcon,
+} from '@/lib/host-icons';
 import { matchesKeyboardShortcut } from '@/lib/keyboard-shortcuts';
 import { skillEntryLiveDocName } from '@/lib/managed-artifact-doc-name';
 import { openDocInNoteWindow } from '@/lib/open-note-window';

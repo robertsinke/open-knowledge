@@ -3,19 +3,7 @@ import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/react';
-import {
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Columns3,
-  Ellipsis,
-  EllipsisVertical,
-  Grid2x2X,
-  type LucideIcon,
-  TableProperties,
-  Trash2,
-} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,6 +13,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Columns3,
+  Ellipsis,
+  EllipsisVertical,
+  Grid2x2X,
+  TableProperties,
+  Trash2,
+} from '@/lib/host-icons';
 import { getFindReplaceState } from '../find-replace/tiptap-find-replace-extension';
 import { handleAnchorCellPos, selectTableAxis } from './table-axis-selection';
 import { useTableDragReorder } from './useTableDragReorder';

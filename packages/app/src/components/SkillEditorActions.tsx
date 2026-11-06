@@ -1,6 +1,5 @@
 import type { SkillScope, SkillsListEntry } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronDown, FilePlus } from 'lucide-react';
 import { useState } from 'react';
 import { AgentIconCluster } from '@/components/AgentIconCluster';
 import {
@@ -16,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useSkills } from '@/hooks/use-skills';
+import { ChevronDown, FilePlus } from '@/lib/host-icons';
 import { skillClusterHosts } from '@/lib/skill-scope';
 import { cn } from '@/lib/utils';
 

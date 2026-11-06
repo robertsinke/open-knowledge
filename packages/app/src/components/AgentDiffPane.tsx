@@ -2,7 +2,6 @@
 
 import type { FrontmatterDelta } from '@inkeep/open-knowledge-core/frontmatter-diff';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { PanelRightClose, PanelRightOpen, X } from 'lucide-react';
 import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PropertyDiffBlock } from '@/components/PropertyDiffBlock';
 import { computeRenderedDiff, RenderedDiffView } from '@/components/RenderedDiffView';
@@ -16,6 +15,7 @@ import {
   PROPERTY_CHANGE_ANCHOR_SELECTOR,
   watchPierreShadowRoots,
 } from '@/lib/diff-change-nav';
+import { PanelRightClose, PanelRightOpen, X } from '@/lib/host-icons';
 import { LruStringCache } from '@/lib/lru-string-cache';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { RENDERED_DIFF_CHANGE_SELECTOR } from '@/lib/rendered-diff/diff-decorations';

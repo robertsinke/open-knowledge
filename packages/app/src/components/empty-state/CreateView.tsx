@@ -4,7 +4,6 @@ import type {
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { plural } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowRightIcon, Info, Plus } from 'lucide-react';
 import { CopyablePromptList } from '@/components/empty-state/CopyablePromptList';
 import { CreatePromptComposer } from '@/components/empty-state/CreatePromptComposer';
 import { EmptyStateHeader } from '@/components/empty-state/EmptyStateHeader';
@@ -15,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import type { AsyncState } from '@/hooks/use-folder-config';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
 import { emitCreateTopLevelFile } from '@/lib/create-file-events';
+import { ArrowRightIcon, Info, Plus } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 interface CreateViewProps {
@@ -58,12 +58,15 @@ interface FileCreationActionsProps {
   readonly templatesState: AsyncState<TemplatesListSuccess>;
   readonly compact?: boolean;
   readonly onAddStarterPack?: () => void;
+  /** Line the create link up with the empty-state subtitle, and drop the leading "or". */
+  readonly alignWithHeaderCopy?: boolean;
 }
 
 export function FileCreationActions({
   templatesState,
   compact = false,
   onAddStarterPack,
+  alignWithHeaderCopy = false,
 }: FileCreationActionsProps) {
   const initialDir = '';
 
@@ -90,7 +93,8 @@ export function FileCreationActions({
       <div
         data-testid="file-creation-action-row"
         className={cn(
-          'flex w-full flex-wrap items-center justify-end gap-4',
+          'flex w-full flex-wrap items-center gap-4',
+          alignWithHeaderCopy ? 'justify-start @md/emptystate:ps-20' : 'justify-end',
           templatesSectionVisible && '-mt-6',
         )}
       >
@@ -108,11 +112,18 @@ export function FileCreationActions({
         <Button
           variant="link-muted"
           size="sm"
+          className={alignWithHeaderCopy ? 'h-auto px-0' : undefined}
           onClick={() => emitCreateTopLevelFile({ initialDir })}
         >
-          <Trans>
-            or create a new file <ArrowRightIcon aria-hidden="true" className="size-3" />
-          </Trans>
+          {alignWithHeaderCopy ? (
+            <Trans>
+              Create a new file <ArrowRightIcon aria-hidden="true" className="size-3" />
+            </Trans>
+          ) : (
+            <Trans>
+              or create a new file <ArrowRightIcon aria-hidden="true" className="size-3" />
+            </Trans>
+          )}
         </Button>
       </div>
     </div>

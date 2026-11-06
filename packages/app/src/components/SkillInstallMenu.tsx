@@ -5,7 +5,6 @@ import type { SkillsListEntry } from '@inkeep/open-knowledge-core/schemas/api';
 import type { SkillInstallTarget } from '@inkeep/open-knowledge-core/skill-targets/schema';
 import { isSkillInstallTarget } from '@inkeep/open-knowledge-core/skill-targets/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Folder, Settings as SettingsIcon } from 'lucide-react';
 import { type ReactElement, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { toast } from 'sonner';
 import { AgentBrandIcon } from '@/components/AgentIconCluster';
@@ -32,6 +31,7 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSkills } from '@/hooks/use-skills';
 import { emitSkillsChanged } from '@/lib/documents-events';
+import { Folder, Settings as SettingsIcon } from '@/lib/host-icons';
 import {
   getSkillOverlay,
   setSkillOverlay,

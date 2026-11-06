@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react/macro';
-import { Paperclip } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { openFilePicker } from '@/lib/file-picker';
+import { Paperclip } from '@/lib/host-icons';
 
 export function AttachFilesButton({
   onFiles,

@@ -1,10 +1,10 @@
 import { useLingui } from '@lingui/react/macro';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ArrowLeft, ArrowRight } from '@/lib/host-icons';
 import { formatShortcut, formatShortcutLabel } from '@/lib/keyboard-shortcuts';
 import { emitLocalMenuAction } from '@/lib/local-menu-action-bus';
 

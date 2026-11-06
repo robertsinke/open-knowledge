@@ -10,7 +10,6 @@ import {
 } from '@inkeep/open-knowledge-core/constants/upload';
 import { randomUUID } from '@inkeep/open-knowledge-core/utils/random-uuid';
 import { t } from '@lingui/core/macro';
-import { RefreshCw } from 'lucide-react';
 import {
   lazy,
   type ReactNode,
@@ -40,6 +39,7 @@ import { TiptapEditor } from '@/editor/TiptapEditor';
 import type { EditorModeValue } from '@/editor/use-editor-mode';
 import { useDocConflict } from '@/hooks/use-conflicts';
 import { ParkingActivity } from '@/lib/activity-park';
+import { RefreshCw } from '@/lib/host-icons';
 import { parseProjectSkillContentDocName } from '@/lib/managed-artifact-doc-name';
 import { isNoteWindow } from '@/lib/note-window-mode';
 import { mark, ProfilerBoundary } from '@/lib/perf';

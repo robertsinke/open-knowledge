@@ -1,12 +1,12 @@
 import { isExcalidrawDocFile } from '@inkeep/open-knowledge-core/constants/upload';
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { PanzoomObject } from '@panzoom/panzoom';
-import { AlertTriangle, ExternalLink } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { hashFromDocName } from '@/lib/doc-hash';
+import { AlertTriangle, ExternalLink } from '@/lib/host-icons';
 import '@/lib/excalidraw-env';
 import { type ExcalidrawScene, restoreScene } from '@/lib/excalidraw-scene.ts';
 import { createRetryingLoader } from '@/lib/retrying-loader.ts';

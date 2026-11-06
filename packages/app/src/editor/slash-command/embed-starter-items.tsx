@@ -4,8 +4,8 @@ import {
 } from '@inkeep/open-knowledge-core/constants/preview-embed-starters';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { BarChart3, Code, LayoutGrid, Shapes, SlidersHorizontal } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { BarChart3, Code, LayoutGrid, Shapes, SlidersHorizontal } from '@/lib/host-icons';
 import type { SlashCommandContext, SlashCommandItem } from './items';
 
 function insertHtmlPreview(chain: SlashCommandContext['chain'], html: string): void {

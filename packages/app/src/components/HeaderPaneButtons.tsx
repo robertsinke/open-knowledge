@@ -6,6 +6,7 @@ import { Kbd } from '@/components/ui/kbd';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTerminalConsentState } from '@/hooks/use-terminal-enabled';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import {
   formatShortcut,
   formatShortcutLabel,
@@ -67,6 +68,7 @@ function useHeaderPaneButtonStates(): readonly HeaderPaneButtonState[] {
   return PANE_ORDER.flatMap((pane) => {
     const visibility = snapshot[pane];
     if (visibility === null) return [];
+    if (isBbEditorHost()) return [];
     if (pane === 'terminal' && terminalTurnedOff) return [];
     return [{ pane, pressed: visibility.onScreen }];
   });

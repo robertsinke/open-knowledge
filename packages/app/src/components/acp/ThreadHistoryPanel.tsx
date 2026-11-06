@@ -1,6 +1,5 @@
 import type { ThreadInfo } from '@inkeep/open-knowledge-core/acp/thread-protocol';
 import { useLingui } from '@lingui/react/macro';
-import { ChevronLeft, History, Pencil, Search, Trash2, X } from 'lucide-react';
 import {
   createContext,
   type ReactNode,
@@ -40,6 +39,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatRelativeActivity } from '@/lib/acp/relative-activity';
 import { getAgentThreadClient } from '@/lib/acp/thread-client';
+import { ChevronLeft, History, Pencil, Search, Trash2, X } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 interface ThreadHistoryContentProps {

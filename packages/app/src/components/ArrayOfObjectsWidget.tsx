@@ -18,13 +18,13 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import type { FrontmatterValue } from '@inkeep/open-knowledge-core/frontmatter/schema';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { type CSSProperties, useState } from 'react';
 import { useFrontmatterBinding } from '@/components/FrontmatterBindingContext';
 import { describeError } from '@/components/frontmatter-error-utils';
 import { ObjectWidget } from '@/components/ObjectWidget';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronRight, GripVertical, Plus, Trash2 } from '@/lib/host-icons';
 
 type ObjectItem = { [key: string]: FrontmatterValue };
 

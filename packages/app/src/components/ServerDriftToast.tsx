@@ -1,5 +1,5 @@
-import { TriangleAlertIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { TriangleAlertIcon } from '@/lib/host-icons';
 
 interface ServerDriftToastProps {
   readonly body: string;

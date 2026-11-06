@@ -1,11 +1,11 @@
 import type { HocuspocusProvider } from '@hocuspocus/provider';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Presentation } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { OkSlidesOpenResult } from '@/lib/desktop-bridge-types';
+import { Presentation } from '@/lib/host-icons';
 import { recordSlidesOpened } from '@/lib/slides-telemetry';
 import { useBooleanFrontmatterField } from '@/lib/use-boolean-frontmatter-field';
 import { useWorkspace } from '@/lib/use-workspace';

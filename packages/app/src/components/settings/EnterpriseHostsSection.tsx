@@ -2,10 +2,10 @@ import type { ConfigBinding } from '@inkeep/open-knowledge-core/config/bind-conf
 import { humanFormat } from '@inkeep/open-knowledge-core/config/errors';
 import { normalizeGitHostname } from '@inkeep/open-knowledge-core/constants/github';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Trash2 } from 'lucide-react';
 import { type SubmitEvent, useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Trash2 } from '@/lib/host-icons';
 import {
   declaredEnterpriseHosts,
   type EnterpriseHostInputResult,

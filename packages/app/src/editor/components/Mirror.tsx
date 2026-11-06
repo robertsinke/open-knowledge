@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/react/macro';
-import { Copy, Link2, Link2Off } from 'lucide-react';
+import { Copy, Link2, Link2Off } from '@/lib/host-icons';
 import { authoredText } from '../utils/authored-text.ts';
 import { useMirrorSource } from './use-mirror-source.ts';
 

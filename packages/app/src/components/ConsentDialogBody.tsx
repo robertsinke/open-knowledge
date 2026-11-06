@@ -4,7 +4,6 @@ import { receivesProjectIntegrationWrite } from '@inkeep/open-knowledge-core/con
 import type { MessageDescriptor } from '@lingui/core';
 import { msg, plural } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ChevronRight } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { toast as sonnerToast } from 'sonner';
@@ -35,6 +34,7 @@ import type {
   OkOnboardingShowPayload,
   OkOnboardingWarningKind,
 } from '@/lib/desktop-bridge-types';
+import { ChevronRight } from '@/lib/host-icons';
 import { isContentDirSafe, relativeToProject } from '@/lib/project-paths';
 
 const PROBE_THROTTLE_MS = 750;

@@ -1,10 +1,9 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react/combobox';
-import { CheckIcon, XIcon } from 'lucide-react';
 import * as React from 'react';
-
 import { Button } from '@/components/ui/button';
+import { CheckIcon, XIcon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 type ComboboxStyleProps<Props> = Omit<Props, 'className'> & { className?: string };

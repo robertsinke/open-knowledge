@@ -13,7 +13,6 @@ import {
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { ArrowUpRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { type ClipboardEvent, type Ref, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -35,6 +34,7 @@ import {
 } from '@/lib/color-themes';
 import { useConfigContextOptional } from '@/lib/config-context';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { ArrowUpRight } from '@/lib/host-icons';
 import { useSavedThemes } from '@/lib/saved-themes-client';
 import { applyColorThemeToDom } from '@/lib/use-apply-config-color-theme';
 import { cn } from '@/lib/utils';

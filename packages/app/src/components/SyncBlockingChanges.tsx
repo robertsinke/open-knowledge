@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/react/macro';
-import { Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { requestTerminalCommand } from '@/components/handoff/terminal-command-events';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { Terminal } from '@/lib/host-icons';
 import { resolveBlockingChanges } from '@/lib/resolve-blocking';
 
 function terminalAvailable(): boolean {

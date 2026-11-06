@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react';
 import {
   AlertOctagon,
   AlertTriangle,
@@ -12,11 +13,10 @@ import {
   Info,
   Lightbulb,
   ListTodo,
-  type LucideIcon,
   MessageSquareWarning,
   Quote,
   Zap,
-} from 'lucide-react';
+} from '@/lib/host-icons';
 
 export const LUCIDE_ICON_ALLOWLIST: Record<string, LucideIcon> = {
   Info,

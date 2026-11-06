@@ -1,10 +1,10 @@
 import { Trans, useLingui } from '@lingui/react/macro';
 import type { Editor } from '@tiptap/react';
 import { useEditorState } from '@tiptap/react';
-import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { basenameFromUrl } from '@/editor/components/File';
+import { Download } from '@/lib/host-icons';
 
 function readActiveFileSrc(editor: Editor): string | null {
   const sel = editor.state.selection;

@@ -1,10 +1,10 @@
 // oxlint-disable ok/no-raw-html-interactive-element -- pre-rule backlog — file uses raw <button>/<input>/<textarea> awaiting shadcn migration; tracked at https://github.com/inkeep/open-knowledge/blob/main/lint-plugins/ok-rules/README.md#no-raw-html-interactive-element
 
 import { useLingui } from '@lingui/react/macro';
-import { TriangleAlertIcon, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useSyncExternalStore } from 'react';
 import { Button } from '@/components/ui/button';
+import { TriangleAlertIcon, X } from '@/lib/host-icons';
 import { dismissNotice, getNoticesSnapshot, subscribeToNotices } from '@/lib/update-notices-store';
 import { SubscribeCard } from './SubscribeCard';
 import type { UpdateNotice } from './UpdateNotices.shared';

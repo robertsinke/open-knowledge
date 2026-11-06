@@ -20,15 +20,6 @@ import {
 import { t } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
 import { useQuery } from '@tanstack/react-query';
-import {
-  AlertTriangle,
-  ArrowUpRight,
-  CheckCircle2,
-  Globe,
-  Hexagon,
-  Maximize2,
-  Minimize2,
-} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { GraphLegend } from '@/components/GraphLegend';
 import { GraphView } from '@/components/GraphView';
@@ -55,6 +46,15 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { loadBoolPref, saveBoolPref } from '@/lib/bool-pref';
 import { hashFromDocName } from '@/lib/doc-hash';
 import { openExternalUrl } from '@/lib/external-link';
+import {
+  AlertTriangle,
+  ArrowUpRight,
+  CheckCircle2,
+  Globe,
+  Hexagon,
+  Maximize2,
+  Minimize2,
+} from '@/lib/host-icons';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { cn } from '@/lib/utils';
 

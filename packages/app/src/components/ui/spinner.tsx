@@ -1,5 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
-import { Loader2Icon, type LucideIcon, type LucideProps } from 'lucide-react';
+import type { LucideIcon, LucideProps } from 'lucide-react';
+import { Loader2Icon } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 function Spinner({

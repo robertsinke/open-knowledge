@@ -1,6 +1,6 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Plus } from 'lucide-react';
 import { DropdownMenuGroup, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Plus } from '@/lib/host-icons';
 
 export function QueueNewChatRow({ onStartNewChat }: { onStartNewChat: () => void }) {
   const { t } = useLingui();

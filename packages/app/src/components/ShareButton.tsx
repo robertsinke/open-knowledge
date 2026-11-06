@@ -2,7 +2,6 @@
 
 import type { ShareFreshness } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { CircleHelp, Share2 } from 'lucide-react';
 import { type Ref, useEffect, useId, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { CopyButton } from '@/components/CopyButton';
@@ -12,6 +11,7 @@ import { Kbd } from '@/components/ui/kbd';
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover';
 import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { CircleHelp, Share2 } from '@/lib/host-icons';
 import { formatShortcutBinding, formatShortcutBindingLabel } from '@/lib/keyboard-shortcuts';
 import { scheduleClipboardWrite } from '@/lib/share/clipboard-adapter';
 import { runShareAction, type ShareTargetInput } from '@/lib/share/run-share-action';

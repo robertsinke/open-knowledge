@@ -4,17 +4,6 @@ import { getGitHubStars } from '@inkeep/open-knowledge-core/utils/github-stars';
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  BookOpen,
-  Bug,
-  CircleHelp,
-  Download,
-  Mail,
-  Megaphone,
-  MessageSquare,
-  RefreshCw,
-  Star,
-} from 'lucide-react';
 import type { ComponentProps, FC, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { ReportBugDialog } from '@/components/ReportBugDialog';
@@ -26,6 +15,17 @@ import { useBugReport } from '@/lib/bug-report-capture';
 import type { OkAboutInfo } from '@/lib/desktop-bridge-types';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
 import { feedbackNudgeStore } from '@/lib/feedback-nudge-store';
+import {
+  BookOpen,
+  Bug,
+  CircleHelp,
+  Download,
+  Mail,
+  Megaphone,
+  MessageSquare,
+  RefreshCw,
+  Star,
+} from '@/lib/host-icons';
 import { DISCORD_INVITE_URL, DOCS_URL, GITHUB_REPO_URL, X_PROFILE_URL } from '@/lib/social-links';
 import { subscribeCardStore } from '@/lib/subscribe-card-store';
 import { openAboutSettings } from '@/lib/use-settings-route';

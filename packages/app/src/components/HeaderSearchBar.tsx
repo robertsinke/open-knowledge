@@ -1,10 +1,10 @@
 import { incrementJsxRenderFailure } from '@inkeep/open-knowledge-core/metrics/parse-health';
 import { useLingui } from '@lingui/react/macro';
-import { Search } from 'lucide-react';
 import type { ErrorInfo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Kbd } from '@/components/ui/kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Search } from '@/lib/host-icons';
 import { formatShortcut } from '@/lib/keyboard-shortcuts';
 import { cn } from '@/lib/utils';
 

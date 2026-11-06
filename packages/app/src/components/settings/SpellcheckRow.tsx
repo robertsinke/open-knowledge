@@ -1,10 +1,10 @@
 import { useLingui } from '@lingui/react/macro';
-import { RotateCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { RotateCcw } from '@/lib/host-icons';
 import { SavedIndicator } from './field-controls';
 import { isOkDesktopHost } from './settings-host-gates';
 

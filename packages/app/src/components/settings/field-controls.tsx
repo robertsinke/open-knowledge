@@ -5,7 +5,6 @@ import {
 import { getFieldMeta } from '@inkeep/open-knowledge-core/config/field-registry';
 import { type Config, ConfigSchema } from '@inkeep/open-knowledge-core/config/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { Check, RotateCcw } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
 import { type ControllerRenderProps, type FieldPath, useFormContext } from 'react-hook-form';
@@ -34,6 +33,7 @@ import {
   resolveModePreference,
 } from '@/lib/color-themes';
 import { useConfigContextOptional } from '@/lib/config-context';
+import { Check, RotateCcw } from '@/lib/host-icons';
 import { recordLanguagePreferenceChanged } from '@/lib/language-telemetry';
 import { recordSavedThemeAssignment } from '@/lib/saved-themes-telemetry';
 import { applyColorThemeToDom } from '@/lib/use-apply-config-color-theme';

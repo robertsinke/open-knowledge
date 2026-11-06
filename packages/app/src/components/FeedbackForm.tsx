@@ -4,13 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { MessageDescriptor } from '@lingui/core';
 import { msg } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { commitContactEmail, contactEmailStore } from '@/lib/contact-email-store';
 import { submitFeedback, toFeedbackAttachmentPayloads } from '@/lib/feedback';
+import { ThumbsDown, ThumbsUp, X } from '@/lib/host-icons';
 import {
   ACCEPTED_IMAGE_TYPES,
   MAX_IMAGE_ATTACHMENTS,

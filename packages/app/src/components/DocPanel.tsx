@@ -2,7 +2,6 @@
 
 import { t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlertTriangle, Clock, Link2, ListTree, MessageSquare, Network } from 'lucide-react';
 import { lazy, Suspense, useEffect } from 'react';
 import { CommentsTab } from '@/comments/CommentsTab';
 import { setCommentsPanelOnScreen } from '@/comments/comments-panel-visibility';
@@ -27,6 +26,7 @@ import { useDocumentContext } from '@/editor/DocumentContext';
 import { useDocLintConfig } from '@/editor/lint-config-client';
 import { useDocDiagnostics } from '@/editor/useDocDiagnostics';
 import { useDocLinkFindings } from '@/editor/validation-audit-client';
+import { AlertTriangle, Clock, Link2, ListTree, MessageSquare, Network } from '@/lib/host-icons';
 import { useSingleFileMode } from '@/lib/single-file-mode';
 import { cn } from '@/lib/utils';
 import { type DocProblemCounts, patchDocValidationSource } from '@/lib/validation-store';

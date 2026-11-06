@@ -24,6 +24,7 @@ import { useDocumentContext } from '@/editor/DocumentContext';
 import { useGitSyncStatusDetailed } from '@/hooks/use-git-sync-status';
 import { useTrailingOverflow } from '@/hooks/use-trailing-overflow';
 import { authPromptStore } from '@/lib/auth-prompt-store';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import {
   buildDocShareInput,
   buildFolderShareInput,
@@ -214,11 +215,12 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
     }
   });
   const badgesFolded = (foldsBadges || singleFile) && actionsOverflowed;
+  const bbEditorHost = isBbEditorHost();
 
   const renderTrailingActions = (onClickWhenNoRemote: ShareButtonProps['onClickWhenNoRemote']) => (
     <>
       <PresenceBar {...presence} />
-      {!singleFile && (
+      {!bbEditorHost && !singleFile && (
         <ShareButton
           input={shareInput}
           onClickWhenNoRemote={onClickWhenNoRemote}
@@ -230,7 +232,7 @@ export function AppHeader({ onOpenSearch }: AppHeaderProps) {
         onSetIdentity={() => authPromptStore.request('identity')}
       />
       {!singleFile && <SettingsButton />}
-      <HelpPopover />
+      {bbEditorHost ? null : <HelpPopover />}
     </>
   );
 

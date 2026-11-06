@@ -1,4 +1,5 @@
 import type { TerminalCli, TerminalLaunchCommand } from '@inkeep/open-knowledge-core/handoff';
+import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { routeNoteWindowActionToMain } from '@/lib/note-window-main-actions';
 
 const TERMINAL_LAUNCH_EVENT = 'open-knowledge:terminal-launch';
@@ -47,6 +48,7 @@ export function requestTerminalLaunch(
   options?: TerminalLaunchOptions,
   target: LaunchTarget = defaultTarget(),
 ): void {
+  if (isBbEditorHost()) return;
   const stage = options?.stage === true;
   if (routeNoteWindowActionToMain({ kind: 'terminal-launch', prompt, cli, stage }, target)) return;
   dispatchLaunch(target, {
@@ -62,6 +64,7 @@ export function requestTerminalCommandLaunch(
   request: TerminalCommandLaunchRequest,
   target: LaunchTarget = defaultTarget(),
 ): void {
+  if (isBbEditorHost()) return;
   dispatchLaunch(target, { kind: 'command', ...request });
 }
 

@@ -18,7 +18,6 @@ import {
 } from '@inkeep/open-knowledge-core/handoff';
 import { useLingui } from '@lingui/react/macro';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowUpRight, Check, Search, TriangleAlert, WifiOff } from 'lucide-react';
 import { type ReactNode, useEffect, useEffectEvent, useRef, useState } from 'react';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
 import {
@@ -64,6 +63,7 @@ import {
 } from '@/lib/agent-connections';
 import { followupHintText } from '@/lib/agent-followup-hint';
 import { isTargetOfferedOnHost, VISIBLE_TARGETS } from '@/lib/handoff/targets';
+import { ArrowUpRight, Check, Search, TriangleAlert, WifiOff } from '@/lib/host-icons';
 import { useWorkspace } from '@/lib/use-workspace';
 import {
   type ApplyConnections,

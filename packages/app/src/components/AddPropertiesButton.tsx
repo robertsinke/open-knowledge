@@ -2,10 +2,10 @@
 
 import { plural } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ListPlus } from 'lucide-react';
 import { Badge, NOTIFICATION_BADGE_MAX } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button.tsx';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ListPlus } from '@/lib/host-icons';
 import { cn } from '@/lib/utils';
 
 export function AddPropertiesButton({

@@ -1,9 +1,9 @@
 import type { AttachmentPart } from '@inkeep/open-knowledge-core/acp/thread-protocol';
 import { useLingui } from '@lingui/react/macro';
-import { X } from 'lucide-react';
 import { createContext, type ReactNode, use } from 'react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { X } from '@/lib/host-icons';
 
 export type ImagePreview = { readonly src: string; readonly name: string };
 

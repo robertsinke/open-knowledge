@@ -28,7 +28,6 @@ import {
   type FileTree as PierreFileTreeModel,
 } from '@pierre/trees';
 import { FileTree as PierreFileTree, useFileTree } from '@pierre/trees/react';
-import { Info, RefreshCw, TriangleAlert } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import {
   type DragEvent as ReactDragEvent,
@@ -209,6 +208,7 @@ import {
   subscribeToFileTreeMenuActionRename,
 } from '@/lib/file-tree-menu-action-events';
 import { importTemplate } from '@/lib/folder-config-api';
+import { Info, RefreshCw, TriangleAlert } from '@/lib/host-icons';
 import { isOverlayLayerOpen } from '@/lib/overlay-layers';
 import { parseServerResponse, parseSuccessOrWarn } from '@/lib/parse-server-response';
 import { revealInFileManagerLabel, trashNounLabel } from '@/lib/platform-labels';
@@ -807,7 +807,7 @@ export function FileTree({ ref }: { ref?: Ref<FileTreeHandle | null> }) {
     reconcileLocalRemoval,
     reconcileLocalRename,
   } = useDocumentContext();
-  const { notifySidebarFileSelected, cover: filesCover } = useSidebar();
+  const { notifySidebarFileSelected, cover: filesCover, state: sidebarState } = useSidebar();
   const { resolvedTheme } = useTheme();
   const { addPage, pageMeta, pages } = usePageList();
   const { okignoreBinding, merged } = useConfigContext();
@@ -2146,6 +2146,14 @@ export function FileTree({ ref }: { ref?: Ref<FileTreeHandle | null> }) {
         });
         emitDocumentsChanged(['files']);
         navigateWithPulse({ kind: 'folder', folderPath: createdPath });
+      }
+
+      // A collapsed sidebar is inert, so the rename field cannot keep focus and
+      // the cancel path deletes the file the user just asked for.
+      if (sidebarState === 'collapsed') {
+        setBusyPath(null);
+        busyPathRef.current = null;
+        return;
       }
 
       let disposed = false;

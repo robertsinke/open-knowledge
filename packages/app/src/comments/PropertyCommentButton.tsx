@@ -1,9 +1,9 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { MessageSquarePlus } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
+import { MessageSquarePlus } from '@/lib/host-icons';
 import { useCommentedDocName } from './CommentedDocContext';
 import { propertyAddress } from './comment-chips';
 import { capturePropertyValueSelection } from './property-value-selection';

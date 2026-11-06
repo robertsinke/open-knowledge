@@ -8,7 +8,6 @@ import {
 } from '@inkeep/open-knowledge-core/handoff';
 import type { TerminalPlacement } from '@inkeep/open-knowledge-core/terminal-layout';
 import { useLingui } from '@lingui/react/macro';
-import { SquareTerminalIcon } from 'lucide-react';
 import {
   type CSSProperties,
   lazy,
@@ -84,6 +83,7 @@ import {
   writeAgentsPanelLevel,
   writeDockSessionOrder,
 } from '@/lib/dock-session-persistence';
+import { SquareTerminalIcon } from '@/lib/host-icons';
 import { matchesPrimaryModifier, type ShortcutPlatform } from '@/lib/keyboard-shortcuts';
 import { subscribeLocalMenuAction } from '@/lib/local-menu-action-bus';
 import type { NewSessionChoice } from '@/lib/new-session-choice';

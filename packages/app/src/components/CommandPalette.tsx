@@ -10,7 +10,6 @@ import {
   semanticProviderErrorBlocks,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import { Check, FileText, Folder, GitBranch, Hash, Sparkles } from 'lucide-react';
 import {
   type Dispatch,
   Fragment,
@@ -95,6 +94,7 @@ import { hashFromDocName } from '@/lib/doc-hash';
 import { runWithToast as runWithToastBase } from '@/lib/error-state';
 import { openExternalUrl as openExternalUrlViaHost } from '@/lib/external-link';
 import { isTargetOfferedOnHost, VISIBLE_TARGETS } from '@/lib/handoff/targets';
+import { Check, FileText, Folder, GitBranch, Hash, Sparkles } from '@/lib/host-icons';
 import {
   formatShortcut,
   formatShortcutLabel,

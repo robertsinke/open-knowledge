@@ -8,7 +8,6 @@ import {
   isFrontmatterValueEmpty,
 } from '@inkeep/open-knowledge-core/frontmatter/schema';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { AlertTriangle, GripVertical, Trash2, X } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import {
@@ -41,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { AlertTriangle, GripVertical, Trash2, X } from '@/lib/host-icons';
 
 export interface AddDraft {
   name: string;

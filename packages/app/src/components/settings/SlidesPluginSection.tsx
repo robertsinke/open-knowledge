@@ -1,5 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { ArrowUpRight, TerminalIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CopyButton } from '@/components/CopyButton';
 import {
@@ -9,6 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { dispatchExternalLinkClick } from '@/lib/external-link';
+import { ArrowUpRight, TerminalIcon } from '@/lib/host-icons';
 import { isSettingsHashOpen } from '@/lib/use-settings-route';
 import { SettingsSectionHeader } from './SettingsSectionHeader';
 

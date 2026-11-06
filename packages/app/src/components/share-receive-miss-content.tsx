@@ -3,15 +3,6 @@ import type {
   ShareTargetStatusResponse,
 } from '@inkeep/open-knowledge-core/schemas/api';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  ArrowDownToLine,
-  FilePen,
-  FileQuestion,
-  FileX2,
-  FolderOpen,
-  MapPin,
-  RefreshCw,
-} from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -23,6 +14,15 @@ import {
   useSyncModeWriter,
 } from '@/hooks/use-enable-sync-with-confirm';
 import { type GitSyncStatus, useGitSyncStatus } from '@/hooks/use-git-sync-status';
+import {
+  ArrowDownToLine,
+  FilePen,
+  FileQuestion,
+  FileX2,
+  FolderOpen,
+  MapPin,
+  RefreshCw,
+} from '@/lib/host-icons';
 import type { PendingReceiveNav } from '@/lib/share/pending-receive-nav-store';
 import { triggerSync } from '@/lib/trigger-sync';
 import { EnableSyncConfirmDialog } from './EnableSyncConfirmDialog';

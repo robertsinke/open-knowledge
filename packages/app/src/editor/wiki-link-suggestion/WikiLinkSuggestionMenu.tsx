@@ -1,7 +1,7 @@
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { FilePlus2 } from 'lucide-react';
 import { useEffect, useId, useRef } from 'react';
+import { FilePlus2 } from '@/lib/host-icons';
 import type { WikiLinkSuggestionItem } from '../extensions/wiki-link-suggestion';
 import { getFileIcon } from '../registry/file-icons';
 

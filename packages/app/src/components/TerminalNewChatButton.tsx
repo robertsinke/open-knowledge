@@ -1,13 +1,5 @@
 import { TERMINAL_CLIS, type TerminalCli } from '@inkeep/open-knowledge-core/handoff';
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  Bot,
-  CheckIcon,
-  ChevronDownIcon,
-  PlusIcon,
-  SlidersHorizontal,
-  SquareTerminalIcon,
-} from 'lucide-react';
 import { useState } from 'react';
 import { RegisteredAgentIcon } from '@/components/acp/RegisteredAgentIcon';
 import { AgentSplitButton } from '@/components/handoff/AgentSplitButton';
@@ -26,6 +18,14 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAgentCatalogQuery } from '@/lib/acp/catalog';
 import type { RegisteredAgent } from '@/lib/acp/registered-agents';
+import {
+  Bot,
+  CheckIcon,
+  ChevronDownIcon,
+  PlusIcon,
+  SlidersHorizontal,
+  SquareTerminalIcon,
+} from '@/lib/host-icons';
 import type { NewSessionChoice } from '@/lib/new-session-choice';
 import { cn } from '@/lib/utils';
 

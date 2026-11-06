@@ -1,12 +1,4 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  CheckCheck,
-  ChevronDown,
-  CircleDot,
-  FileText,
-  FoldVertical,
-  UnfoldVertical,
-} from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,6 +12,14 @@ import {
   PanelTitle,
 } from '@/components/ui/panel';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  CheckCheck,
+  ChevronDown,
+  CircleDot,
+  FileText,
+  FoldVertical,
+  UnfoldVertical,
+} from '@/lib/host-icons';
 import { CommentSendFooter } from './CommentSendFooter';
 import { docBasename } from './comment-chips';
 import { groupByDoc } from './queue-grouping';

@@ -7,6 +7,7 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import type { EditorState } from '@tiptap/pm/state';
 import type { ChainedCommands, Editor } from '@tiptap/react';
+import type { ReactNode } from 'react';
 import {
   Code2,
   Heading1,
@@ -21,8 +22,7 @@ import {
   Smile,
   Superscript,
   Table2,
-} from 'lucide-react';
-import type { ReactNode } from 'react';
+} from '@/lib/host-icons';
 import { setPendingAutoOpen } from './component-items';
 import { openEmojiPickerForEditor } from './emoji-picker-event';
 

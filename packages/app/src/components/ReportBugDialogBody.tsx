@@ -11,14 +11,6 @@ import {
 } from '@inkeep/open-knowledge-core/logger-types';
 import { formatRelativeAge } from '@inkeep/open-knowledge-core/utils/relative-time';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
-import {
-  AlertCircleIcon,
-  ArchiveIcon,
-  ChevronRightIcon,
-  ExpandIcon,
-  ShieldIcon,
-  TriangleAlertIcon,
-} from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { BugReportPreviousReports } from '@/components/BugReportHistory';
 import { ImageAttachmentTextarea, useImageAttachmentIntake } from '@/components/ImageAttachments';
@@ -43,6 +35,14 @@ import { bugReportSendManager } from '@/lib/bug-report-send-manager';
 import { formatBundleSize, zipBasename } from '@/lib/bug-report-support';
 import { okCliCommandName } from '@/lib/channel-cli-copy';
 import { commitContactEmail } from '@/lib/contact-email-store';
+import {
+  AlertCircleIcon,
+  ArchiveIcon,
+  ChevronRightIcon,
+  ExpandIcon,
+  ShieldIcon,
+  TriangleAlertIcon,
+} from '@/lib/host-icons';
 import { isImageAttachmentType } from '@/lib/image-attachments';
 import { revealInFileManagerLabel } from '@/lib/platform-labels';
 import { isValidContactEmail } from '@/lib/validate-email';

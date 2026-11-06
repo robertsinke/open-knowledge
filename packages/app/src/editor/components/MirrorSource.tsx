@@ -1,5 +1,5 @@
 import { Trans, useLingui } from '@lingui/react/macro';
-import { CopyPlus } from 'lucide-react';
+import { CopyPlus } from '@/lib/host-icons';
 import { authoredText } from '../utils/authored-text.ts';
 
 interface MirrorSourceProps {

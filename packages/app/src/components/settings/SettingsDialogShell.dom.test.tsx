@@ -3,6 +3,7 @@ import type { DocNoticeWire } from '@inkeep/open-knowledge-core/schemas/api';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 import { createServedBindingLog } from '@/test-utils/served-binding.test-helper';
 import {
   expectVisualClassTokens,
@@ -137,6 +138,7 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    clearBbEditorHost();
     resetProbe();
     mockUserBinding = null;
     mockUserSynced = false;
@@ -213,6 +215,33 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
       screen.getByTestId('settings-sidebar-item-preferences').getAttribute('aria-current'),
     ).toBe('page');
     expect(probeProps.at(-1)?.activeId).toBe('preferences');
+  });
+
+  test('on the BB host, the open dialog shows User, This project, Plugins, and Integrations', async () => {
+    markBbEditorHost();
+    mockDesktopPresent = true;
+    const user = userEvent.setup();
+    render(<SettingsDialogShell open onOpenChange={() => {}} />);
+
+    expect(screen.getByText('User')).toBeTruthy();
+    expect(screen.getByText('This project')).toBeTruthy();
+    expect(screen.getAllByText('Plugins').length).toBeGreaterThan(0);
+    expect(screen.getByText('Integrations')).toBeTruthy();
+    expect(screen.queryByText('Agents')).toBeNull();
+    expect(screen.queryByTestId('settings-sidebar-item-agent-connections')).toBeNull();
+    expect(screen.queryByTestId('settings-sidebar-item-terminal')).toBeNull();
+
+    await user.click(screen.getByTestId('settings-sidebar-item-sync'));
+    expect(probeProps.at(-1)?.activeId).toBe('sync');
+  });
+
+  test('with the host flag off, the open dialog keeps Agents', () => {
+    clearBbEditorHost();
+    render(<SettingsDialogShell open onOpenChange={() => {}} />);
+    expect(screen.getByText('Agents')).toBeTruthy();
+    expect(screen.getByText('User')).toBeTruthy();
+    expect(screen.getByText('This project')).toBeTruthy();
+    expect(screen.queryByTestId('settings-bb-server')).toBeNull();
   });
 
   test('the retired configure-agents deep link redirects to the merged Agents page in one hop', () => {

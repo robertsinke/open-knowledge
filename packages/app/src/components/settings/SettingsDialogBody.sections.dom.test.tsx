@@ -3,6 +3,12 @@ import { createContext, type ReactNode, use, useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import {
+  bbDeployedOriginCurrent,
+  bbDeployedOriginRead,
+  bbDeployedOriginSet,
+} from '@/lib/bb-deployed-origin';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 import { renderLinguiTemplate } from '@/test-utils/lingui-mock';
 import { renderSettingsBody } from '@/test-utils/render-settings-body.test-helper';
 
@@ -367,6 +373,7 @@ async function renderBody(
 describe('SettingsDialogBody section runtime dispatch', () => {
   beforeEach(() => {
     cleanup();
+    clearBbEditorHost();
     syncStatus = null;
     projectLocalConfig = { autoSync: { enabled: true } };
     projectLocalSynced = true;
@@ -545,6 +552,78 @@ describe('SettingsDialogBody section runtime dispatch', () => {
       // biome-ignore lint/suspicious/noExplicitAny: test-only global teardown.
       (window as any).okDesktop = undefined;
     }
+  });
+
+  test('on the BB host, sync and sharing shows the server choice and the sync configuration', async () => {
+    markBbEditorHost();
+    const posted: unknown[] = [];
+    const spy = vi.spyOn(window.parent, 'postMessage').mockImplementation((data: unknown) => {
+      posted.push(data);
+    });
+    try {
+      await renderBody({ activeId: 'sync' });
+      expect(screen.getByTestId('settings-bb-server')).toBeTruthy();
+      expect(screen.getByTestId('settings-sync-sharing').textContent ?? '').toContain(
+        'GitHub sync for this project is a BB setting.',
+      );
+      expect(screen.getByText('Config sharing')).toBeTruthy();
+      expect(screen.queryByTestId('settings-sync-section')).toBeNull();
+      expect(posted).toContainEqual(bbDeployedOriginRead());
+
+      act(() => {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: bbDeployedOriginCurrent('https://evil.example'),
+            source: null,
+          }),
+        );
+      });
+      expect((screen.getByTestId('settings-bb-server-origin') as HTMLInputElement).value).toBe('');
+
+      act(() => {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: bbDeployedOriginCurrent('https://kb.example'),
+            source: window,
+          }),
+        );
+      });
+      const origin = screen.getByTestId('settings-bb-server-origin') as HTMLInputElement;
+      expect(origin.value).toBe('https://kb.example');
+
+      fireEvent.change(origin, { target: { value: 'https://notes.example/kb' } });
+      fireEvent.click(screen.getByTestId('settings-bb-server-save'));
+      expect(origin.value).toBe('https://notes.example');
+      expect(posted).toContainEqual(bbDeployedOriginSet('https://notes.example'));
+
+      fireEvent.change(origin, { target: { value: 'javascript:alert(1)' } });
+      fireEvent.click(screen.getByTestId('settings-bb-server-save'));
+      expect(screen.getByTestId('settings-bb-server-error').textContent).toMatch(/http\(s\)/u);
+      expect(
+        posted.some(
+          (message) =>
+            typeof message === 'object' &&
+            message !== null &&
+            'origin' in message &&
+            message.origin === 'javascript:alert(1)',
+        ),
+      ).toBe(false);
+
+      fireEvent.change(origin, { target: { value: '   ' } });
+      fireEvent.click(screen.getByTestId('settings-bb-server-save'));
+      expect(posted).toContainEqual(bbDeployedOriginSet(''));
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  test('with the host flag off, sync and sharing has no BB server choice', async () => {
+    clearBbEditorHost();
+    syncStatus = { state: 'dormant', hasRemote: false, syncEnabled: false };
+    await renderBody({ activeId: 'sync' });
+    expect(screen.queryByTestId('settings-bb-server')).toBeNull();
+    expect(screen.getByText('Sync & sharing')).toBeTruthy();
+    expect(screen.getByTestId('settings-sync-section')).toBeTruthy();
   });
 
   test('sync page stacks the config-sharing block under the sync controls', async () => {

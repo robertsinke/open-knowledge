@@ -8,12 +8,15 @@ import {
   type PluginNavPanelProps,
   type PluginSettingsSectionProps,
 } from "@get-bb/plugin-sdk/app";
+import {
+  bbDeployedOriginCurrent,
+  deployedOriginSetting,
+  readBbDeployedOriginMessage,
+} from "../packages/app/src/lib/bb-deployed-origin";
 import { markBbEditorHost } from "../packages/app/src/lib/bb-editor-host";
 import type { rpcContract } from "./server";
 
 markBbEditorHost();
-
-const EDITOR_SOURCE = "../packages/app/src";
 
 export const EDITOR_ORIGIN_POLL_MS = 15_000;
 
@@ -39,7 +42,7 @@ function editorFrameUrl(editorUrl: string, documentPath: string | null): string 
 function EditorSettings(_props: PluginSettingsSectionProps) {
   return (
     <p>
-      Editor settings from {EDITOR_SOURCE} appear here. The terminal is omitted.
+      Use the settings gear in the editor for this project. The terminal is omitted.
       GitHub sync is a BB setting, not an OpenKnowledge setting.
     </p>
   );
@@ -58,30 +61,69 @@ function EditorSurface({
 
   useEffect(() => {
     if (workspaceRoot === undefined || workspaceRoot === null) return;
+    const root = workspaceRoot;
     let active = true;
-    let pending = false;
+    let request = 0;
+    let framedOrigin: string | null = null;
+    let deployedOrigin = "";
     const load = () => {
-      if (pending) return;
-      pending = true;
-      void rpc.call("editorOrigin", { workspaceRoot }).then(
+      const id = ++request;
+      void rpc.call("editorOrigin", { workspaceRoot: root }).then(
         (next) => {
-          pending = false;
-          if (!active) return;
+          if (!active || id !== request) return;
+          framedOrigin = next.origin;
+          deployedOrigin = next.source === "deployed" ? next.origin : "";
           setError(null);
           setUrl(editorFrameUrl(next.editorUrl, documentPath));
         },
         (reason: unknown) => {
-          pending = false;
-          if (!active) return;
+          if (!active || id !== request) return;
           setError(reason instanceof Error ? reason.message : "Editor entry failed");
         },
       );
     };
+    const onMessage = (event: MessageEvent) => {
+      if (framedOrigin === null || event.origin !== framedOrigin) return;
+      const message = readBbDeployedOriginMessage(event.data);
+      if (!message) return;
+      if (message.intent === "read") {
+        const source = event.source;
+        const current = bbDeployedOriginCurrent(deployedOrigin);
+        if (source instanceof Window) {
+          source.postMessage(current, event.origin);
+        } else if (
+          source !== null &&
+          typeof source.postMessage === "function" &&
+          !("start" in source)
+        ) {
+          (source as unknown as Window).postMessage(current, event.origin);
+        }
+        return;
+      }
+      if (message.intent !== "set") return;
+      void applySet(message.origin);
+    };
+    async function applySet(raw: string): Promise<void> {
+      let next: string | null;
+      try {
+        next = deployedOriginSetting(raw);
+      } catch {
+        return;
+      }
+      try {
+        await rpc.call("setDeployedOrigin", { workspaceRoot: root, origin: next });
+      } catch {
+        return;
+      }
+      if (active) load();
+    }
+    window.addEventListener("message", onMessage);
     load();
     const timer = setInterval(load, EDITOR_ORIGIN_POLL_MS);
     return () => {
       active = false;
       clearInterval(timer);
+      window.removeEventListener("message", onMessage);
     };
   }, [documentPath, rpc, workspaceRoot]);
 
@@ -188,7 +230,7 @@ export default definePluginApp((app) => {
     id: "editor",
     title: "Editor",
     description:
-      "OpenKnowledge editor settings. The terminal is omitted. GitHub sync stays in BB.",
+      "Use the settings gear in the editor. The terminal is omitted. GitHub sync stays in BB.",
     component: EditorSettings,
   });
   app.slots.navPanel({

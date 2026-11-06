@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { defineRpcContract, type BbPluginApi } from "@get-bb/plugin-sdk";
 import { z } from "zod";
+import { deployedOriginSetting } from "../packages/app/src/lib/bb-deployed-origin";
 
 const execFileAsync = promisify(execFile);
 
@@ -32,6 +33,15 @@ export const rpcContract = defineRpcContract({
       editorUrl: z.string(),
       mcpUrl: z.string(),
       source: z.enum(["deployed", "local"]),
+    }),
+  },
+  setDeployedOrigin: {
+    input: z.object({
+      workspaceRoot: z.string().min(1),
+      origin: z.string().nullable(),
+    }),
+    output: z.object({
+      origin: z.string().nullable(),
     }),
   },
 });
@@ -380,6 +390,24 @@ export function readDeployedOriginValue(value: unknown): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
+export async function writeDeployedOrigin(
+  kv: {
+    set(key: string, value: unknown): Promise<void>;
+    delete(key: string): Promise<void>;
+  },
+  workspaceRoot: string,
+  origin: string | null,
+): Promise<string | null> {
+  const key = deployedOriginKey(workspaceRoot);
+  const next = deployedOriginSetting(origin ?? "");
+  if (next === null) {
+    await kv.delete(key);
+    return null;
+  }
+  await kv.set(key, next);
+  return next;
+}
+
 export default async function plugin(bb: BbPluginApi) {
   bb.onDispose(() => {
     stopWorkspaceServerLockReader();
@@ -395,6 +423,10 @@ export default async function plugin(bb: BbPluginApi) {
       const result = await resolveEditorOrigin(root, deps);
       await bb.storage.kv.set(mcpUrlKey(root), result.mcpUrl);
       return result;
+    },
+    async setDeployedOrigin(input) {
+      const origin = await writeDeployedOrigin(bb.storage.kv, input.workspaceRoot, input.origin);
+      return { origin };
     },
   });
 }

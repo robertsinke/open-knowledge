@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { clearBbEditorHost, markBbEditorHost } from '@/lib/bb-editor-host';
 import { renderSettingsBody } from '@/test-utils/render-settings-body.test-helper';
 
 const preloadCalls: string[] = [];
@@ -43,6 +44,7 @@ describe('SettingsButton runtime behavior', () => {
   afterEach(() => {
     vi.useRealTimers();
     cleanup();
+    clearBbEditorHost();
     preloadCalls.length = 0;
     window.location.hash = '';
   });
@@ -59,6 +61,25 @@ describe('SettingsButton runtime behavior', () => {
     expect(button.tagName).toBe('BUTTON');
     expect(button.textContent).toBe('Settings');
     expect(button.querySelector('svg')).not.toBeNull();
+  });
+
+  test('on the BB host, the gear opens the in-editor settings hash', async () => {
+    markBbEditorHost();
+    await renderSettingsButton();
+    act(() => {
+      fireEvent.click(screen.getByTestId('header-settings-button'));
+    });
+    expect(window.location.hash).toBe('#settings');
+    expect(window.location.pathname).toBe('/');
+  });
+
+  test('with the host flag off, the gear still opens the in-editor settings hash', async () => {
+    clearBbEditorHost();
+    await renderSettingsButton();
+    act(() => {
+      fireEvent.click(screen.getByTestId('header-settings-button'));
+    });
+    expect(window.location.hash).toBe('#settings');
   });
 
   test('click opens the canonical settings hash and cancels a pending preload', async () => {

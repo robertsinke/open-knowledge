@@ -4,15 +4,20 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, writeFi
 import { hostname, tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import { cleanup } from "@testing-library/react";
+import { cleanup, waitFor } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { loadPluginApp, renderSlot } from "@get-bb/plugin-sdk/testing/app";
+import {
+  bbDeployedOriginCurrent,
+  bbDeployedOriginRead,
+  bbDeployedOriginSet,
+} from "../packages/app/src/lib/bb-deployed-origin";
 import {
   isBbEditorHost,
   markBbEditorHost,
 } from "../packages/app/src/lib/bb-editor-host";
 import { EDITOR_ORIGIN_POLL_MS, editorDocumentHash, ThreadEditor } from "./app";
-import {
+import plugin, {
   canonicalWorkspaceRoot,
   deployedOriginKey,
   editorOriginFrom,
@@ -25,6 +30,7 @@ import {
   resolveEditorOrigin,
   runWorkspaceInit,
   stopWorkspaceServerLockReader,
+  writeDeployedOrigin,
   type ProjectServerDeps,
 } from "./server";
 
@@ -142,6 +148,13 @@ describe("OpenKnowledge editor plugin", () => {
     await slot.findByText(/The terminal is omitted/u);
     expect(slot.container.textContent).toContain("GitHub sync is a BB setting");
     expect(slot.container.textContent).not.toMatch(/terminal settings/iu);
+  });
+
+  it("keeps the left-rail editor section free of project field controls", async () => {
+    const slot = renderSlot(app.settingsSections[0]!, {});
+    await slot.findByText(/settings gear/u);
+    expect(slot.container.querySelector("input, textarea, select, button")).toBeNull();
+    expect(slot.container.textContent).not.toContain("Deployed origin");
   });
 
   it("marks this page as the BB editor host", () => {
@@ -347,9 +360,197 @@ describe("OpenKnowledge editor plugin", () => {
     expect(calls).toBe(2);
     vi.useRealTimers();
   });
+
+  it("writes a deployed origin from the iframed editor and reloads that origin", async () => {
+    vi.useRealTimers();
+    const root = tempDir("set-origin");
+    const memory = new Map<string, unknown>();
+    const kv = {
+      async set(key: string, value: unknown) {
+        memory.set(key, value);
+      },
+      async delete(key: string) {
+        memory.delete(key);
+      },
+    };
+    let originReads = 0;
+    const slot = renderSlot(
+      { component: ThreadEditor },
+      { threadId: "thr_set_origin", environment: { id: "env_set_origin" } },
+      {
+        rpc: {
+          editorOrigin: async () => {
+            originReads += 1;
+            const deployed = readDeployedOriginValue(memory.get(deployedOriginKey(root)));
+            if (deployed !== undefined) return editorOriginFrom(deployed, "deployed");
+            return editorOriginFrom("http://127.0.0.1:4173", "local");
+          },
+          setDeployedOrigin: async (input: unknown) => {
+            const body = input as { workspaceRoot: string; origin: string | null };
+            const origin = await writeDeployedOrigin(kv, body.workspaceRoot, body.origin);
+            return { origin };
+          },
+        },
+        sdk: {
+          environments: {
+            get: async () => ({ path: root }) as never,
+          },
+        },
+      },
+    );
+    const editor = await slot.findByTitle("OpenKnowledge editor");
+    expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4173/bb.html");
+    const readsAfterLoad = originReads;
+
+    const child = document.createElement("iframe");
+    document.body.appendChild(child);
+    const childWindow = child.contentWindow;
+    if (childWindow === null) throw new Error("missing frame window");
+    const replies: unknown[] = [];
+    vi.spyOn(childWindow, "postMessage").mockImplementation((data: unknown) => {
+      replies.push(data);
+    });
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbDeployedOriginRead(),
+        source: childWindow,
+      }),
+    );
+    expect(replies).toEqual([bbDeployedOriginCurrent("")]);
+
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "https://evil.example",
+        data: bbDeployedOriginSet("https://evil.example"),
+      }),
+    );
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbDeployedOriginSet("javascript:alert(1)"),
+      }),
+    );
+    expect(memory.size).toBe(0);
+    expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4173/bb.html");
+
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbDeployedOriginSet("https://notes.example/kb"),
+      }),
+    );
+    await waitFor(() => {
+      expect(slot.getByTitle("OpenKnowledge editor").getAttribute("src")).toBe(
+        "https://notes.example/bb.html",
+      );
+    });
+    expect(originReads).toBe(readsAfterLoad + 1);
+    expect(memory.get(deployedOriginKey(root))).toBe("https://notes.example");
+    const resolved = await resolveEditorOrigin(
+      root,
+      deps({
+        deployedOrigin: async (workspaceRoot) =>
+          readDeployedOriginValue(memory.get(deployedOriginKey(workspaceRoot))),
+        readLiveLock: async () => {
+          throw new Error("local server");
+        },
+      }),
+    );
+    expect(resolved.origin).toBe("https://notes.example");
+    expect(resolved.source).toBe("deployed");
+
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "http://127.0.0.1:4173",
+        data: bbDeployedOriginSet("https://later.example"),
+      }),
+    );
+    await new Promise((resolveDelay) => setTimeout(resolveDelay, 20));
+    expect(memory.get(deployedOriginKey(root))).toBe("https://notes.example");
+
+    window.dispatchEvent(
+      new MessageEvent("message", {
+        origin: "https://notes.example",
+        data: bbDeployedOriginSet(""),
+      }),
+    );
+    await waitFor(() => {
+      expect(slot.getByTitle("OpenKnowledge editor").getAttribute("src")).toBe(
+        "http://127.0.0.1:4173/bb.html",
+      );
+    });
+    expect(memory.has(deployedOriginKey(root))).toBe(false);
+  });
 });
 
+interface DeployedOriginHandler {
+  setDeployedOrigin(input: {
+    workspaceRoot: string;
+    origin: string | null;
+  }): Promise<{ origin: string | null }>;
+}
+
 describe("workspace project server", () => {
+  it("stores a deployed origin from the settings RPC on the key U1 reads", async () => {
+    const root = tempDir("rpc-origin");
+    const memory = new Map<string, unknown>();
+    const registered: { current: DeployedOriginHandler | null } = { current: null };
+    await plugin({
+      onDispose() {},
+      storage: {
+        kv: {
+          get: async (key: string) => memory.get(key),
+          set: async (key: string, value: unknown) => {
+            memory.set(key, value);
+          },
+          delete: async (key: string) => {
+            memory.delete(key);
+          },
+          list: async () => [...memory.keys()],
+        },
+      },
+      rpc: {
+        register(_contract: unknown, impl: DeployedOriginHandler) {
+          registered.current = impl;
+        },
+      },
+    } as unknown as Parameters<typeof plugin>[0]);
+    const handlers = registered.current;
+    if (handlers === null) throw new Error("setDeployedOrigin was not registered");
+    await expect(
+      handlers.setDeployedOrigin({ workspaceRoot: root, origin: "javascript:alert(1)" }),
+    ).rejects.toThrow(/http\(s\)/u);
+    expect(memory.size).toBe(0);
+    await expect(
+      handlers.setDeployedOrigin({
+        workspaceRoot: root,
+        origin: "https://user:secret@notes.example/kb",
+      }),
+    ).rejects.toThrow(/http\(s\)/u);
+    const stored = await handlers.setDeployedOrigin({
+      workspaceRoot: root,
+      origin: "https://notes.example/kb",
+    });
+    expect(stored.origin).toBe("https://notes.example");
+    expect(memory.get(deployedOriginKey(root))).toBe("https://notes.example");
+    const resolved = await resolveEditorOrigin(
+      root,
+      deps({
+        deployedOrigin: async (workspaceRoot) =>
+          readDeployedOriginValue(memory.get(deployedOriginKey(workspaceRoot))),
+      }),
+    );
+    expect(resolved).toMatchObject({ origin: "https://notes.example", source: "deployed" });
+    expect(await handlers.setDeployedOrigin({ workspaceRoot: root, origin: "" })).toEqual({
+      origin: null,
+    });
+    expect(memory.has(deployedOriginKey(root))).toBe(false);
+    expect(await handlers.setDeployedOrigin({ workspaceRoot: root, origin: null })).toEqual({
+      origin: null,
+    });
+  });
+
   it("stores a deployed origin per workspace root", () => {
     const first = tempDir("key-a");
     const second = tempDir("key-b");

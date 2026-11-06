@@ -1,8 +1,17 @@
 import type { ConfigBinding } from '@inkeep/open-knowledge-core/config/bind-config-doc';
 import type { OkignoreBinding } from '@inkeep/open-knowledge-core/config/bind-okignore-doc';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { type ComponentType, lazy } from 'react';
+import { type ComponentType, lazy, useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  bbDeployedOriginRead,
+  bbDeployedOriginSet,
+  DEPLOYED_ORIGIN_ERROR,
+  deployedOriginSetting,
+  readBbDeployedOriginMessage,
+} from '@/lib/bb-deployed-origin';
 import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { TriangleAlert } from '@/lib/host-icons';
 import { lazyWithPreload } from '@/lib/lazy-with-preload';
@@ -128,6 +137,75 @@ function UserConfigPending({ loadFailed }: { loadFailed: boolean }) {
   );
 }
 
+function BbServerChoice() {
+  const [value, setValue] = useState('');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== window.parent) return;
+      const message = readBbDeployedOriginMessage(event.data);
+      if (message?.intent !== 'current') return;
+      setValue(message.origin);
+      setError(null);
+    };
+    window.addEventListener('message', onMessage);
+    window.parent.postMessage(bbDeployedOriginRead(), '*');
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  function save(raw: string) {
+    try {
+      const next = deployedOriginSetting(raw);
+      setError(null);
+      setValue(next ?? '');
+      window.parent.postMessage(bbDeployedOriginSet(next ?? ''), '*');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : DEPLOYED_ORIGIN_ERROR);
+    }
+  }
+
+  return (
+    <form
+      className="space-y-3"
+      data-testid="settings-bb-server"
+      onSubmit={(event) => {
+        event.preventDefault();
+        save(value);
+      }}
+    >
+      <SettingsSectionHeader
+        titleId="settings-bb-server-title"
+        title={<Trans>Server</Trans>}
+        level="block"
+      >
+        <Trans>Leave this empty to use this workspace's local server.</Trans>
+      </SettingsSectionHeader>
+      <label htmlFor="settings-bb-server-origin" className="text-sm font-medium">
+        <Trans>Deployed origin</Trans>
+      </label>
+      <Input
+        id="settings-bb-server-origin"
+        data-testid="settings-bb-server-origin"
+        value={value}
+        inputMode="url"
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
+        onChange={(event) => setValue(event.target.value)}
+      />
+      {error ? (
+        <p role="alert" data-testid="settings-bb-server-error">
+          {error}
+        </p>
+      ) : null}
+      <Button type="submit" data-testid="settings-bb-server-save">
+        <Trans>Save server</Trans>
+      </Button>
+    </form>
+  );
+}
+
 interface SettingsDialogBodyProps {
   activeId: string;
   userBinding: ConfigBinding | null;
@@ -203,6 +281,7 @@ export function SettingsDialogBody({
         <SettingsSectionHeader titleId="settings-sync-sharing-title" title={<Trans>Sharing</Trans>}>
           <Trans>GitHub sync for this project is a BB setting.</Trans>
         </SettingsSectionHeader>
+        <BbServerChoice />
         <SharingSection />
       </section>
     );

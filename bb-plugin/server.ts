@@ -1,5 +1,6 @@
 import { execFile, spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, rmSync } from "node:fs";
+import { connect as connectTcp } from "node:net";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +12,14 @@ import {
   commentChatContextFromId,
 } from "./comment-chat";
 import { deployedOriginSetting } from "./deployed-origin";
+import {
+  ensureProxyConsent,
+  localServerPort,
+  publishedFrame,
+  shareBaseForPage,
+  viewerNeedsPublishedFrame,
+  type ProxyConsentLaunch,
+} from "./remote-frame";
 
 const execFileAsync = promisify(execFile);
 
@@ -32,6 +41,18 @@ export const startCliArgs = ["start", "--no-open-browser", "--no-auto-sync"] as 
 export const rpcContract = defineRpcContract({
   editorOrigin: {
     input: z.object({ projectId: z.string().min(1) }),
+    output: z.object({
+      origin: z.string(),
+      editorUrl: z.string(),
+      mcpUrl: z.string(),
+      source: z.enum(["deployed", "local"]),
+    }),
+  },
+  sharedEditorOrigin: {
+    input: z.object({
+      projectId: z.string().min(1),
+      pageHost: z.string().min(1),
+    }),
     output: z.object({
       origin: z.string(),
       editorUrl: z.string(),
@@ -286,14 +307,23 @@ function delay(ms: number): Promise<void> {
   return new Promise((resolveDelay) => setTimeout(resolveDelay, ms));
 }
 
-async function runWorkspaceStart(workspaceRoot: string): Promise<void> {
+async function runWorkspaceStart(
+  workspaceRoot: string,
+  launch?: ProxyConsentLaunch,
+): Promise<void> {
+  if (launch !== undefined) {
+    const current = await readWorkspaceServerLock(workspaceRoot);
+    if (current.state === "ready") {
+      throw new Error("OpenKnowledge is still running; stop it before a proxy-consent start");
+    }
+  }
   const stderrDir = mkdtempSync(join(tmpdir(), "ok-bb-start-"));
   const stderrPath = join(stderrDir, "stderr.txt");
   const stderrFd = openSync(stderrPath, "w");
-  const child = spawn(process.execPath, cliNodeArgs(startCliArgs), {
+  const child = spawn(process.execPath, cliNodeArgs([...startCliArgs, ...(launch?.args ?? [])]), {
     cwd: workspaceRoot,
     stdio: ["ignore", "ignore", stderrFd],
-    env: process.env,
+    env: launch === undefined ? process.env : { ...process.env, ...launch.env },
   });
   closeSync(stderrFd);
   child.unref();
@@ -322,6 +352,70 @@ async function runWorkspaceStart(workspaceRoot: string): Promise<void> {
   } finally {
     rmSync(stderrDir, { recursive: true, force: true });
   }
+}
+
+function portIsClosed(port: number): Promise<boolean> {
+  return new Promise((resolveClosed) => {
+    const socket = connectTcp({ host: "127.0.0.1", port });
+    const finish = (closed: boolean) => {
+      socket.removeAllListeners();
+      socket.destroy();
+      resolveClosed(closed);
+    };
+    socket.once("connect", () => finish(false));
+    socket.once("error", () => finish(true));
+  });
+}
+
+async function waitUntilPortFree(port: number): Promise<void> {
+  const deadline = Date.now() + 10_000;
+  while (Date.now() < deadline) {
+    if (await portIsClosed(port)) return;
+    await delay(100);
+  }
+  throw new Error(`Port ${port} stayed busy after OpenKnowledge stopped`);
+}
+
+async function runWorkspaceStop(workspaceRoot: string): Promise<void> {
+  const stderrDir = mkdtempSync(join(tmpdir(), "ok-bb-stop-"));
+  const stderrPath = join(stderrDir, "stderr.txt");
+  const stderrFd = openSync(stderrPath, "w");
+  let code: number | null;
+  try {
+    code = await new Promise<number | null>((resolveCode, rejectCode) => {
+      const child = spawn(process.execPath, cliNodeArgs(["stop", "--force"]), {
+        cwd: workspaceRoot,
+        stdio: ["ignore", "ignore", stderrFd],
+        env: process.env,
+      });
+      closeSync(stderrFd);
+      child.once("error", rejectCode);
+      child.once("exit", (exitCode) => resolveCode(exitCode));
+    });
+    if (code !== 0) {
+      throw new Error(`ok stop failed (${code}): ${readFileSync(stderrPath, "utf8").trim()}`);
+    }
+  } finally {
+    rmSync(stderrDir, { recursive: true, force: true });
+  }
+  const deadline = Date.now() + 20_000;
+  while (Date.now() < deadline) {
+    const lock = await readWorkspaceServerLock(workspaceRoot);
+    if (lock.state === "absent") return;
+    await delay(250);
+  }
+  throw new Error(`Timed out stopping the OpenKnowledge server at ${workspaceRoot}`);
+}
+
+async function probeProxyConsent(port: number, shareUrl: string): Promise<number> {
+  const share = new URL(shareUrl);
+  const response = await fetch(`http://127.0.0.1:${port}/bb.html`, {
+    headers: {
+      "X-Forwarded-Host": share.host,
+      "X-Forwarded-Proto": share.protocol.replace(":", ""),
+    },
+  });
+  return response.status;
 }
 
 async function runInitIsolated(workspaceRoot: string): Promise<void> {
@@ -458,12 +552,50 @@ export default async function plugin(bb: BbPluginApi) {
       return { context: commentChatContextFromId(id) };
     },
   });
+  async function originFor(projectId: string): Promise<EditorOrigin> {
+    const root = await corpusFor(projectId);
+    const result = await resolveEditorOrigin(root, deps);
+    await bb.storage.kv.set(mcpUrlKey(root), result.mcpUrl);
+    return result;
+  }
   bb.rpc.register(rpcContract, {
     async editorOrigin(input) {
+      return originFor(input.projectId);
+    },
+    async sharedEditorOrigin(input) {
+      const local = await originFor(input.projectId);
+      if (!viewerNeedsPublishedFrame(input.pageHost)) return local;
+      const port = localServerPort(local.origin);
+      if (port === null) return local;
+      const listing = await bb.sdk.plugins.callRpc({
+        pluginId: "connect",
+        method: "expose",
+        input: { port },
+        outputSchema: z.object({
+          url: z.string().min(1),
+          nextUrl: z.string().min(1).optional(),
+        }),
+      });
+      const shareUrl = shareBaseForPage(listing, input.pageHost);
       const root = await corpusFor(input.projectId);
-      const result = await resolveEditorOrigin(root, deps);
-      await bb.storage.kv.set(mcpUrlKey(root), result.mcpUrl);
-      return result;
+      await ensureProxyConsent({
+        port,
+        shareUrl,
+        probe: probeProxyConsent,
+        stop: async () => {
+          await runWorkspaceStop(root);
+          await waitUntilPortFree(port);
+        },
+        start: (launch) => runWorkspaceStart(root, launch),
+      });
+      if ((await probeProxyConsent(port, shareUrl)) === 403) {
+        throw new Error("OpenKnowledge still refuses the remote share");
+      }
+      const running = await readWorkspaceServerLock(root);
+      if (running.state !== "ready" || localServerPort(running.origin) !== port) {
+        throw new Error("OpenKnowledge restarted on a different port than the shared one");
+      }
+      return publishedFrame(local, shareUrl);
     },
     async setDeployedOrigin(input) {
       const root = await corpusFor(input.projectId);

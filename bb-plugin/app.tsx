@@ -26,9 +26,21 @@ import {
   deployedOriginSetting,
   readBbDeployedOriginMessage,
 } from "./deployed-origin";
+import { viewerNeedsPublishedFrame } from "./remote-frame";
 import type { rpcContract } from "./server";
 
 export const EDITOR_ORIGIN_POLL_MS = 15_000;
+
+function requestEditorOrigin(
+  rpc: ReturnType<typeof useRpc<typeof rpcContract>>,
+  projectId: string,
+) {
+  const pageHost = window.location.hostname;
+  if (viewerNeedsPublishedFrame(pageHost)) {
+    return rpc.call("sharedEditorOrigin", { projectId, pageHost });
+  }
+  return rpc.call("editorOrigin", { projectId });
+}
 
 type ComposerHandle = ReturnType<typeof useComposer>;
 
@@ -103,7 +115,7 @@ function EditorSettings(_props: PluginSettingsSectionProps) {
   useEffect(() => {
     if (context.projectId === null) return;
     let active = true;
-    void rpc.call("editorOrigin", { projectId: context.projectId }).then(
+    void requestEditorOrigin(rpc, context.projectId).then(
       (next) => {
         if (active) setUrl(bbSettingsFrameUrl(next.editorUrl));
       },
@@ -173,7 +185,7 @@ function EditorSurface({
     let deployedOrigin = "";
     const load = () => {
       const id = ++request;
-      void rpc.call("editorOrigin", { projectId: currentProjectId }).then(
+      void requestEditorOrigin(rpc, currentProjectId).then(
         (next) => {
           if (!active || id !== request) return;
           framedOrigin = next.origin;

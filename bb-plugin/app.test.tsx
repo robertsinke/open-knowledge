@@ -325,6 +325,23 @@ describe("OpenKnowledge editor plugin", () => {
     expect(editor.getAttribute("src")).toBe("http://127.0.0.1:4243/bb.html");
   });
 
+  it("shows a loading mark while the local editor is still starting", async () => {
+    const slot = renderSlot(
+      { component: ThreadEditor },
+      { threadId: "thr_load", environment: { id: "env_load" } },
+      {
+        context: { projectId: "proj_load", threadId: "thr_load" },
+        rpc: {
+          editorOrigin: () => new Promise(() => {}),
+        },
+      },
+    );
+    const status = await slot.findByRole("status", { name: "Loading the editor." });
+    expect(status.querySelector(".ok-editor-load-face")).not.toBeNull();
+    expect(status.querySelector(".ok-editor-load-bar")).not.toBeNull();
+    expect(slot.container.querySelector("iframe")).toBeNull();
+  });
+
   it("does not load an editor when no BB project is open", async () => {
     const slot = renderSlot(
       { component: ThreadEditor },

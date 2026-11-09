@@ -140,6 +140,93 @@ function EditorSettings(_props: PluginSettingsSectionProps) {
   );
 }
 
+const EDITOR_LOADING_MOTION = `
+@keyframes ok-editor-load-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes ok-editor-load-blink {
+  0%, 42%, 48%, 100% { transform: scaleY(1); }
+  45% { transform: scaleY(0.12); }
+}
+@keyframes ok-editor-load-bar {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(280%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ok-editor-load-face,
+  .ok-editor-load-eyes,
+  .ok-editor-load-bar { animation: none; }
+}
+`;
+
+function EditorLoading() {
+  return (
+    <div
+      role="status"
+      aria-busy="true"
+      aria-label="Loading the editor."
+      style={{
+        display: "flex",
+        flex: "1 1 auto",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+        minHeight: "12rem",
+      }}
+    >
+      <style>{EDITOR_LOADING_MOTION}</style>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
+        <svg
+          className="ok-editor-load-face"
+          width="72"
+          height="72"
+          viewBox="0 0 72 72"
+          aria-hidden="true"
+          style={{ animation: "ok-editor-load-bob 1.8s ease-in-out infinite" }}
+        >
+          <path
+            fill="#4B8BF5"
+            d="M36 7c14 0 25 8 27 22 2 15-6 28-20 31-15 3-29-6-32-20C8 24 20 7 36 7z"
+          />
+          <g
+            className="ok-editor-load-eyes"
+            style={{
+              transformOrigin: "36px 33px",
+              animation: "ok-editor-load-blink 3.2s ease-in-out infinite",
+            }}
+          >
+            <ellipse cx="27" cy="33" rx="3.1" ry="4" fill="#1E4ED8" />
+            <ellipse cx="46" cy="33" rx="3.1" ry="4" fill="#1E4ED8" />
+          </g>
+        </svg>
+        <div
+          aria-hidden="true"
+          style={{
+            width: 88,
+            height: 3,
+            overflow: "hidden",
+            borderRadius: 999,
+            background: "rgba(75, 139, 245, 0.25)",
+          }}
+        >
+          <div
+            className="ok-editor-load-bar"
+            style={{
+              width: "42%",
+              height: "100%",
+              borderRadius: 999,
+              background: "#4B8BF5",
+              animation: "ok-editor-load-bar 1.1s ease-in-out infinite",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function EditorSurface({
   projectId,
   documentPath = null,
@@ -277,7 +364,7 @@ function EditorSurface({
     };
   }, [documentPath, pluginId, projectId, rpc]);
 
-  if (projectId === undefined) return <p>Loading the editor.</p>;
+  if (projectId === undefined) return <EditorLoading />;
   if (projectId === null) return <p>No project is open for this editor.</p>;
   if (url) {
     return (
@@ -308,7 +395,7 @@ function EditorSurface({
     );
   }
   if (error) return <p>{error}</p>;
-  return <p>Loading the editor.</p>;
+  return <EditorLoading />;
 }
 
 function useResolvedProjectId(threadId: string | null): string | null | undefined {

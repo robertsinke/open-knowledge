@@ -79,6 +79,7 @@ afterEach(() => {
   dispatchComments.mockClear();
   openSession = null;
   clearBbEditorHost();
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
@@ -95,6 +96,7 @@ function parentReply(mounted: boolean): void {
 }
 
 test('footer names an open chat in the button and shortcut tooltip', async () => {
+  vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
   openSession = { kind: 'thread', agentId: 'agent', iconUrl: null };
   const { CommentSendFooter } = await import('./CommentSendFooter');
   render(
@@ -110,7 +112,25 @@ test('footer names an open chat in the button and shortcut tooltip', async () =>
   expect(screen.getByText('⇧⌘ ↵').getAttribute('title')).toBe('Send to chat (Shift Command Enter)');
 });
 
+test('the web page does not offer send to chat', async () => {
+  vi.stubGlobal('okDesktop', undefined);
+  const { CommentSendFooter } = await import('./CommentSendFooter');
+  render(
+    <CommentSendFooter
+      threadIds={['a', 'b']}
+      totalCount={4}
+      selection={<span>Bulk selection</span>}
+      testIdPrefix="comments"
+    />,
+  );
+
+  expect(screen.getByText('Bulk selection')).toBeTruthy();
+  expect(screen.queryByRole('button', { name: 'Start a new chat' })).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Send to chat' })).toBeNull();
+});
+
 test('footer shows the selection and Enter glyph, and sends the selected threads', async () => {
+  vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
   const { CommentSendFooter } = await import('./CommentSendFooter');
   render(
     <CommentSendFooter

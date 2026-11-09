@@ -578,7 +578,7 @@ export const COMMAND_IDENTITIES: readonly CommandIdentity[] = [
       'left',
       'position',
     ],
-    availability: {},
+    availability: { host: 'desktop' },
     palette: { group: 'view', visibility: 'search-only' },
   },
   {
@@ -595,7 +595,7 @@ export const COMMAND_IDENTITIES: readonly CommandIdentity[] = [
       'right',
       'position',
     ],
-    availability: {},
+    availability: { host: 'desktop' },
     palette: { group: 'view', visibility: 'search-only' },
   },
   {
@@ -630,6 +630,7 @@ export const COMMAND_IDENTITIES: readonly CommandIdentity[] = [
       'open',
     ],
     shortcutId: 'toggle-terminal-panel',
+    shortcutDesktopOnly: true,
     stateToggle: {
       showKey: 'terminalShow',
       hideKey: 'terminalHide',
@@ -646,6 +647,7 @@ export const COMMAND_IDENTITIES: readonly CommandIdentity[] = [
     labelKey: 'agentPanelShow',
     keywords: ['agent', 'agents', 'chat', 'ai', 'ask', 'panel', 'toggle', 'open', 'show', 'hide'],
     shortcutId: 'toggle-agent-panel',
+    shortcutDesktopOnly: true,
     stateToggle: {
       showKey: 'agentPanelShow',
       hideKey: 'agentPanelHide',
@@ -654,7 +656,7 @@ export const COMMAND_IDENTITIES: readonly CommandIdentity[] = [
       overrideKey: 'agentPanelAskSelection',
       overrideField: 'hasEditorSelection',
     },
-    availability: {},
+    availability: { host: 'desktop' },
     palette: { group: 'view', visibility: 'search-only' },
     menu: [{ section: 'view-panels', order: 4, accelerator: 'CmdOrCtrl+L' }],
   },

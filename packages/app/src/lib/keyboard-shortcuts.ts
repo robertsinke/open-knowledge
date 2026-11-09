@@ -189,6 +189,7 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
     title: msg`Show or hide Terminal`,
     description: msg`Toggle Terminal in its current dock.`,
     scope: msg`OK Desktop`,
+    desktopOnly: true,
     bindings: [
       {
         mac: '⌘ J',
@@ -208,7 +209,8 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
     category: 'general',
     title: msg`Show or hide agents`,
     description: msg`Toggle the right agents panel, where agent conversations live.`,
-    scope: msg`Global`,
+    scope: msg`OK Desktop`,
+    desktopOnly: true,
     bindings: [
       {
         mac: '⌘ L',
@@ -222,7 +224,8 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
     category: 'general',
     title: msg`Ask AI about selection`,
     description: msg`Stage the selected passage in the agents panel, ready to extend and send.`,
-    scope: msg`Editor selection`,
+    scope: msg`OK Desktop`,
+    desktopOnly: true,
     bindings: [
       {
         mac: '⌘ L',
@@ -236,7 +239,8 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
     category: 'general',
     title: msg`Ask AI`,
     description: msg`Open and focus the bottom Ask AI prompt composer.`,
-    scope: msg`Global`,
+    scope: msg`OK Desktop`,
+    desktopOnly: true,
     bindings: [
       {
         mac: '⇧⌘ L',
@@ -251,6 +255,7 @@ const KEYBOARD_SHORTCUT_DEFINITIONS = [
     title: msg`New session`,
     description: msg`Open a new session with your preferred AI. With text selected, stage it there instead of running it.`,
     scope: msg`OK Desktop`,
+    desktopOnly: true,
     bindings: [
       {
         mac: '⇧⌘ J',

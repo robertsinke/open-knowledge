@@ -209,6 +209,10 @@ let innerLayoutReads = 0;
 let lastDeliveredDocPanelSize: { asPercentage: number; inPixels: number } | null = null;
 
 beforeEach(() => {
+  vi.stubGlobal('okDesktop', {
+    config: { ptyAvailable: true },
+    editor: { notifyViewMenuStateChanged: () => {} },
+  });
   mockPanelPercentage = null;
   mockPanelPx = null;
   innerLayout = { ...INNER_LAYOUT_DOC_CLOSED };
@@ -684,8 +688,31 @@ describe('EditorArea empty-state terminal host', () => {
       />,
     );
 
-    expect(dockUnit('terminal').hidden).toBe(true);
+    expect(document.querySelector('[data-dock-unit="terminal"]')).toBeNull();
     expect(terminalMount()).toBeNull();
+    const emptyState = screen.getByTestId('empty-editor-state');
+    expect(emptyState.getAttribute('data-terminal-open')).toBe('false');
+    expect(emptyState.getAttribute('data-agents-open')).toBe('false');
+  });
+
+  test('the web page hides agents and the terminal even when both are requested', () => {
+    vi.stubGlobal('okDesktop', undefined);
+    render(
+      <EditorArea
+        editorMode="wysiwyg"
+        onModeChange={() => {}}
+        activeTab="timeline"
+        onActiveTabChange={() => {}}
+        terminalBridge={{} as never}
+        terminalVisible
+        agentsVisible
+      />,
+    );
+
+    expect(document.querySelector('[data-dock-unit="terminal"]')).toBeNull();
+    expect(document.querySelector('[data-dock-unit="agents"]')).toBeNull();
+    expect(terminalMount()).toBeNull();
+    expect(agentsMount()).toBeNull();
     const emptyState = screen.getByTestId('empty-editor-state');
     expect(emptyState.getAttribute('data-terminal-open')).toBe('false');
     expect(emptyState.getAttribute('data-agents-open')).toBe('false');
@@ -1353,7 +1380,7 @@ describe('EditorArea dock units', () => {
 
     expect(paneCard('terminal')).toBeNull();
     expect(terminalMount()).toBeNull();
-    expect(dockUnit('terminal').hidden).toBe(true);
+    expect(document.querySelector('[data-dock-unit="terminal"]')).toBeNull();
     expect(paneCard('agents')).not.toBeNull();
     expect(unitPx('agents', 'height')).toBe(WORKSPACE_HEIGHT_PX);
     expect(unitPx('editor', 'height')).toBe(WORKSPACE_HEIGHT_PX);
@@ -1586,7 +1613,7 @@ describe('EditorArea terminal unit across view kinds', () => {
       renderEditorArea();
 
       expect(dockUnit('editor').contains(screen.getByTestId(content))).toBe(true);
-      expect(dockUnit('terminal').hidden).toBe(true);
+      expect(document.querySelector('[data-dock-unit="terminal"]')).toBeNull();
       expect(terminalMount()).toBeNull();
     },
   );

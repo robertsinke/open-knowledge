@@ -148,6 +148,7 @@ describe('settings dialog search', () => {
 
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     consoleErrorSpy.mockRestore();
     vi.useRealTimers();
   });
@@ -172,6 +173,7 @@ describe('settings dialog search', () => {
   });
 
   test('the merged Agents page is findable under both of its former names', async () => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
     const user = userEvent.setup();
     render(<SettingsDialogShell open={true} onOpenChange={() => {}} />);
     const input = screen.getByTestId('settings-search-input');

@@ -20,6 +20,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
 } from '@/components/ui/context-menu';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
 import {
   isDesktopTargetEnabled,
@@ -63,7 +64,7 @@ export function OpenInAgentEmptySpaceSubmenu(props: OpenInAgentEmptySpaceSubmenu
   const terminalLaunch = useTerminalLaunch();
   const registeredAgents = useRegisteredAgents();
   const overrides = useEnabledOverrides();
-  if (isEmbedded) return null;
+  if (isEmbedded || !isOkDesktopHost()) return null;
   const { input, installStates, dispatch } = props;
   const inputMissing = input === null;
   const hint = emptySpaceRowHint(inputMissing);

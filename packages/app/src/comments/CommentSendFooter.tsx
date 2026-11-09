@@ -5,6 +5,7 @@ import { AgentSplitButton } from '@/components/handoff/AgentSplitButton';
 import { useReusableSession } from '@/components/reusable-session-store';
 import { Button } from '@/components/ui/button';
 import { PanelFooter } from '@/components/ui/panel';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { MessageSquarePlus } from '@/lib/host-icons';
 import { formatShortcut, formatShortcutLabel } from '@/lib/keyboard-shortcuts';
@@ -106,7 +107,7 @@ export function CommentSendFooter({
             ) : null}
           </div>
         ) : null}
-        {bbHost ? null : (
+        {bbHost || !isOkDesktopHost() ? null : (
           <AgentSplitButton
             className="ms-auto max-w-full shrink-0"
             primaryClassName="min-w-0 flex-1"

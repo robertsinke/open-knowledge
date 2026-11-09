@@ -3,7 +3,7 @@ import * as actualLinguiMacro from '@lingui/react/macro';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { type ReactNode, useState } from 'react';
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -102,8 +102,13 @@ async function selectCodex() {
 }
 
 describe('FileTree external handoff', () => {
+  beforeEach(() => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
+  });
+
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     vi.clearAllMocks();
     setAgentEnabled(desktopEnabledKey('codex'), undefined);
   });

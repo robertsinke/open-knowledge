@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { AsyncState } from '@/hooks/use-folder-config';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
 import { emitCreateTopLevelFile } from '@/lib/create-file-events';
 import { ArrowRightIcon, Info, Plus } from '@/lib/host-icons';
@@ -45,9 +46,9 @@ export function CreateView({
 
       {isEmbedded ? (
         <CopyablePromptList scenario="existing-repo" />
-      ) : (
+      ) : isOkDesktopHost() ? (
         <CreatePromptComposer scenario="existing-repo" />
-      )}
+      ) : null}
 
       <FileCreationActions templatesState={templatesState} onAddStarterPack={onAddStarterPack} />
     </div>

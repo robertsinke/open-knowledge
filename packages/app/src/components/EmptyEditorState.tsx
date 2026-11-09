@@ -15,6 +15,7 @@ import { SeedDialog } from '@/components/SeedDialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { type AsyncState, useAllTemplates } from '@/hooks/use-folder-config';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import { isBbEditorHost } from '@/lib/bb-editor-host';
 import { emitCreateTopLevelFile } from '@/lib/create-file-events';
 import type { OkPackId } from '@/lib/desktop-bridge-types';
@@ -225,9 +226,9 @@ function OnboardingView({
       />
       {isEmbedded ? (
         <CopyablePromptList scenario="new-project" />
-      ) : (
+      ) : isOkDesktopHost() ? (
         <CreatePromptComposer scenario="new-project" />
-      )}
+      ) : null}
       <div className="flex w-full flex-col gap-3">
         <TemplateDivider label={isEmbedded ? t`Use a starter pack` : t`Or use a starter pack`} />
         <PackCardGrid

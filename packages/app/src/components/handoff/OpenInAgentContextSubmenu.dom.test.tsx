@@ -88,12 +88,15 @@ async function renderSubmenu({
   states = installStates(),
   withTerminal = false,
   onBeforeLaunch,
+  desktop = true,
 }: {
   input?: HandoffDispatchInput | null;
   states?: Record<HandoffTarget, InstallState>;
   withTerminal?: boolean;
   onBeforeLaunch?: () => void;
+  desktop?: boolean;
 } = {}) {
+  vi.stubGlobal('okDesktop', desktop ? { config: { ptyAvailable: true } } : undefined);
   const { OpenInAgentContextSubmenu } = await import('./OpenInAgentContextSubmenu');
   const dispatchCalls: Array<{ input: HandoffDispatchInput; target: HandoffTarget }> = [];
   const dispatch = vi.fn(async (target: HandoffTarget, nextInput: HandoffDispatchInput) => {
@@ -130,6 +133,7 @@ async function renderSubmenu({
     ),
   );
 
+  if (!desktop) return { dispatch, dispatchCalls, trigger: null };
   const trigger = screen.getByRole('menuitem', { name: 'Open with AI' });
   await userEvent.hover(trigger);
   await waitFor(
@@ -145,6 +149,7 @@ async function renderSubmenu({
 describe('OpenInAgentContextSubmenu runtime behavior', () => {
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     launchCalls.length = 0;
     threadLaunchCalls.length = 0;
     threadLaunchOpts.length = 0;
@@ -152,6 +157,11 @@ describe('OpenInAgentContextSubmenu runtime behavior', () => {
     if (typeof localStorage !== 'undefined') localStorage.clear();
     reloadRegisteredAgentsFromStorage();
     reloadEnabledAgentsFromStorage();
+  });
+
+  test('the web page does not show Open with AI', async () => {
+    await renderSubmenu({ desktop: false });
+    expect(screen.queryByRole('menuitem', { name: 'Open with AI' })).toBeNull();
   });
 
   test('renders only installed visible targets and dispatches the selected row', async () => {

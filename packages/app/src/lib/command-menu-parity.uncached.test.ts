@@ -492,7 +492,14 @@ describe('command identity registry (Phase 2b)', () => {
       (shortcut) => shortcut.desktopOnly === true,
     ).map((shortcut) => shortcut.id);
 
-    expect(desktopOnlyShortcutIds.sort()).toEqual(['report-bug']);
+    expect(desktopOnlyShortcutIds.sort()).toEqual([
+      'ask-ai-selection',
+      'new-terminal-tab',
+      'open-ask-ai',
+      'report-bug',
+      'toggle-agent-panel',
+      'toggle-terminal-panel',
+    ]);
 
     const chordShownOnWeb = COMMAND_IDENTITIES.filter(
       (command) =>

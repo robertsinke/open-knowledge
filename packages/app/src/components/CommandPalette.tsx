@@ -679,7 +679,11 @@ export function CommandPalette({ bridge = null, open, onOpenChange }: CommandPal
     };
   });
   const showAgentGroup =
-    !inExclusiveMode && !isEmbedded && handoffInput !== null && rankedAgentTargets.length > 0;
+    !inExclusiveMode &&
+    bridge !== null &&
+    !isEmbedded &&
+    handoffInput !== null &&
+    rankedAgentTargets.length > 0;
   const tagListItems =
     paletteMode.kind === 'tag-list' ? filterTagList(tagsList, paletteMode.query) : [];
   const showTagListEmpty =

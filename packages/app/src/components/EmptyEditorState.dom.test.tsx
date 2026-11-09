@@ -88,7 +88,10 @@ beforeEach(() => {
   useAllTemplates.mockReturnValue(readyTemplates([templateFixture]));
 });
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
 
 const { EmptyEditorState } = await import('./EmptyEditorState');
 
@@ -104,13 +107,13 @@ describe('EmptyEditorState file creation with session panels', () => {
     },
   );
 
-  test('closed panels show the composer, the starter-pack action and both create paths', async () => {
+  test('closed panels on the web page keep file actions and omit the agent composer', async () => {
     const onCreate = vi.fn();
     const unsubscribe = subscribeToCreateTopLevelFile(onCreate);
     try {
       render(<EmptyEditorState />);
       await screen.findByRole('region', { name: 'From template' });
-      expect(screen.getByTestId('create-prompt-composer')).toBeTruthy();
+      expect(screen.queryByTestId('create-prompt-composer')).toBeNull();
       expect(screen.getByRole('button', { name: 'Add a starter pack' })).toBeTruthy();
 
       fireEvent.click(screen.getByRole('button', { name: templateRowName }));
@@ -202,6 +205,7 @@ describe('EmptyEditorState file creation with session panels', () => {
   });
 
   test('toggling the AI sidebar keeps file actions available and restores the composer', async () => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
     const { rerender } = render(<EmptyEditorState />);
     await screen.findByRole('region', { name: 'From template' });
     rerender(<EmptyEditorState agentsOpen />);

@@ -20,6 +20,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu.tsx';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import { useIsEmbedded } from '@/hooks/use-is-embedded';
 import {
   isDesktopTargetEnabled,
@@ -66,7 +67,7 @@ export function OpenInAgentContextSubmenu(props: OpenInAgentContextSubmenuProps)
   const terminalLaunch = useTerminalLaunch();
   const registeredAgents = useRegisteredAgents();
   const overrides = useEnabledOverrides();
-  if (isEmbedded) return null;
+  if (isEmbedded || !isOkDesktopHost()) return null;
   const { input, installStates, dispatch, onBeforeLaunch, restoreFocus } = props;
   const inputMissing = input === null;
   const hint = contextRowHint(inputMissing);

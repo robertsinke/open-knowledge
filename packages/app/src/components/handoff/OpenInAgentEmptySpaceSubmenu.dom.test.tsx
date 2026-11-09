@@ -84,11 +84,14 @@ async function renderSubmenu({
   input = readyInput,
   states = installStates(),
   withTerminal = false,
+  desktop = true,
 }: {
   input?: HandoffDispatchInput | null;
   states?: Record<HandoffTarget, InstallState>;
   withTerminal?: boolean;
+  desktop?: boolean;
 } = {}) {
+  vi.stubGlobal('okDesktop', desktop ? { config: { ptyAvailable: true } } : undefined);
   const { OpenInAgentEmptySpaceSubmenu } = await import('./OpenInAgentEmptySpaceSubmenu');
   const dispatchCalls: Array<{ input: HandoffDispatchInput; target: HandoffTarget }> = [];
   const dispatch = vi.fn(async (target: HandoffTarget, nextInput: HandoffDispatchInput) => {
@@ -145,12 +148,18 @@ async function openEmptySpaceSubmenu() {
 describe('OpenInAgentEmptySpaceSubmenu runtime behavior', () => {
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     launchCalls.length = 0;
     threadLaunchCalls.length = 0;
     threadLaunchOpts.length = 0;
     if (typeof localStorage !== 'undefined') localStorage.clear();
     reloadRegisteredAgentsFromStorage();
     reloadEnabledAgentsFromStorage();
+  });
+
+  test('the web page does not show Open with AI', async () => {
+    await renderSubmenu({ desktop: false });
+    expect(screen.queryByRole('menuitem', { name: 'Open with AI' })).toBeNull();
   });
 
   test('renders as a ContextMenu submenu, filters visible installed targets, and dispatches rows', async () => {

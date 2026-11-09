@@ -74,7 +74,7 @@ import { useDocConflict } from '@/hooks/use-conflicts';
 import { useDocumentStats } from '@/hooks/use-document-stats';
 import { useSelectionStats } from '@/hooks/use-selection-stats';
 import { closeAgentDiff, useAgentDiffView } from '@/lib/agent-diff-store';
-import { isBbEditorHost } from '@/lib/bb-editor-host';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 import type { OkDesktopBridge } from '@/lib/desktop-bridge-types';
 import { docNameFromHash, hashFromDocName, isSameHash } from '@/lib/doc-hash';
 import { getInitialDocPanelWidth, writeDocPanelWidth } from '@/lib/doc-panel-width-store';
@@ -759,9 +759,9 @@ function EditorAreaInner({
   const { resolvedTheme } = useTheme();
   const xtermBackground = useLiveXtermTheme(resolvedTheme).background;
 
-  const bbEditorHost = isBbEditorHost();
-  const agentsUnitShown = !bbEditorHost && !noteWindow && agentsVisible;
-  const terminalUnitShown = !bbEditorHost && !noteWindow && terminalAvailable && terminalVisible;
+  const desktopHost = isOkDesktopHost();
+  const agentsUnitShown = desktopHost && !noteWindow && agentsVisible;
+  const terminalUnitShown = desktopHost && !noteWindow && terminalAvailable && terminalVisible;
   const terminalPlacement = dockTerminalPlacement(dockTree);
   const [dockLayout, setDockLayout] = useState<DockLayout>(EMPTY_DOCK_LAYOUT);
   const editorVisibleRef = useRef(editorVisible);
@@ -1538,9 +1538,9 @@ function EditorAreaInner({
           <OkBlobRunnerPage autoStart />
         ) : (
           <EmptyEditorState
-            terminalOpen={terminalVisible}
-            bottomDockOpen={terminalVisible && terminalPlacement === 'bottom'}
-            agentsOpen={agentsVisible}
+            terminalOpen={terminalUnitShown}
+            bottomDockOpen={terminalUnitShown && terminalPlacement === 'bottom'}
+            agentsOpen={agentsUnitShown}
             onRageStreak={
               activeNewTabId
                 ? () => withViewTransition(() => setBlobRunRevealedTabId(activeNewTabId))
@@ -2202,7 +2202,7 @@ function EditorAreaInner({
     </PaneCard>
   );
 
-  const agentsUnit = noteWindow ? null : (
+  const agentsUnit = desktopHost && !noteWindow ? (
     <PaneCard pane="agents" variant={cardVariant}>
       <section
         ref={setAgentsContainer}
@@ -2213,9 +2213,9 @@ function EditorAreaInner({
         className="flex min-h-0 flex-1 flex-col overflow-hidden"
       />
     </PaneCard>
-  );
+  ) : null;
 
-  const terminalUnit = terminalAvailable ? (
+  const terminalUnit = desktopHost && terminalAvailable ? (
     <PaneCard
       pane="terminal"
       variant={cardVariant}

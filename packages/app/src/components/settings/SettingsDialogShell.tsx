@@ -24,7 +24,6 @@ import { electronDragBandClearance } from '@/components/ui/electron-drag-strip';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useDocumentContext } from '@/editor/DocumentContext';
-import { isBbEditorHost } from '@/lib/bb-editor-host';
 import type { ConfigContextValue } from '@/lib/config-context';
 import { useConfigContext } from '@/lib/config-provider';
 import { isFileProtocolPage } from '@/lib/file-protocol-page';
@@ -448,7 +447,7 @@ function SettingsDialogFrame({
   ];
 
   const groups = scopeSettingsGroupsForHost(
-    isBbEditorHost() ? declaredGroups.filter((group) => group.id !== 'agents') : declaredGroups,
+    isOkDesktopHost ? declaredGroups : declaredGroups.filter((group) => group.id !== 'agents'),
     host,
   );
   const shownId =

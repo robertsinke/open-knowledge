@@ -997,9 +997,9 @@ export function EditorPane() {
   }, [noteWindow, sendSelectionToAgents]);
 
   useEffect(() => {
-    const hasNativeMenu = window.okDesktop != null;
+    if (window.okDesktop == null) return;
     function handleKeyDown(event: KeyboardEvent) {
-      if (!matchesRendererShortcut(event, 'toggle-terminal-panel', hasNativeMenu)) return;
+      if (!matchesRendererShortcut(event, 'toggle-terminal-panel', true)) return;
       if (isOverlayLayerOpen()) return;
       if (!terminalAvailable) return;
       event.preventDefault();
@@ -1010,19 +1010,7 @@ export function EditorPane() {
   }, [terminalAvailable]);
 
   useEffect(() => {
-    if (window.okDesktop != null) return;
-    function handleKeyDown(event: KeyboardEvent) {
-      if (!matchesKeyboardShortcut(event, 'toggle-agent-panel')) return;
-      if (isOverlayLayerOpen()) return;
-      event.preventDefault();
-      if (sendSelectionToAgents()) return;
-      toggleAgentsEvent();
-    }
-    window.addEventListener('keydown', handleKeyDown, { capture: true });
-    return () => window.removeEventListener('keydown', handleKeyDown, { capture: true });
-  }, [sendSelectionToAgents]);
-
-  useEffect(() => {
+    if (window.okDesktop == null) return;
     function handleKeyDown(event: KeyboardEvent) {
       if (!matchesKeyboardShortcut(event, 'new-terminal-tab')) return;
       if (isOverlayLayerOpen()) return;
@@ -1311,9 +1299,11 @@ export function EditorPane() {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <AgentThreadClientBinder />
-      </Suspense>
+      {desktopBridge == null ? null : (
+        <Suspense fallback={null}>
+          <AgentThreadClientBinder />
+        </Suspense>
+      )}
       <div className="flex min-h-0 flex-1">
         <div className="flex min-w-0 flex-1 flex-col">
           <EditorArea
@@ -1340,7 +1330,7 @@ export function EditorPane() {
           />
         </div>
       </div>
-      {noteWindow ? null : (
+      {noteWindow || desktopBridge == null ? null : (
         <Suspense fallback={null}>
           <SessionsHost
             surface="agents-panel"

@@ -1,4 +1,4 @@
-import { isBbEditorHost } from '@/lib/bb-editor-host';
+import { isOkDesktopHost } from '@/components/settings/settings-host-gates';
 
 export interface BottomComposerGateInputs {
   terminalVisible: boolean;
@@ -8,7 +8,7 @@ export interface BottomComposerGateInputs {
 }
 
 export function shouldShowBottomComposer(inputs: BottomComposerGateInputs): boolean {
-  if (isBbEditorHost()) return false;
+  if (!isOkDesktopHost()) return false;
   return (
     !inputs.terminalVisible &&
     !inputs.agentsVisible &&
@@ -20,6 +20,6 @@ export function shouldShowBottomComposer(inputs: BottomComposerGateInputs): bool
 export function shouldShowFolderComposer(
   inputs: Omit<BottomComposerGateInputs, 'activeDocName'>,
 ): boolean {
-  if (isBbEditorHost()) return false;
+  if (!isOkDesktopHost()) return false;
   return !inputs.terminalVisible && !inputs.agentsVisible && !inputs.isEmbedded;
 }

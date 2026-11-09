@@ -155,6 +155,7 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
 
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     consoleErrorSpy.mockRestore();
   });
 
@@ -202,10 +203,10 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeTruthy();
     expect(screen.getByRole('region', { name: 'Settings content' })).toBeTruthy();
     expect(screen.getByRole('navigation', { name: 'Settings sections' })).toBeTruthy();
-    expect(screen.getByText('Agents')).toBeTruthy();
+    expect(screen.queryByText('Agents')).toBeNull();
     expect(screen.getByText('User')).toBeTruthy();
     expect(screen.getByText('This project')).toBeTruthy();
-    expect(screen.getByTestId('settings-sidebar-item-agent-connections')).toBeTruthy();
+    expect(screen.queryByTestId('settings-sidebar-item-agent-connections')).toBeNull();
     expect(screen.queryByTestId('settings-sidebar-item-configure-agents')).toBeNull();
     expect(screen.queryByTestId('settings-sidebar-item-ai-tools')).toBeNull();
     expect(screen.queryByTestId('settings-sidebar-item-project-ai-tools')).toBeNull();
@@ -235,8 +236,9 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
     expect(probeProps.at(-1)?.activeId).toBe('sync');
   });
 
-  test('with the host flag off, the open dialog keeps Agents', () => {
+  test('the desktop dialog keeps Agents', () => {
     clearBbEditorHost();
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
     render(<SettingsDialogShell open onOpenChange={() => {}} />);
     expect(screen.getByText('Agents')).toBeTruthy();
     expect(screen.getByText('User')).toBeTruthy();
@@ -245,6 +247,7 @@ describe('SettingsDialogShell userBinding gating (Tier-3 mount)', () => {
   });
 
   test('the retired configure-agents deep link redirects to the merged Agents page in one hop', () => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
     render(<SettingsDialogShell open initialSection="configure-agents" onOpenChange={() => {}} />);
 
     expect(probeProps.at(-1)?.activeId).toBe('agent-connections');

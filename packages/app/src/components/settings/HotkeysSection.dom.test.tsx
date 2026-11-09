@@ -52,9 +52,11 @@ describe('HotkeysSection host awareness', () => {
   test('keeps every other row on web, including the OK Desktop-scoped ones', () => {
     renderUnderHost(false);
 
-    for (const id of ['new-folder', 'toggle-terminal-panel', 'navigate-back']) {
+    for (const id of ['new-folder', 'navigate-back']) {
       expect(screen.queryByTestId(`settings-hotkey-${id}`)).not.toBeNull();
     }
+    expect(screen.queryByTestId('settings-hotkey-toggle-terminal-panel')).toBeNull();
+    expect(screen.queryByTestId('settings-hotkey-toggle-agent-panel')).toBeNull();
   });
 
   test('the web list is the desktop list minus exactly the desktop-only rows', () => {

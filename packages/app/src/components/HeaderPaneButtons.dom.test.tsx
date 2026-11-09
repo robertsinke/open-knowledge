@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ReactNode } from 'react';
-import { afterEach, describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { HeaderPaneButtons, useHeaderPaneButtonSet } from '@/components/HeaderPaneButtons';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ConfigContext } from '@/lib/config-context';
@@ -98,9 +98,23 @@ function PaneSetProbe() {
 }
 
 describe('HeaderPaneButtons', () => {
+  beforeEach(() => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
+  });
+
   afterEach(() => {
+    vi.unstubAllGlobals();
     __resetPaneVisibilityStoreForTests();
     setPlatform(ORIGINAL_PLATFORM);
+  });
+
+  test('the web page keeps Editor and drops Agents and Terminal', () => {
+    vi.stubGlobal('okDesktop', undefined);
+    paneVisibilityStore.publish({ editor: SHOWN, agents: SHOWN, terminal: SHOWN });
+    renderButtons();
+    expect(screen.queryByTestId('header-pane-button-agents')).toBeNull();
+    expect(screen.queryByTestId('header-pane-button-terminal')).toBeNull();
+    expect(screen.getByTestId('header-pane-button-editor')).toBeTruthy();
   });
 
   test('renders Agents then Terminal inside a group named Panels, after a divider', () => {
@@ -475,7 +489,12 @@ describe('HeaderPaneButtons', () => {
 });
 
 describe('the Editor header button', () => {
+  beforeEach(() => {
+    vi.stubGlobal('okDesktop', { config: { ptyAvailable: true } });
+  });
+
   afterEach(() => {
+    vi.unstubAllGlobals();
     __resetPaneVisibilityStoreForTests();
     setPlatform(ORIGINAL_PLATFORM);
   });

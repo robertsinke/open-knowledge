@@ -505,6 +505,7 @@ export function DockWorkspace({
       )}
     >
       {DOCK_PANES.map((pane) => {
+        if (units[pane] == null) return null;
         const seam = seamBefore.get(pane);
         return (
           <Fragment key={pane}>

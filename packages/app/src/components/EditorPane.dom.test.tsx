@@ -707,12 +707,10 @@ describe('EditorPane session-panel wiring', () => {
     workspaceContentDir = '/tmp/project';
   });
 
-  test('web host mounts the agents panel only — no shell can spawn, so no terminal dock', async () => {
+  test('web host mounts neither the agents panel nor the terminal dock', async () => {
     await renderEditorPane();
 
-    const agents = screen.getByTestId('agents-panel');
-    expect(agents.getAttribute('data-has-bridge')).toBe('false');
-    expect(agents.getAttribute('data-terminal-capable')).toBe('false');
+    expect(screen.queryByTestId('agents-panel')).toBeNull();
     expect(screen.queryByTestId('terminal-dock')).toBeNull();
     expect(screen.getByTestId('editor-header')).toBeTruthy();
     expect(screen.getByTestId('editor-header').contains(screen.getByTestId('workspace-tabs'))).toBe(
@@ -1065,6 +1063,7 @@ describe('EditorPane session-panel wiring', () => {
 
   test('a SessionsHost reveal request opens the agents panel', async () => {
     const user = userEvent.setup();
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     await renderEditorPane();
 
     expect(screen.getByTestId('agents-panel').getAttribute('data-visible')).toBe('false');
@@ -1186,6 +1185,7 @@ describe('EditorPane session-panel wiring', () => {
   });
 
   test('an agent-thread launch request reveals the agents panel and forwards the intent', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     await renderEditorPane();
     expect(screen.getByTestId('agents-panel').getAttribute('data-visible')).toBe('false');
 
@@ -1261,6 +1261,7 @@ describe('EditorPane session-panel wiring', () => {
   });
 
   test('a narrow agent launch selects Chat while retaining its document and attachment intent', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     const originalMatchMedia = window.matchMedia;
     const narrowQuery = originalMatchMedia('(width < 48rem)');
     Object.defineProperty(narrowQuery, 'matches', { configurable: true, value: true });
@@ -1320,6 +1321,7 @@ describe('EditorPane session-panel wiring', () => {
   });
 
   test('a launch request carrying an image attachment forwards it into the thread-launch intent', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     await renderEditorPane();
 
     await act(async () => {
@@ -1425,7 +1427,7 @@ describe('EditorPane session-panel wiring', () => {
     expect(event.defaultPrevented).toBe(false);
   });
 
-  test('web host: a Cmd/Ctrl+L keydown is intercepted (the agents toggle is wired)', async () => {
+  test('web host: a Cmd/Ctrl+L keydown does not open agents', async () => {
     await renderEditorPane();
 
     const init: KeyboardEventInit = { key: 'l', cancelable: true, bubbles: true };
@@ -1434,7 +1436,7 @@ describe('EditorPane session-panel wiring', () => {
     const event = new KeyboardEvent('keydown', init);
     window.dispatchEvent(event);
 
-    expect(event.defaultPrevented).toBe(true);
+    expect(event.defaultPrevented).toBe(false);
   });
 
   test('web host: an unrelated keydown is not intercepted', async () => {
@@ -1504,7 +1506,7 @@ describe('EditorPane session-panel wiring', () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
-  test('web host: ⇧⌘J still asks for a preferred-AI session (the agents panel can answer)', async () => {
+  test('web host: Shift+Cmd/Ctrl+J does not start an agent session', async () => {
     await renderEditorPane();
     const preferred = capturePreferredSessionRequests();
     const event = new KeyboardEvent('keydown', shiftJKeydownInit());
@@ -1513,135 +1515,8 @@ describe('EditorPane session-panel wiring', () => {
     });
     preferred.stop();
 
-    expect(event.defaultPrevented).toBe(true);
-    expect(preferred.count).toBe(1);
-  });
-
-  test('web host: a no-selection shortcut reaches the preferred request before a session host subscribes', async () => {
-    await renderEditorPane();
-    clearSelection();
-    window.getSelection()?.removeAllRanges();
-    const preferred = capturePreferredSessionRequests();
-    const input = captureActiveTerminalInput();
-    const event = new KeyboardEvent('keydown', shiftJKeydownInit());
-
-    expect(window.getSelection()?.toString()).toBe('');
-    act(() => {
-      window.dispatchEvent(event);
-    });
-    preferred.stop();
-    input.stop();
-
-    expect(event.defaultPrevented).toBe(true);
-    expect(preferred.count).toBe(1);
-    expect(input.details).toEqual([]);
-    expect(screen.getByTestId('agents-panel').getAttribute('data-visible')).toBe('false');
-  });
-
-  test('web host: a cold shortcut is delivered once when its session host becomes ready', async () => {
-    await renderEditorPane();
-    const keyEvent = new KeyboardEvent('keydown', shiftJKeydownInit());
-    act(() => {
-      window.dispatchEvent(keyEvent);
-    });
-    expect(keyEvent.defaultPrevented).toBe(true);
-
-    let launches = 0;
-    const stop = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    stop();
-
-    expect(launches).toBe(1);
-  });
-
-  test('web host: two cold shortcuts deliver two accepted requests without replay on another ready signal', async () => {
-    await renderEditorPane();
-    const first = new KeyboardEvent('keydown', shiftJKeydownInit());
-    const second = new KeyboardEvent('keydown', shiftJKeydownInit());
-    act(() => {
-      window.dispatchEvent(first);
-      window.dispatchEvent(second);
-    });
-    expect(first.defaultPrevented).toBe(true);
-    expect(second.defaultPrevented).toBe(true);
-
-    let launches = 0;
-    const stop = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(2);
-    act(() => preferredHostReady?.());
-    stop();
-
-    expect(launches).toBe(2);
-  });
-
-  test('web host: zero-width collapse keeps a cold request but explicit Hide cancels the next one', async () => {
-    await renderEditorPane();
-    act(() => agentsHostVisibleChange?.(true));
-    setPaneExtent('agents', false);
-    const first = new KeyboardEvent('keydown', shiftJKeydownInit());
-    act(() => window.dispatchEvent(first));
-    expect(first.defaultPrevented).toBe(true);
-
-    let launches = 0;
-    const stopFirst = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(1);
-    stopFirst();
-
-    const second = new KeyboardEvent('keydown', shiftJKeydownInit());
-    act(() => window.dispatchEvent(second));
-    expect(second.defaultPrevented).toBe(true);
-    act(() => agentsHostVisibleChange?.(false));
-    const stopSecond = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    stopSecond();
-
-    expect(screen.getByTestId('agents-panel').getAttribute('data-visible')).toBe('false');
-    expect(launches).toBe(1);
-  });
-
-  test('web host: project switch and unmount discard the prior owner’s cold request', async () => {
-    const view = await renderEditorPane();
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-
-    let launches = 0;
-    const stopFirst = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(1);
-    stopFirst();
-
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    workspaceContentDir = '/tmp/other-project';
-    const { EditorPane } = await import('./EditorPane');
-    act(() => view.rerender(<EditorPane />));
-    const stopAfterSwitch = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(1);
-    stopAfterSwitch();
-
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    act(() => view.unmount());
-    render(<EditorPane />);
-    const stopAfterRemount = subscribeToPreferredSessionRequests(() => {
-      launches += 1;
-    });
-    act(() => preferredHostReady?.());
-    stopAfterRemount();
-
-    expect(launches).toBe(1);
+    expect(event.defaultPrevented).toBe(false);
+    expect(preferred.count).toBe(0);
   });
 
   test('desktop: a pending shortcut follows a changed preference into an already ready terminal host', async () => {
@@ -1734,81 +1609,6 @@ describe('EditorPane session-panel wiring', () => {
     act(() => terminalHostReady?.());
     stopSecond();
     expect(launches).toBe(1);
-  });
-
-  test('web host: a stale ready callback cannot drain requests from a new project or mount', async () => {
-    const view = await renderEditorPane();
-    const oldReady = preferredHostReady;
-    const { EditorPane } = await import('./EditorPane');
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    workspaceContentDir = '/tmp/other-project';
-    act(() => view.rerender(<EditorPane />));
-    const projectReady = preferredHostReady;
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-
-    let launches = 0;
-    const stop = trackPreferredStop(
-      subscribeToPreferredSessionRequests(() => {
-        launches += 1;
-      }),
-    );
-    act(() => oldReady?.());
-    const launchesAfterOldReady = launches;
-    act(() => projectReady?.());
-    expect(launches).toBe(1);
-    expect(launchesAfterOldReady).toBe(0);
-    stop();
-
-    act(() => view.unmount());
-    render(<EditorPane />);
-    const nextReady = preferredHostReady;
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    expect(launches).toBe(1);
-    const stopAfterRemount = trackPreferredStop(
-      subscribeToPreferredSessionRequests(() => {
-        launches += 1;
-      }),
-    );
-    act(() => projectReady?.());
-    const launchesAfterStaleReady = launches;
-    act(() => nextReady?.());
-    stopAfterRemount();
-    expect(launchesAfterStaleReady).toBe(1);
-    expect(launches).toBe(2);
-  });
-
-  test('web host: an unknown workspace binds its first project, then retires intent on a known-project switch', async () => {
-    workspaceContentDir = null;
-    const view = await renderEditorPane();
-    const { EditorPane } = await import('./EditorPane');
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    workspaceContentDir = '/tmp/project-a';
-    act(() => view.rerender(<EditorPane />));
-
-    let launches = 0;
-    const stop = trackPreferredStop(
-      subscribeToPreferredSessionRequests(() => {
-        launches += 1;
-      }),
-    );
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(1);
-    stop();
-
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    expect(launches).toBe(1);
-    workspaceContentDir = '/tmp/project-b';
-    act(() => view.rerender(<EditorPane />));
-    const stopAfterSwitch = trackPreferredStop(
-      subscribeToPreferredSessionRequests(() => {
-        launches += 1;
-      }),
-    );
-    act(() => preferredHostReady?.());
-    expect(launches).toBe(1);
-    act(() => window.dispatchEvent(new KeyboardEvent('keydown', shiftJKeydownInit())));
-    stopAfterSwitch();
-    expect(launches).toBe(2);
   });
 
   test('desktop: ⌘J with a selection toggles the terminal and stages nothing', async () => {
@@ -2077,6 +1877,7 @@ describe('EditorPane pane visibility for the header', () => {
   });
 
   test('a header request shows and hides chat', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     await renderEditorPane();
     const agents = () => screen.getByTestId('agents-panel').getAttribute('data-visible');
 
@@ -2281,6 +2082,7 @@ describe('EditorPane pane visibility for the header', () => {
   });
 
   test('a header hide leaves focus where it was', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     const editorRegion = document.createElement('div');
     editorRegion.tabIndex = -1;
     document.body.append(editorRegion);
@@ -2423,6 +2225,7 @@ describe('EditorPane pane visibility for the header', () => {
   });
 
   test('a pane hiding while the editor is hidden sends focus to the header Editor button, not the page', async () => {
+    (window as { okDesktop?: unknown }).okDesktop = makeOkDesktopStub().stub;
     const editorRegion = document.createElement('div');
     editorRegion.tabIndex = -1;
     document.body.append(editorRegion);

@@ -337,7 +337,7 @@ describe("OpenKnowledge editor plugin", () => {
       },
     );
     const status = await slot.findByRole("status", { name: "Loading the editor." });
-    expect(status.querySelector(".ok-editor-load-face")).not.toBeNull();
+    expect(status.querySelector(".ok-blob-body")).not.toBeNull();
     expect(status.querySelector(".ok-editor-load-bar")).not.toBeNull();
     expect(slot.container.querySelector("iframe")).toBeNull();
   });

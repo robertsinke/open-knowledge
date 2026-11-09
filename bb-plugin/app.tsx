@@ -27,6 +27,7 @@ import {
   readBbDeployedOriginMessage,
 } from "./deployed-origin";
 import { viewerNeedsPublishedFrame } from "./remote-frame";
+import { MASCOT_OUTLINE_PATH } from "../packages/app/src/components/mascot-outline";
 import type { rpcContract } from "./server";
 
 export const EDITOR_ORIGIN_POLL_MS = 15_000;
@@ -141,21 +142,36 @@ function EditorSettings(_props: PluginSettingsSectionProps) {
 }
 
 const EDITOR_LOADING_MOTION = `
-@keyframes ok-editor-load-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+.ok-blob-body {
+  fill: #3784ff;
+  animation: ok-blob-squish 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
 }
-@keyframes ok-editor-load-blink {
-  0%, 42%, 48%, 100% { transform: scaleY(1); }
-  45% { transform: scaleY(0.12); }
+.ok-blob-eye {
+  fill: #3784ff;
+  animation: ok-blob-blink 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.ok-blob-eye-right { animation-delay: 0.04s; }
+@keyframes ok-blob-blink {
+  0%, 28%, 34%, 100% { transform: scaleY(1); }
+  30%, 32% { transform: scaleY(0.05); }
+}
+@keyframes ok-blob-squish {
+  0%, 28%, 38%, 100% { transform: scaleY(1) scaleX(1); }
+  30% { transform: scaleY(0.97) scaleX(1.02); }
+  33% { transform: scaleY(1.02) scaleX(0.99); }
+  36% { transform: scaleY(1) scaleX(1); }
 }
 @keyframes ok-editor-load-bar {
   0% { transform: translateX(-120%); }
   100% { transform: translateX(280%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ok-editor-load-face,
-  .ok-editor-load-eyes,
+  .ok-blob-body,
+  .ok-blob-eye,
   .ok-editor-load-bar { animation: none; }
 }
 `;
@@ -179,26 +195,23 @@ function EditorLoading() {
       <style>{EDITOR_LOADING_MOTION}</style>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
         <svg
-          className="ok-editor-load-face"
-          width="72"
-          height="72"
-          viewBox="0 0 72 72"
+          width="64"
+          height="64"
+          viewBox="0 0 30 30"
+          fill="none"
+          overflow="visible"
           aria-hidden="true"
-          style={{ animation: "ok-editor-load-bob 1.8s ease-in-out infinite" }}
         >
-          <path
-            fill="#4B8BF5"
-            d="M36 7c14 0 25 8 27 22 2 15-6 28-20 31-15 3-29-6-32-20C8 24 20 7 36 7z"
-          />
-          <g
-            className="ok-editor-load-eyes"
-            style={{
-              transformOrigin: "36px 33px",
-              animation: "ok-editor-load-blink 3.2s ease-in-out infinite",
-            }}
-          >
-            <ellipse cx="27" cy="33" rx="3.1" ry="4" fill="#1E4ED8" />
-            <ellipse cx="46" cy="33" rx="3.1" ry="4" fill="#1E4ED8" />
+          <g className="ok-blob-group">
+            <path d={MASCOT_OUTLINE_PATH} className="ok-blob-body" />
+            <ellipse className="ok-blob-eye" cx="9.2736" cy="14.5244" rx="1.2722" ry="1.9083" />
+            <ellipse
+              className="ok-blob-eye ok-blob-eye-right"
+              cx="18.1799"
+              cy="14.5244"
+              rx="1.2722"
+              ry="1.9083"
+            />
           </g>
         </svg>
         <div
